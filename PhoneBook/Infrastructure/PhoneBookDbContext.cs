@@ -3,7 +3,7 @@ using PhoneBook.Domain.Entities;
 
 namespace PhoneBook.Infrastructure;
 
-internal class PhoneBookDbContext : DbContext
+public class PhoneBookDbContext : DbContext
 {
     public DbSet<Contact> Contacts { get; set; }
 

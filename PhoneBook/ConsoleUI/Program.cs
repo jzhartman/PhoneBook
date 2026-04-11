@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PhoneBook.ConsoleUI;
 using PhoneBook.ConsoleUI.Services;
@@ -15,12 +13,8 @@ internal class Program
         var host = Host.CreateDefaultBuilder(args)
             .ConfigureServices((context, services) =>
             {
-                var connectionString = context.Configuration.GetConnectionString("PhoneBook");
-
-                services.AddDbContext<PhoneBookDbContext>(options =>
-                        options.UseSqlite(connectionString));
-
                 services.AddPresentation();
+                services.AddInfrastructure(context);
             })
             .Build();
 
