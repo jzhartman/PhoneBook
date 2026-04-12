@@ -7,12 +7,16 @@ internal class MainMenuService
 {
     private readonly MainMenuView _mainMenu;
 
-    public MainMenuService(MainMenuView mainMenu)
+    private readonly AddContactService _addContactService;
+
+    public MainMenuService(MainMenuView mainMenu, AddContactService addContactService)
     {
         _mainMenu = mainMenu;
+
+        _addContactService = addContactService;
     }
 
-    internal void Run()
+    internal async Task RunAsync()
     {
         bool exitApp = false;
         MainMenuOptions[] menuOptions = Enum.GetValues<MainMenuOptions>();
@@ -25,8 +29,7 @@ internal class MainMenuService
             switch (selection)
             {
                 case MainMenuOptions.Add:
-                    Console.WriteLine("Adding contact...");
-                    Console.ReadLine();
+                    await _addContactService.RunAsync();
                     break;
                 case MainMenuOptions.Delete:
                     Console.WriteLine("Deleting contact...");

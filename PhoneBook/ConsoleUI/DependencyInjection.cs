@@ -11,6 +11,7 @@ internal static class DependencyInjection
         services.AddTransient<MainMenuView>();
 
         services.AddTransient<MainMenuService>();
+        services.AddTransient<AddContactService>();
 
         return services;
     }
