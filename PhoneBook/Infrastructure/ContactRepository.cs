@@ -1,4 +1,5 @@
-﻿using PhoneBook.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PhoneBook.Application.Interfaces;
 using PhoneBook.Domain.Entities;
 
 namespace PhoneBook.Infrastructure;
@@ -13,33 +14,34 @@ public class ContactRepository : IContactRepository
     }
 
 
-    public Task AddAsync(Contact contact)
+    public async Task AddAsync(Contact contact)
     {
-        throw new NotImplementedException();
+        // Validate for if it exists
+        await _context.Contacts.AddAsync(contact);
     }
 
-    public Task DeleteAsync(Contact contact)
+    public async Task DeleteAsync(Contact contact)
     {
-        throw new NotImplementedException();
+        // Validate for if it exists
+        _context.Contacts.Remove(contact);
     }
 
-    public Task<List<Contact>> GetAllAsync()
+    public async Task<List<Contact>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await _context.Contacts.ToListAsync();
     }
 
-    public Task<Contact> GetByIdAsync(int id)
+    public async Task<Contact?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _context.Contacts.FindAsync(id);
     }
 
-    public Task SaveChangesAsync()
+    public async Task UpdateAsync(Contact contact)
     {
-        throw new NotImplementedException();
+        _context.Update(contact);
     }
-
-    public Task UpdateAsync(Contact contact)
+    public async Task SaveChangesAsync()
     {
-        throw new NotImplementedException();
+        await _context.SaveChangesAsync();
     }
 }
