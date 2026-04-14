@@ -17,7 +17,6 @@ internal class MainMenuView
                 MainMenuOptions.Delete => "Delete Contact",
                 MainMenuOptions.Update => "Edit Contact",
                 MainMenuOptions.Read => "Lookup Contact",
-                MainMenuOptions.ReadAll => "Browse All Contacts",
                 MainMenuOptions.Exit => "Exit Application",
                 _ => m.ToString()
             })
