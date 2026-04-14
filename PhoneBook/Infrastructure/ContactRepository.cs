@@ -28,7 +28,7 @@ public class ContactRepository : IContactRepository
 
     public async Task<List<Contact>> GetAllAsync()
     {
-        return await _context.Contacts.ToListAsync();
+        return await _context.Contacts.AsNoTracking().ToListAsync();
     }
 
     public async Task<Contact?> GetByIdAsync(int id)

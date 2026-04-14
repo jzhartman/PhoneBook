@@ -8,12 +8,15 @@ internal class MainMenuService
     private readonly MainMenuView _mainMenu;
 
     private readonly AddContactService _addContactService;
+    private readonly DeleteContactService _deleteContactService;
 
-    public MainMenuService(MainMenuView mainMenu, AddContactService addContactService)
+    public MainMenuService(MainMenuView mainMenu, AddContactService addContactService,
+        DeleteContactService deleteContactService)
     {
         _mainMenu = mainMenu;
 
         _addContactService = addContactService;
+        _deleteContactService = deleteContactService;
     }
 
     internal async Task RunAsync()
@@ -32,8 +35,7 @@ internal class MainMenuService
                     await _addContactService.RunAsync();
                     break;
                 case MainMenuOptions.Delete:
-                    Console.WriteLine("Deleting contact...");
-                    Console.ReadLine();
+                    await _deleteContactService.RunAsync();
                     break;
                 case MainMenuOptions.Update:
                     Console.WriteLine("Editing contact...");
@@ -41,10 +43,6 @@ internal class MainMenuService
                     break;
                 case MainMenuOptions.Read:
                     Console.WriteLine("Reading contact...");
-                    Console.ReadLine();
-                    break;
-                case MainMenuOptions.ReadAll:
-                    Console.WriteLine("Reading all contacts...");
                     Console.ReadLine();
                     break;
                 case MainMenuOptions.Exit:
