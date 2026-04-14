@@ -6,6 +6,5 @@ internal enum MainMenuOptions
     Delete,
     Update,
     Read,
-    ReadAll,
     Exit
 }
