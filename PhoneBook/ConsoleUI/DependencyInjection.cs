@@ -10,11 +10,14 @@ internal static class DependencyInjection
     {
         services.AddTransient<MainMenuView>();
         services.AddTransient<ContactSelectionView>();
+        services.AddTransient<ContactDetailsView>();
 
         services.AddTransient<MainMenuService>();
         services.AddTransient<AddContactService>();
+        services.AddTransient<LookupContactMenuService>();
         services.AddTransient<DeleteContactService>();
         services.AddTransient<ContactSelectionService>();
+        services.AddTransient<EditContactService>();
 
         return services;
     }

@@ -3,8 +3,6 @@
 internal enum MainMenuOptions
 {
     Add,
-    Delete,
-    Update,
     Read,
     Exit
 }
