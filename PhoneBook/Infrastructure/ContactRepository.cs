@@ -23,7 +23,9 @@ public class ContactRepository : IContactRepository
     public async Task DeleteAsync(Contact contact)
     {
         // Validate for if it exists
-        _context.Contacts.Remove(contact);
+        _context.Contacts
+                    .Where(c => c.ContactId == contact.ContactId)
+                    .ExecuteDelete();
     }
 
     public async Task<List<Contact>> GetAllAsync()
