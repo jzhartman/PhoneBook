@@ -23,9 +23,9 @@ public class ContactRepository : IContactRepository
     public async Task DeleteAsync(Contact contact)
     {
         // Validate for if it exists
-        _context.Contacts
+        await _context.Contacts
                     .Where(c => c.ContactId == contact.ContactId)
-                    .ExecuteDelete();
+                    .ExecuteDeleteAsync();
     }
 
     public async Task<List<Contact>> GetAllAsync()
@@ -40,7 +40,16 @@ public class ContactRepository : IContactRepository
 
     public async Task UpdateAsync(Contact contact)
     {
-        _context.Update(contact);
+        //_context.Update(contact);
+
+        await _context.Contacts
+                    .Where(c => c.ContactId == contact.ContactId)
+                    .ExecuteUpdateAsync(setters => setters
+                        .SetProperty(c => c.FirstName, contact.FirstName)
+                        .SetProperty(c => c.LastName, contact.LastName)
+                        .SetProperty(c => c.Email, contact.Email)
+                        .SetProperty(c => c.PhoneNumber, contact.PhoneNumber)
+                    );
     }
     public async Task SaveChangesAsync()
     {
