@@ -47,7 +47,7 @@ internal class LookupContactMenuService
             RenderContactDetailKeyOptions();
 
             var keyInfo = Console.ReadKey(true);
-            var operation = await ManageKeyPressMenuFromCategory(keyInfo, contact);
+            var operation = await ManageKeyPressMenu(keyInfo, contact);
 
             if (operation == LookupMenuOptions.Exit || operation == LookupMenuOptions.Delete) returnToMainMenu = true;
             if (operation == LookupMenuOptions.Update) await _getContactByIdHandler.HandleAsync(contact.ContactId);
@@ -75,7 +75,7 @@ internal class LookupContactMenuService
         AnsiConsole.Write(table);
     }
 
-    private async Task<LookupMenuOptions> ManageKeyPressMenuFromCategory(ConsoleKeyInfo keyInfo, ContactResponse contact)
+    private async Task<LookupMenuOptions> ManageKeyPressMenu(ConsoleKeyInfo keyInfo, ContactResponse contact)
     {
         switch (keyInfo.Key)
         {
