@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PhoneBook.Application.AddContact;
 using PhoneBook.Application.DeleteContact;
+using PhoneBook.Application.EditContact;
 using PhoneBook.Application.GetAllContacts;
 using PhoneBook.Application.GetById;
 using PhoneBook.Application.SaveChanges;
@@ -16,6 +17,7 @@ public static class DependencyInjection
         services.AddTransient<AddContactHandler>();
         services.AddTransient<DeleteContactHandler>();
         services.AddTransient<SaveChangesHandler>();
+        services.AddTransient<EditContactHandler>();
 
         return services;
     }
