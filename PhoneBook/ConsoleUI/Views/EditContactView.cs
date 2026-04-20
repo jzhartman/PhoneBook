@@ -1,12 +1,17 @@
-﻿using PhoneBook.Application.DTOs;
+﻿using PhoneBook.ConsoleUI.Models;
 using Spectre.Console;
 
 namespace PhoneBook.ConsoleUI.Views;
 
 internal class EditContactView
 {
-    public void Render(ContactResponse contact)
+    public void Render(EditContactViewModel contact)
     {
+        var firstNameTextColor = (contact.ChangedFirstName) ? "[green]" : "[white]";
+        var lastNameTextColor = (contact.ChangedLastName) ? "[green]" : "[white]";
+        var phoneNumberTextColor = (contact.ChangedPhoneNumber) ? "[green]" : "[white]";
+        var emailTextColor = (contact.ChangedEmail) ? "[green]" : "[white]";
+
         AnsiConsole.MarkupInterpolated($"[bold blue]Contact Entry:[/]");
 
         AnsiConsole.WriteLine();
@@ -19,9 +24,9 @@ internal class EditContactView
         table.AddColumn("Key");
         table.AddColumn("Value");
 
-        table.AddRow("[blue]Name:[/]", $"{contact.FirstName} {contact.LastName}");
-        table.AddRow("[blue]Phone Number:[/]", $"{contact.PhoneNumber}");
-        table.AddRow("[blue]Email:[/]", $"{contact.Email}");
+        table.AddRow("[blue]Name:[/]", $"{firstNameTextColor}{contact.FirstName}[/] {lastNameTextColor}{contact.LastName}[/]");
+        table.AddRow("[blue]Phone Number:[/]", $"{phoneNumberTextColor}{contact.PhoneNumber}[/]");
+        table.AddRow("[blue]Email:[/]", $"{emailTextColor}{contact.Email}[/]");
 
         AnsiConsole.Write(table);
     }
