@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PhoneBook.ConsoleUI.Input;
+using PhoneBook.ConsoleUI.Output;
 using PhoneBook.ConsoleUI.Services;
 using PhoneBook.ConsoleUI.Views;
 
@@ -10,6 +11,7 @@ internal static class DependencyInjection
     internal static IServiceCollection AddPresentation(this IServiceCollection services)
     {
         services.AddTransient<UserInput>();
+        services.AddTransient<Messages>();
 
         services.AddTransient<MainMenuView>();
         services.AddTransient<ContactSelectionView>();
