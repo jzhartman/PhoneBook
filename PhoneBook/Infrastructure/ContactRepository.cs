@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PhoneBook.Application.Interfaces;
 using PhoneBook.Domain.Entities;
+using PhoneBook.Domain.Validation;
+using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.Infrastructure;
 
@@ -14,10 +16,20 @@ public class ContactRepository : IContactRepository
     }
 
 
-    public async Task AddAsync(Contact contact)
+    public async Task<Result> AddAsync(Contact contact)
     {
-        // Validate for if it exists
-        await _context.Contacts.AddAsync(contact);
+        try
+        {
+            if (await ContactExists(contact))
+                return Result.Failure(Errors.ContactExists);
+
+            await _context.Contacts.AddAsync(contact);
+            return Result.Success();
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure(new Error("AddFailed", ex.Message));
+        }
     }
 
     public async Task DeleteAsync(Contact contact)
@@ -54,5 +66,11 @@ public class ContactRepository : IContactRepository
     public async Task SaveChangesAsync()
     {
         await _context.SaveChangesAsync();
+    }
+
+    private async Task<bool> ContactExists(Contact contact)
+    {
+        return await _context.Contacts.AnyAsync(c => c.FirstName == contact.FirstName && c.LastName == contact.LastName
+                                                            && c.Email == contact.Email && c.PhoneNumber == contact.PhoneNumber);
     }
 }

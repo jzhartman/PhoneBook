@@ -1,5 +1,7 @@
 ﻿using PhoneBook.Application.Interfaces;
 using PhoneBook.Domain.Entities;
+using PhoneBook.Domain.Validation;
+using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.Application.AddContact;
 
@@ -12,9 +14,9 @@ internal class AddContactHandler
         _repo = repo;
     }
 
-    public async Task HandleAsync(AddContactRequest contact)
+    public async Task<Result> HandleAsync(AddContactRequest contact)
     {
-        await _repo.AddAsync(
+        var result = await _repo.AddAsync(
             new Contact
             {
                 FirstName = contact.FirstName,
@@ -22,5 +24,12 @@ internal class AddContactHandler
                 Email = contact.Email,
                 PhoneNumber = contact.PhoneNumber
             });
+
+        if (result == null)
+            return Result.Failure(Errors.GenericNull);
+        if (result.IsFailure)
+            return Result.Failure(result.Errors);
+
+        return Result.Success();
     }
 }
