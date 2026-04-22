@@ -115,12 +115,12 @@ internal class EditContactService
 
     private void ManageUpdateFirstName(ContactResponse originalContact, EditContactViewModel contact)
     {
-        contact.FirstName = _userInput.GetTextFromUser("Please enter the new first name:");
+        contact.FirstName = _userInput.GetNameFromUser("Please enter the new first name:");
         contact.ChangedFirstName = (contact.FirstName == originalContact.FirstName) ? false : true;
     }
     private void ManageUpdateLastName(ContactResponse originalContact, EditContactViewModel contact)
     {
-        contact.LastName = _userInput.GetTextFromUser("Please enter the new last name:");
+        contact.LastName = _userInput.GetNameFromUser("Please enter the new last name:");
         contact.ChangedLastName = (contact.LastName == originalContact.LastName) ? false : true;
     }
 
