@@ -25,7 +25,7 @@ public class UserInput
             .AllowEmpty()
             .Validate(input =>
             {
-                if (input.Contains("@") && input.Contains(".") && input.IndexOf(".") > input.IndexOf("@") && input.Length < 5)
+                if (input.Contains("@") && input.Contains(".") && input.IndexOf(".") > input.IndexOf("@") && input.Length >= 5)
                     return ValidationResult.Success();
 
                 if (string.IsNullOrWhiteSpace(input))
