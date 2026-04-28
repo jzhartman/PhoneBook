@@ -9,7 +9,7 @@ internal class Messages
     {
         foreach (var error in errors)
         {
-            AnsiConsole.MarkupLineInterpolated($"[red]ERROR:[/] {error.Code} - {error.Description}");
+            AnsiConsole.MarkupLineInterpolated($"[red]{error.Code} ERROR:[/] {error.Description}");
         }
     }
 }

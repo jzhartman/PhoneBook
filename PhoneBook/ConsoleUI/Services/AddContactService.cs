@@ -30,6 +30,9 @@ internal class AddContactService
 
         var addResult = await _addContactHandler.HandleAsync(new(firstName, lastName, phoneNumber, email));
 
+        if (addResult == null)
+            _messages.ErrorMessage(new())
+
         if (addResult.IsFailure)
             _messages.ErrorMessage(addResult.Errors);
 
