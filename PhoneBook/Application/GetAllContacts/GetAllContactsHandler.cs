@@ -1,6 +1,7 @@
 ﻿using PhoneBook.Application.DTOs;
 using PhoneBook.Application.Interfaces;
 using PhoneBook.Domain.Entities;
+using PhoneBook.Domain.Validation;
 
 namespace PhoneBook.Application.GetAllContacts;
 
@@ -13,11 +14,17 @@ public class GetAllContactsHandler
         _repo = repo;
     }
 
-    public async Task<List<ContactResponse>> HandleAsync()
+    public async Task<Result<List<ContactResponse>>> HandleAsync()
     {
-        var contacts = await _repo.GetAllAsync();
+        var result = await _repo.GetAllAsync();
 
-        return MapToContactResponse(contacts);
+        if (result == null || result.Value == null)
+            return Result<List<ContactResponse>>.Success(new List<ContactResponse>);
+
+        if (result.IsFailure)
+            return Result<List<ContactResponse>>.Failure(result.Errors);
+
+        return Result<List<ContactResponse>>.Success(MapToContactResponse(result.Value));
     }
 
     private List<ContactResponse> MapToContactResponse(List<Contact> contacts)

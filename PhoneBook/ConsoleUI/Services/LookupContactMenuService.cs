@@ -1,7 +1,10 @@
 ﻿using PhoneBook.Application.DTOs;
 using PhoneBook.Application.GetById;
 using PhoneBook.ConsoleUI.Enums;
+using PhoneBook.ConsoleUI.Input;
+using PhoneBook.ConsoleUI.Output;
 using PhoneBook.ConsoleUI.Views;
+using PhoneBook.Domain.Validation;
 using Spectre.Console;
 
 namespace PhoneBook.ConsoleUI.Services;
@@ -13,10 +16,13 @@ internal class LookupContactMenuService
     private readonly GetContactByIdHandler _getContactByIdHandler;
     private readonly EditContactService _editContactService;
     private readonly ContactDetailsView _contactDetailsView;
+    private readonly Messages _messages;
+    private readonly UserInput _userInput;
 
     public LookupContactMenuService(ContactSelectionService contactSelectionService, DeleteContactService deleteContactService,
                                     GetContactByIdHandler getContactByIdHandler,
-                                    EditContactService editContactService, ContactDetailsView contactDetailsView)
+                                    EditContactService editContactService, ContactDetailsView contactDetailsView,
+                                    Messages messages, UserInput userInput)
     {
         _contactSelectionService = contactSelectionService;
         _deleteContactService = deleteContactService;
@@ -25,6 +31,9 @@ internal class LookupContactMenuService
         _getContactByIdHandler = getContactByIdHandler;
 
         _contactDetailsView = contactDetailsView;
+
+        _messages = messages;
+        _userInput = userInput;
     }
 
     internal async Task RunAsync()
@@ -33,28 +42,32 @@ internal class LookupContactMenuService
         LookupMenuOptions[] menuOptions = Enum.GetValues<LookupMenuOptions>();
 
         Console.Clear();
-        var contact = await _contactSelectionService.RunAsync();
+        var contactResult = await _contactSelectionService.RunAsync();
+
+        if (contactResult.IsFailure || contactResult.Value == null)
+        {
+            _messages.ErrorMessage(contactResult.Errors);
+            _userInput.PressAnyKeyToContinue();
+            return;
+        }
 
         while (returnToMainMenu == false)
         {
             Console.Clear();
 
-            AnsiConsole.WriteLine($"Viewing contact entry for {contact.FirstName} {contact.LastName}:");
+            AnsiConsole.WriteLine($"Viewing contact entry for {contactResult.Value.FirstName} {contactResult.Value.LastName}:");
             AnsiConsole.WriteLine();
-            _contactDetailsView.Render(contact);
+            _contactDetailsView.Render(contactResult.Value);
             AnsiConsole.WriteLine();
 
             RenderContactDetailKeyOptions();
 
             var keyInfo = Console.ReadKey(true);
-            var operation = await ManageKeyPressMenu(keyInfo, contact);
+            var operation = await ManageKeyPressMenu(keyInfo, contactResult.Value);
 
             if (operation == LookupMenuOptions.Exit || operation == LookupMenuOptions.Delete) returnToMainMenu = true;
-            if (operation == LookupMenuOptions.Update) await _getContactByIdHandler.HandleAsync(contact.ContactId);
+            if (operation == LookupMenuOptions.Update) await _getContactByIdHandler.HandleAsync(contactResult.Value.ContactId);
         }
-
-        Console.Write("Press any key to continue...");
-        Console.ReadLine();
     }
 
 
@@ -88,7 +101,9 @@ internal class LookupContactMenuService
             case ConsoleKey.M:
                 return LookupMenuOptions.Exit;
             default:
+                _messages.ErrorMessage(new[] { new Error("Input", "Invalid key press") });
                 Console.WriteLine("ERROR! Invalid key press");
+                _userInput.PressAnyKeyToContinue();
                 return LookupMenuOptions.Unknown;
         }
     }

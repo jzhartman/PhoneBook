@@ -34,7 +34,6 @@ public class ContactRepository : IContactRepository
 
     public async Task<Result> DeleteAsync(Contact contact)
     {
-        // Validate for if it exists
         try
         {
             if (!(await ContactExists(contact)))
@@ -52,9 +51,21 @@ public class ContactRepository : IContactRepository
         }
     }
 
-    public async Task<List<Contact>> GetAllAsync()
+    public async Task<Result<List<Contact>>> GetAllAsync()
     {
-        return await _context.Contacts.AsNoTracking().ToListAsync();
+        try
+        {
+            var contacts = await _context.Contacts.AsNoTracking().ToListAsync();
+
+            if (contacts == null)
+                return Result<List<Contact>>.Success(new List<Contact>());
+
+            return Result<List<Contact>>.Success(contacts);
+        }
+        catch (Exception ex)
+        {
+            return Result<List<Contact>>.Failure(new Error("Retreival Failed", ex.Message));
+        }
     }
 
     public async Task<Contact?> GetByIdAsync(int id)

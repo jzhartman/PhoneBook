@@ -6,7 +6,7 @@ namespace PhoneBook.Application.Interfaces;
 public interface IContactRepository
 {
     Task<Contact> GetByIdAsync(int id);
-    Task<List<Contact>> GetAllAsync();
+    Task<Result<List<Contact>>> GetAllAsync();
     Task<Result> AddAsync(Contact contact);
     Task UpdateAsync(Contact contact);
     Task<Result> DeleteAsync(Contact contact);
