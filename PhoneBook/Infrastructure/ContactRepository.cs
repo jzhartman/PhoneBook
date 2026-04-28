@@ -28,16 +28,28 @@ public class ContactRepository : IContactRepository
         }
         catch (Exception ex)
         {
-            return Result.Failure(new Error("AddFailed", ex.Message));
+            return Result.Failure(new Error("Add Failed", ex.Message));
         }
     }
 
-    public async Task DeleteAsync(Contact contact)
+    public async Task<Result> DeleteAsync(Contact contact)
     {
         // Validate for if it exists
-        await _context.Contacts
-                    .Where(c => c.ContactId == contact.ContactId)
-                    .ExecuteDeleteAsync();
+        try
+        {
+            if (!(await ContactExists(contact)))
+                return Result.Failure(Errors.ContactDoesNotExist);
+
+            await _context.Contacts
+                .Where(c => c.ContactId == contact.ContactId)
+                .ExecuteDeleteAsync();
+            return Result.Success();
+        }
+        catch (Exception ex)
+        {
+
+            return Result.Failure(new Error("Delete Failed", ex.Message));
+        }
     }
 
     public async Task<List<Contact>> GetAllAsync()

@@ -7,6 +7,8 @@ public static class Errors
     public static readonly Error GenericNull = new("GenericNull", "");
 
     public static readonly Error ContactExists = new("ContactExists", "A contact with that information already exists.");
+    public static readonly Error ContactDoesNotExist = new("ContactDoesNotExist", "A contact with that information does not exist.");
+
     public static readonly Error EntryNull = new("EntryNull", "This data cannot be left blank.");
     public static readonly Error InvalidEmail = new("InvalidEmail", "The email is invalid.");
     public static readonly Error InvalidPhoneNumber = new("InvalidPhoneNumber", "The phone number is invalid.");

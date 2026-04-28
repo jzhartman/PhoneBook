@@ -9,6 +9,6 @@ public interface IContactRepository
     Task<List<Contact>> GetAllAsync();
     Task<Result> AddAsync(Contact contact);
     Task UpdateAsync(Contact contact);
-    Task DeleteAsync(Contact contact);
+    Task<Result> DeleteAsync(Contact contact);
     Task SaveChangesAsync();
 }
