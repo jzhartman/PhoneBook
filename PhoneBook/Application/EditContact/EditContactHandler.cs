@@ -1,6 +1,8 @@
 ﻿using PhoneBook.Application.DTOs;
 using PhoneBook.Application.Interfaces;
 using PhoneBook.Domain.Entities;
+using PhoneBook.Domain.Validation;
+using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.Application.EditContact;
 
@@ -13,9 +15,9 @@ public class EditContactHandler
         _repo = repo;
     }
 
-    public async Task HandleAsync(ContactResponse contact)
+    public async Task<Result> HandleAsync(ContactResponse contact)
     {
-        await _repo.UpdateAsync(new Contact
+        var result = await _repo.UpdateAsync(new Contact
         {
             ContactId = contact.ContactId,
             FirstName = contact.FirstName,
@@ -23,5 +25,13 @@ public class EditContactHandler
             PhoneNumber = contact.PhoneNumber,
             Email = contact.Email
         });
+
+        if (result is null)
+            return Result.Failure(Errors.UpdateResponseNull);
+
+        if (result.IsFailure)
+            return Result.Failure(result.Errors);
+
+        return Result.Success();
     }
 }

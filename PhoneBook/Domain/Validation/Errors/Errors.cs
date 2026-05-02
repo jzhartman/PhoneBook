@@ -6,6 +6,8 @@ public static class Errors
 
     public static readonly Error GenericNull = new("GenericNull", "");
     public static readonly Error SaveResponseNull = new("SaveResponseNull", "Save action returned null value");
+    public static readonly Error UpdateResponseNull = new("UpdateResponseNull", "Update action returned null value");
+
 
     public static readonly Error ContactExists = new("ContactExists", "A contact with that information already exists.");
     public static readonly Error ContactDoesNotExist = new("ContactDoesNotExist", "A contact with that information does not exist.");
@@ -16,6 +18,8 @@ public static class Errors
     public static readonly Error InvalidPhoneNumber = new("InvalidPhoneNumber", "The phone number is invalid.");
 
     public static readonly Error LoadEditDataFailed = new("LoadEditDataFailed", "There was an error loading the edited data for the contact.");
+    public static readonly Error UpdateDataFailed = new("UpdateDataFailed", "Database returned no records were successfully updated");
+    public static readonly Error SaveDataFailed = new("SaveDataFailed", "Database returned no records were successfully saved");
 
 
     public static readonly Error DBConnectionFailure = new("DBConnectionFailure", "Failed to connect to database.");

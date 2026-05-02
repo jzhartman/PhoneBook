@@ -85,24 +85,39 @@ public class ContactRepository : IContactRepository
         }
     }
 
-    public async Task UpdateAsync(Contact contact)
+    public async Task<Result> UpdateAsync(Contact contact)
     {
-        //_context.Update(contact);
+        try
+        {
+            var response = await _context.Contacts
+                .Where(c => c.ContactId == contact.ContactId)
+                .ExecuteUpdateAsync(setters => setters
+                    .SetProperty(c => c.FirstName, contact.FirstName)
+                    .SetProperty(c => c.LastName, contact.LastName)
+                    .SetProperty(c => c.Email, contact.Email)
+                    .SetProperty(c => c.PhoneNumber, contact.PhoneNumber)
+                );
 
-        await _context.Contacts
-                    .Where(c => c.ContactId == contact.ContactId)
-                    .ExecuteUpdateAsync(setters => setters
-                        .SetProperty(c => c.FirstName, contact.FirstName)
-                        .SetProperty(c => c.LastName, contact.LastName)
-                        .SetProperty(c => c.Email, contact.Email)
-                        .SetProperty(c => c.PhoneNumber, contact.PhoneNumber)
-                    );
+            if (response <= 0)
+                return Result.Failure(Errors.UpdateDataFailed);
+
+            return Result.Success();
+
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure(new Error("Update Failed", ex.Message));
+        }
     }
     public async Task<Result> SaveChangesAsync()
     {
         try
         {
-            await _context.SaveChangesAsync();
+            var response = await _context.SaveChangesAsync();
+
+            if (response <= 0)
+                return Result.Failure(Errors.SaveDataFailed);
+
             return Result.Success();
         }
         catch (Exception ex)
