@@ -5,6 +5,7 @@ using PhoneBook.ConsoleUI.Input;
 using PhoneBook.ConsoleUI.Output;
 using PhoneBook.ConsoleUI.Views;
 using PhoneBook.Domain.Validation;
+using PhoneBook.Domain.Validation.Errors;
 using Spectre.Console;
 
 namespace PhoneBook.ConsoleUI.Services;
@@ -66,7 +67,13 @@ internal class LookupContactMenuService
             var operation = await ManageKeyPressMenu(keyInfo, contactResult.Value);
 
             if (operation == LookupMenuOptions.Exit || operation == LookupMenuOptions.Delete) returnToMainMenu = true;
-            if (operation == LookupMenuOptions.Update) await _getContactByIdHandler.HandleAsync(contactResult.Value.ContactId);
+            if (operation == LookupMenuOptions.Update) contactResult = await _getContactByIdHandler.HandleAsync(contactResult.Value.ContactId);
+
+            if (contactResult.IsFailure)
+            {
+                _messages.ErrorMessage(new[] { Errors.LoadEditDataFailed });
+                _userInput.PressAnyKeyToContinue();
+            }
         }
     }
 

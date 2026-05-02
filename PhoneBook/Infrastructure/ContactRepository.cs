@@ -58,7 +58,7 @@ public class ContactRepository : IContactRepository
             var contacts = await _context.Contacts.AsNoTracking().ToListAsync();
 
             if (contacts == null)
-                return Result<List<Contact>>.Success(new List<Contact>());
+                contacts = new List<Contact>();
 
             return Result<List<Contact>>.Success(contacts);
         }
@@ -68,9 +68,21 @@ public class ContactRepository : IContactRepository
         }
     }
 
-    public async Task<Contact?> GetByIdAsync(int id)
+    public async Task<Result<Contact>> GetByIdAsync(int id)
     {
-        return await _context.Contacts.AsNoTracking().FirstOrDefaultAsync(c => c.ContactId == id);
+        try
+        {
+            var contact = await _context.Contacts.AsNoTracking().FirstOrDefaultAsync(c => c.ContactId == id);
+
+            if (contact == null)
+                contact = new Contact();
+
+            return Result<Contact>.Success(contact);
+        }
+        catch (Exception ex)
+        {
+            return Result<Contact>.Failure(new Error("Retreival Failed", ex.Message));
+        }
     }
 
     public async Task UpdateAsync(Contact contact)

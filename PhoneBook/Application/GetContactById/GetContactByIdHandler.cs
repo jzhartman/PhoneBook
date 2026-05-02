@@ -1,5 +1,7 @@
 ﻿using PhoneBook.Application.DTOs;
 using PhoneBook.Application.Interfaces;
+using PhoneBook.Domain.Validation;
+using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.Application.GetById;
 
@@ -12,17 +14,23 @@ internal class GetContactByIdHandler
         _repo = repo;
     }
 
-    public async Task<ContactResponse> HandleAsync(int contactId)
+    public async Task<Result<ContactResponse>> HandleAsync(int contactId)
     {
-        var contact = await _repo.GetByIdAsync(contactId);
+        var result = await _repo.GetByIdAsync(contactId);
 
-        return (new ContactResponse
+        if (result == null || result.Value == null)
+            return Result<ContactResponse>.Failure(Errors.ContactNotFound);
+
+        if (result.IsFailure)
+            return Result<ContactResponse>.Failure(result.Errors);
+
+        return Result<ContactResponse>.Success(new ContactResponse
             (
-                contact.ContactId,
-                contact.FirstName,
-                contact.LastName,
-                contact.PhoneNumber,
-                contact.Email
+                result.Value.ContactId,
+                result.Value.FirstName,
+                result.Value.LastName,
+                result.Value.PhoneNumber,
+                result.Value.Email
             ));
     }
 }
