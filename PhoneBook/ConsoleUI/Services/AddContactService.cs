@@ -2,6 +2,7 @@
 using PhoneBook.Application.SaveChanges;
 using PhoneBook.ConsoleUI.Input;
 using PhoneBook.ConsoleUI.Output;
+using PhoneBook.Domain.Validation;
 using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.ConsoleUI.Services;
@@ -30,16 +31,29 @@ internal class AddContactService
         var phoneNumber = _userInput.GetPhoneNumberFromUser();
 
         var addResult = await _addContactHandler.HandleAsync(new(firstName, lastName, phoneNumber, email));
-
-        if (addResult.IsFailure)
-            _messages.ErrorMessage(addResult.Errors);
+        var errors = new List<Error>();
 
         if (addResult.IsSuccess)
-            await _saveChangesHandler.HandleAsync();
+        {
+            var saveResult = await _saveChangesHandler.HandleAsync();
 
-        if (addResult == null)
-            _messages.ErrorMessage(new[] { Errors.GenericNull });
+            if (saveResult is null)
+                errors.Add(Errors.SaveResponseNull);
 
+            else if (saveResult.IsFailure)
+                errors.AddRange(saveResult.Errors);
+
+            else if (saveResult.IsSuccess)
+                return;
+        }
+
+        if (addResult.IsFailure)
+            errors.AddRange(addResult.Errors);
+
+        if (addResult is null)
+            errors.Add(Errors.GenericNull);
+
+        _messages.ErrorMessage(errors);
         _userInput.PressAnyKeyToContinue();
     }
 }

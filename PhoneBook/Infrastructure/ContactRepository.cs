@@ -57,7 +57,7 @@ public class ContactRepository : IContactRepository
         {
             var contacts = await _context.Contacts.AsNoTracking().ToListAsync();
 
-            if (contacts == null)
+            if (contacts is null)
                 contacts = new List<Contact>();
 
             return Result<List<Contact>>.Success(contacts);
@@ -74,7 +74,7 @@ public class ContactRepository : IContactRepository
         {
             var contact = await _context.Contacts.AsNoTracking().FirstOrDefaultAsync(c => c.ContactId == id);
 
-            if (contact == null)
+            if (contact is null)
                 contact = new Contact();
 
             return Result<Contact>.Success(contact);
@@ -98,9 +98,17 @@ public class ContactRepository : IContactRepository
                         .SetProperty(c => c.PhoneNumber, contact.PhoneNumber)
                     );
     }
-    public async Task SaveChangesAsync()
+    public async Task<Result> SaveChangesAsync()
     {
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.SaveChangesAsync();
+            return Result.Success();
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure(new Error("Save Failed", ex.Message));
+        }
     }
 
     private async Task<bool> ContactExists(Contact contact)

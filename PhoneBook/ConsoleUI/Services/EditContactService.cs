@@ -4,7 +4,10 @@ using PhoneBook.Application.SaveChanges;
 using PhoneBook.ConsoleUI.Enums;
 using PhoneBook.ConsoleUI.Input;
 using PhoneBook.ConsoleUI.Models;
+using PhoneBook.ConsoleUI.Output;
 using PhoneBook.ConsoleUI.Views;
+using PhoneBook.Domain.Validation;
+using PhoneBook.Domain.Validation.Errors;
 using Spectre.Console;
 
 namespace PhoneBook.ConsoleUI.Services;
@@ -13,14 +16,16 @@ internal class EditContactService
 {
     private readonly EditContactView _editContactView;
     private readonly UserInput _userInput;
+    private readonly Messages _messages;
     private readonly EditContactHandler _editContactHandler;
     private readonly SaveChangesHandler _saveChangesHandler;
 
-    public EditContactService(EditContactView editContactView, UserInput userInput, EditContactHandler editContactHandler,
-                                SaveChangesHandler saveChangesHandler)
+    public EditContactService(EditContactView editContactView, UserInput userInput, Messages messages
+                                EditContactHandler editContactHandler, SaveChangesHandler saveChangesHandler)
     {
         _editContactView = editContactView;
         _userInput = userInput;
+        _messages = messages;
         _editContactHandler = editContactHandler;
         _saveChangesHandler = saveChangesHandler;
     }
@@ -42,15 +47,15 @@ internal class EditContactService
             RenderEditContactKeyOptions();
 
             var keyInfo = Console.ReadKey(true);
-            var options = await ManageKeyPressMenuFromCategory(keyInfo, originalContact, contact);
+            var exitCode = await ManageKeyPressMenuFromCategory(keyInfo, originalContact, contact);
 
-            if (options == EditContactExitCode.Save)
+            if (exitCode == EditContactExitCode.Save)
             {
                 stillEditing = false;
                 await UpdateContact(contact);
             }
 
-            if (options == EditContactExitCode.Cancel) stillEditing = false;
+            if (exitCode == EditContactExitCode.Cancel) stillEditing = false;
         }
     }
 
@@ -105,12 +110,36 @@ internal class EditContactService
 
     private async Task UpdateContact(EditContactViewModel contact)
     {
-        await _editContactHandler.HandleAsync(new ContactResponse(contact.Id,
-                                                            contact.FirstName,
-                                                            contact.LastName,
-                                                            contact.PhoneNumber,
-                                                            contact.Email));
-        await _saveChangesHandler.HandleAsync();
+        var updateResult = await _editContactHandler.HandleAsync(new ContactResponse(contact.Id,
+                                                                        contact.FirstName,
+                                                                        contact.LastName,
+                                                                        contact.PhoneNumber,
+                                                                        contact.Email));
+
+        var errors = new List<Error>();
+
+        if (updateResult.IsSuccess)
+        {
+            var saveResult = await _saveChangesHandler.HandleAsync();
+
+            if (saveResult is null)
+                errors.Add(Errors.SaveResponseNull);
+
+            else if (saveResult.IsFailure)
+                errors.AddRange(saveResult.Errors);
+
+            else if (saveResult.IsSuccess)
+                return;
+        }
+
+        if (updateResult.IsFailure)
+            errors.AddRange(updateResult.Errors);
+
+        if (updateResult is null)
+            errors.Add(Errors.GenericNull);
+
+        _messages.ErrorMessage(errors);
+        _userInput.PressAnyKeyToContinue();
     }
 
     private void ManageUpdateFirstName(ContactResponse originalContact, EditContactViewModel contact)
