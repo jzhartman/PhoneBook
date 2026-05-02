@@ -18,7 +18,7 @@ internal class GetContactByIdHandler
     {
         var result = await _repo.GetByIdAsync(contactId);
 
-        if (result == null || result.Value == null)
+        if (result is null || result.Value is null)
             return Result<ContactResponse>.Failure(Errors.ContactNotFound);
 
         if (result.IsFailure)

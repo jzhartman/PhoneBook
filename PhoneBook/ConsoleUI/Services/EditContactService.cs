@@ -136,7 +136,7 @@ internal class EditContactService
             errors.AddRange(updateResult.Errors);
 
         if (updateResult is null)
-            errors.Add(Errors.GenericNull);
+            errors.Add(Errors.UpdateResponseNull);
 
         _messages.ErrorMessage(errors);
         _userInput.PressAnyKeyToContinue();

@@ -45,7 +45,7 @@ internal class LookupContactMenuService
         Console.Clear();
         var contactResult = await _contactSelectionService.RunAsync();
 
-        if (contactResult.IsFailure || contactResult.Value == null)
+        if (contactResult.IsFailure || contactResult.Value is null)
         {
             _messages.ErrorMessage(contactResult.Errors);
             _userInput.PressAnyKeyToContinue();

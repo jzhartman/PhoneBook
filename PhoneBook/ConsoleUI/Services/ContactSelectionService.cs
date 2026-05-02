@@ -24,8 +24,8 @@ internal class ContactSelectionService
         if (result.IsFailure)
             return Result<ContactResponse>.Failure(result.Errors);
 
-        if (result.Value == null)
-            return Result<ContactResponse>.Failure(new[] { Errors.GenericNull });
+        if (result.Value is null)
+            return Result<ContactResponse>.Failure(new[] { Errors.GetResponseNull });
 
         return Result<ContactResponse>.Success(_contactSelectionView.Render(result.Value.ToArray()));
     }

@@ -27,8 +27,8 @@ internal class DeleteContactHandler
                     PhoneNumber = contact.PhoneNumber
                 });
 
-        if (result == null)
-            return Result.Failure(Errors.GenericNull);
+        if (result is null)
+            return Result.Failure(Errors.DeleteResponseNull);
         if (result.IsFailure)
             return Result.Failure(result.Errors);
 

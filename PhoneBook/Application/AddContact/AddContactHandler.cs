@@ -25,8 +25,8 @@ internal class AddContactHandler
                 PhoneNumber = contact.PhoneNumber
             });
 
-        if (result == null)
-            return Result.Failure(Errors.GenericNull);
+        if (result is null)
+            return Result.Failure(Errors.AddResponseNull);
         if (result.IsFailure)
             return Result.Failure(result.Errors);
 

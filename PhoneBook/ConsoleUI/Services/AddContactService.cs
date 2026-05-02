@@ -51,7 +51,7 @@ internal class AddContactService
             errors.AddRange(addResult.Errors);
 
         if (addResult is null)
-            errors.Add(Errors.GenericNull);
+            errors.Add(Errors.AddResponseNull);
 
         _messages.ErrorMessage(errors);
         _userInput.PressAnyKeyToContinue();

@@ -5,8 +5,12 @@ public static class Errors
     public static readonly Error None = Error.None;
 
     public static readonly Error GenericNull = new("GenericNull", "");
+    public static readonly Error AddResponseNull = new("AddResponseNull", "Add action returned null value");
+    public static readonly Error DeleteResponseNull = new("DeleteResponseNull", "Delete action returned null value");
     public static readonly Error SaveResponseNull = new("SaveResponseNull", "Save action returned null value");
     public static readonly Error UpdateResponseNull = new("UpdateResponseNull", "Update action returned null value");
+    public static readonly Error GetResponseNull = new("GetResponseNull", "Get Contact action returned null value");
+
 
 
     public static readonly Error ContactExists = new("ContactExists", "A contact with that information already exists.");

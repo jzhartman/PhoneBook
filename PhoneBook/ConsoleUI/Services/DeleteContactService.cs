@@ -46,7 +46,7 @@ internal class DeleteContactService
             errors.AddRange(deleteResult.Errors);
 
         if (deleteResult is null)
-            errors.Add(Errors.GenericNull);
+            errors.Add(Errors.DeleteResponseNull);
 
         _messages.ErrorMessage(errors);
         _userInput.PressAnyKeyToContinue();
