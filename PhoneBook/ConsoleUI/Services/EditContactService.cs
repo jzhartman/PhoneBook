@@ -20,7 +20,7 @@ internal class EditContactService
     private readonly EditContactHandler _editContactHandler;
     private readonly SaveChangesHandler _saveChangesHandler;
 
-    public EditContactService(EditContactView editContactView, UserInput userInput, Messages messages
+    public EditContactService(EditContactView editContactView, UserInput userInput, Messages messages,
                                 EditContactHandler editContactHandler, SaveChangesHandler saveChangesHandler)
     {
         _editContactView = editContactView;

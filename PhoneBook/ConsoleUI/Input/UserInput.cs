@@ -49,7 +49,7 @@ public class UserInput
                 if (string.IsNullOrWhiteSpace(input))
                     return ValidationResult.Error("[red]Phone number cannot be empty[/]");
 
-                if (input.Length <= 7 || input.Length > 15)
+                if (input.Length < 7 || input.Length > 15)
                     return ValidationResult.Error("[red]Please enter a valid phone number[/]");
 
                 return ValidationResult.Success();
