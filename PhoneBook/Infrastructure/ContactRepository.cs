@@ -115,8 +115,9 @@ public class ContactRepository : IContactRepository
         {
             var response = await _context.SaveChangesAsync();
 
-            if (response <= 0)
-                return Result.Failure(Errors.SaveDataFailed);
+            // ToDo: Fix this so that it it confirms changes for untracked items
+            //if (response <= 0)
+            //    return Result.Failure(Errors.SaveDataFailed);
 
             return Result.Success();
         }

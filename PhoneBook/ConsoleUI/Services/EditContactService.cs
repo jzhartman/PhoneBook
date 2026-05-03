@@ -119,18 +119,7 @@ internal class EditContactService
         var errors = new List<Error>();
 
         if (updateResult.IsSuccess)
-        {
-            var saveResult = await _saveChangesHandler.HandleAsync();
-
-            if (saveResult is null)
-                errors.Add(Errors.SaveResponseNull);
-
-            else if (saveResult.IsFailure)
-                errors.AddRange(saveResult.Errors);
-
-            else if (saveResult.IsSuccess)
-                return;
-        }
+            return;
 
         if (updateResult.IsFailure)
             errors.AddRange(updateResult.Errors);
