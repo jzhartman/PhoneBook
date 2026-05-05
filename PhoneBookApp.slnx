@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="PhoneBook.Tests/PhoneBook.Tests.csproj" Id="5f95b3b2-7e71-41cd-b06d-6fcc1164faba" />
   <Project Path="PhoneBook/PhoneBook.csproj" />
 </Solution>

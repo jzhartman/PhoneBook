@@ -5,7 +5,7 @@ using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.Application.AddContact;
 
-internal class AddContactHandler
+public class AddContactHandler
 {
     private readonly IContactRepository _repo;
 
