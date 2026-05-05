@@ -6,7 +6,7 @@ using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.Application.DeleteContact;
 
-internal class DeleteContactHandler
+public class DeleteContactHandler
 {
     private readonly IContactRepository _repo;
 
