@@ -24,32 +24,32 @@ public class PhoneBookDbContext : DbContext
                     ContactId = 1,
                     FirstName = "Malcolm",
                     LastName = "Reynolds",
-                    Email = "mal@serenity.com",
-                    PhoneNumber = "1111111111"
+                    PhoneNumber = "1111111111",
+                    Email = "mal@serenity.com"
                 },
                 new Contact
                 {
                     ContactId = 2,
                     FirstName = "Inara",
                     LastName = "Serra",
-                    Email = "inara@serenity.com",
-                    PhoneNumber = "2222222222"
+                    PhoneNumber = "2222222222",
+                    Email = "inara@serenity.com"
                 },
                 new Contact
                 {
                     ContactId = 3,
                     FirstName = "Shepherd",
                     LastName = "Book",
-                    Email = "book@serenity.com",
-                    PhoneNumber = "3333333333"
+                    PhoneNumber = "3333333333",
+                    Email = "book@serenity.com"
                 },
                 new Contact
                 {
                     ContactId = 4,
                     FirstName = "Jayne",
                     LastName = "Cobb",
-                    Email = "vera@serenity.com",
-                    PhoneNumber = "4444444444"
+                    PhoneNumber = "4444444444",
+                    Email = "vera@serenity.com"
                 }
             });
     }

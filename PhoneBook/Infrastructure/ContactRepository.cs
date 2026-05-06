@@ -94,8 +94,8 @@ public class ContactRepository : IContactRepository
                 .ExecuteUpdateAsync(setters => setters
                     .SetProperty(c => c.FirstName, contact.FirstName)
                     .SetProperty(c => c.LastName, contact.LastName)
-                    .SetProperty(c => c.Email, contact.Email)
                     .SetProperty(c => c.PhoneNumber, contact.PhoneNumber)
+                    .SetProperty(c => c.Email, contact.Email)
                 );
 
             if (response <= 0)
@@ -130,6 +130,6 @@ public class ContactRepository : IContactRepository
     private async Task<bool> ContactExists(Contact contact)
     {
         return await _context.Contacts.AnyAsync(c => c.FirstName == contact.FirstName && c.LastName == contact.LastName
-                                                            && c.Email == contact.Email && c.PhoneNumber == contact.PhoneNumber);
+                                                            && c.PhoneNumber == contact.PhoneNumber && c.Email == contact.Email);
     }
 }
