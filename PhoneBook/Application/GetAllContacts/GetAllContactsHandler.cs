@@ -35,7 +35,7 @@ public class GetAllContactsHandler
         {
             contactResponseList.Add(new ContactResponse
             (
-                contact.ContactId,
+                contact.Id,
                 contact.FirstName,
                 contact.LastName,
                 contact.PhoneNumber,

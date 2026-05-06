@@ -20,7 +20,7 @@ public class DeleteContactHandler
         var result = await _repo.DeleteAsync(
                 new Contact
                 {
-                    ContactId = contact.ContactId,
+                    Id = contact.ContactId,
                     FirstName = contact.FirstName,
                     LastName = contact.LastName,
                     PhoneNumber = contact.PhoneNumber,

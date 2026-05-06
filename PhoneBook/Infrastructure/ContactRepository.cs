@@ -40,7 +40,7 @@ public class ContactRepository : IContactRepository
                 return Result.Failure(Errors.ContactDoesNotExist);
 
             await _context.Contacts
-                .Where(c => c.ContactId == contact.ContactId)
+                .Where(c => c.Id == contact.Id)
                 .ExecuteDeleteAsync();
             return Result.Success();
         }
@@ -72,7 +72,7 @@ public class ContactRepository : IContactRepository
     {
         try
         {
-            var contact = await _context.Contacts.AsNoTracking().FirstOrDefaultAsync(c => c.ContactId == id);
+            var contact = await _context.Contacts.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
 
             if (contact is null)
                 contact = new Contact();
@@ -90,7 +90,7 @@ public class ContactRepository : IContactRepository
         try
         {
             var response = await _context.Contacts
-                .Where(c => c.ContactId == contact.ContactId)
+                .Where(c => c.Id == contact.Id)
                 .ExecuteUpdateAsync(setters => setters
                     .SetProperty(c => c.FirstName, contact.FirstName)
                     .SetProperty(c => c.LastName, contact.LastName)

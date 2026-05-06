@@ -26,7 +26,7 @@ internal class GetContactByIdHandler
 
         return Result<ContactResponse>.Success(new ContactResponse
             (
-                result.Value.ContactId,
+                result.Value.Id,
                 result.Value.FirstName,
                 result.Value.LastName,
                 result.Value.PhoneNumber,

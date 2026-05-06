@@ -19,7 +19,7 @@ public class EditContactHandler
     {
         var result = await _repo.UpdateAsync(new Contact
         {
-            ContactId = contact.ContactId,
+            Id = contact.ContactId,
             FirstName = contact.FirstName,
             LastName = contact.LastName,
             PhoneNumber = contact.PhoneNumber,
