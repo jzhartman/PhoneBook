@@ -25,6 +25,9 @@ internal static class DependencyInjection
         services.AddTransient<ContactSelectionService>();
         services.AddTransient<EditContactService>();
 
+        services.AddTransient<AddCategoryService>();
+        services.AddTransient<LookupCategoryMenuService>();
+
         return services;
     }
 }
