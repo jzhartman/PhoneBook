@@ -10,13 +10,20 @@ internal class MainMenuService
     private readonly AddContactService _addContactService;
     private readonly LookupContactMenuService _lookupContactMenuService;
 
-    public MainMenuService(MainMenuView mainMenu, AddContactService addContactService,
-                    LookupContactMenuService lookupContactMenuService)
+    private readonly AddCategoryService _addCategoryService;
+    private readonly LookupCategoryMenuService _lookupCategoryMenuService;
+
+    public MainMenuService(MainMenuView mainMenu,
+                            AddContactService addContactService, LookupContactMenuService lookupContactMenuService,
+                            AddCategoryService addCategoryService, LookupCategoryMenuService lookupCategoryMenuService)
     {
         _mainMenu = mainMenu;
 
         _addContactService = addContactService;
         _lookupContactMenuService = lookupContactMenuService;
+
+        _addCategoryService = addCategoryService;
+        _lookupCategoryMenuService = lookupCategoryMenuService;
     }
 
     internal async Task RunAsync()
@@ -31,11 +38,17 @@ internal class MainMenuService
 
             switch (selection)
             {
-                case MainMenuOptions.Add:
+                case MainMenuOptions.AddContact:
                     await _addContactService.RunAsync();
                     break;
-                case MainMenuOptions.Read:
+                case MainMenuOptions.ReadContacts:
                     await _lookupContactMenuService.RunAsync();
+                    break;
+                case MainMenuOptions.AddCategory:
+                    await _addCategoryService.RunAsync();
+                    break;
+                case MainMenuOptions.ReadCategory:
+                    await _lookupCategoryMenuService.RunAsync();
                     break;
                 case MainMenuOptions.Exit:
                     Console.WriteLine("Goodbye...");

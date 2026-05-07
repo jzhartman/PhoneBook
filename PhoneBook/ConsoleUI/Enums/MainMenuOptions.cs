@@ -2,7 +2,9 @@
 
 internal enum MainMenuOptions
 {
-    Add,
-    Read,
+    AddContact,
+    AddCategory,
+    ReadContacts,
+    ReadCategory,
     Exit
 }

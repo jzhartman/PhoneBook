@@ -13,8 +13,10 @@ internal class MainMenuView
             .Title("Select a menu option:")
             .UseConverter(m => m switch
             {
-                MainMenuOptions.Add => "Add Contact",
-                MainMenuOptions.Read => "Lookup Contact",
+                MainMenuOptions.AddContact => "Add Contact",
+                MainMenuOptions.ReadContacts => "View All Contacts",
+                MainMenuOptions.AddCategory => "Add Category",
+                MainMenuOptions.ReadCategory => "View Categories",
                 MainMenuOptions.Exit => "Exit Application",
                 _ => m.ToString()
             })
