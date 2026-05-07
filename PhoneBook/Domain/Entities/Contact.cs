@@ -8,7 +8,7 @@ public class Contact
     public string PhoneNumber { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
 
-    //public int CategoryId { get; set; }
+    public int CategoryId { get; set; }
 
-    //public ContactCategory Category { get; set; }
+    public ContactCategory Category { get; set; }
 }

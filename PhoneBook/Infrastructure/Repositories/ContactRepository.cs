@@ -4,7 +4,7 @@ using PhoneBook.Domain.Entities;
 using PhoneBook.Domain.Validation;
 using PhoneBook.Domain.Validation.Errors;
 
-namespace PhoneBook.Infrastructure;
+namespace PhoneBook.Infrastructure.Repositories;
 
 public class ContactRepository : IContactRepository
 {
