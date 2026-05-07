@@ -12,6 +12,7 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, HostBuilderContext context)
     {
         services.AddTransient<IContactRepository, ContactRepository>();
+        services.AddTransient<ICategoryRepository, CategoryRepository>();
 
         var connectionString = context.Configuration.GetConnectionString("PhoneBook");
 
