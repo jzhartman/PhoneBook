@@ -6,5 +6,6 @@ public record ContactResponse
     string FirstName,
     string LastName,
     string PhoneNumber,
-    string Email
+    string Email,
+    int CategoryId
 );

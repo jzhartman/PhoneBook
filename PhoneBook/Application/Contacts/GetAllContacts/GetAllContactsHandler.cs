@@ -39,7 +39,8 @@ public class GetAllContactsHandler
                 contact.FirstName,
                 contact.LastName,
                 contact.PhoneNumber,
-                contact.Email
+                contact.Email,
+                contact.CategoryId
             ));
         }
 

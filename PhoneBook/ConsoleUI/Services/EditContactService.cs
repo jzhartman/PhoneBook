@@ -74,6 +74,7 @@ internal class EditContactService
         table.AddRow("L", "Last Name");
         table.AddRow("P", "Phone Number");
         table.AddRow("E", "Email");
+        table.AddRow("C", "Category");
         table.AddRow("S", "Save Changes");
         table.AddRow("X", "Cancel");
 
@@ -98,6 +99,10 @@ internal class EditContactService
             case ConsoleKey.E:
                 ManageUpdateEmail(originalContact, contact);
                 break;
+            case ConsoleKey.C:
+                Console.WriteLine("TBD");
+                _userInput.PressAnyKeyToContinue();
+                break;
             case ConsoleKey.S:
                 return EditContactExitCode.Save;
             case ConsoleKey.X:
@@ -114,7 +119,8 @@ internal class EditContactService
                                                                         contact.FirstName,
                                                                         contact.LastName,
                                                                         contact.PhoneNumber,
-                                                                        contact.Email));
+                                                                        contact.Email,
+                                                                        contact.CategoryId));
 
         var errors = new List<Error>();
 

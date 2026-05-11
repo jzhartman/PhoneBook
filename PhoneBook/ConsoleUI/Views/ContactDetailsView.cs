@@ -22,6 +22,7 @@ internal class ContactDetailsView
         table.AddRow("[blue]Name:[/]", $"{contact.FirstName} {contact.LastName}");
         table.AddRow("[blue]Phone Number:[/]", $"{contact.PhoneNumber}");
         table.AddRow("[blue]Email:[/]", $"{contact.Email}");
+        table.AddRow("[blue]Category:[/]", $"{contact.CategoryId}");
 
         AnsiConsole.Write(table);
     }

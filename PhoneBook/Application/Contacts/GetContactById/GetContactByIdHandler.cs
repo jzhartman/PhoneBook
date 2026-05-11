@@ -30,7 +30,8 @@ internal class GetContactByIdHandler
                 result.Value.FirstName,
                 result.Value.LastName,
                 result.Value.PhoneNumber,
-                result.Value.Email
+                result.Value.Email,
+                result.Value.CategoryId
             ));
     }
 }

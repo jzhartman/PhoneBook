@@ -14,6 +14,7 @@ internal class EditContactViewModel
     public string LastName { get; set; }
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
+    public int CategoryId { get; set; }
 
     public EditContactViewModel(ContactResponse originalContact)
     {
@@ -22,5 +23,6 @@ internal class EditContactViewModel
         LastName = originalContact.LastName;
         PhoneNumber = originalContact.PhoneNumber;
         Email = originalContact.Email;
+        CategoryId = originalContact.CategoryId;
     }
 }
