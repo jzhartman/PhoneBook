@@ -1,4 +1,4 @@
-﻿using PhoneBook.Application.DTOs;
+﻿using PhoneBook.Application.Contacts.DTOs;
 using Spectre.Console;
 
 namespace PhoneBook.ConsoleUI.Views;
@@ -11,7 +11,7 @@ internal class ContactSelectionView
 
         var selection = AnsiConsole.Prompt(
                             new SelectionPrompt<ContactResponse>()
-                            .Title("Select a category from below: ")
+                            .Title("Select a contact from below: ")
                             .PageSize(15)
                             .WrapAround()
                             .UseConverter(c => $"{c.LastName}, {c.FirstName}")

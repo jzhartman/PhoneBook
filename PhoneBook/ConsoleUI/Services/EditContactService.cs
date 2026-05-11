@@ -1,6 +1,6 @@
-﻿using PhoneBook.Application.DTOs;
-using PhoneBook.Application.EditContact;
-using PhoneBook.Application.SaveChanges;
+﻿using PhoneBook.Application.Contacts.DTOs;
+using PhoneBook.Application.Contacts.EditContact;
+using PhoneBook.Application.Contacts.SaveChanges;
 using PhoneBook.ConsoleUI.Enums;
 using PhoneBook.ConsoleUI.Input;
 using PhoneBook.ConsoleUI.Models;

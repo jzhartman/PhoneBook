@@ -1,5 +1,5 @@
-﻿using PhoneBook.Application.AddContact;
-using PhoneBook.Application.SaveChanges;
+﻿using PhoneBook.Application.Contacts.AddContact;
+using PhoneBook.Application.Contacts.SaveChanges;
 using PhoneBook.ConsoleUI.Input;
 using PhoneBook.ConsoleUI.Output;
 using PhoneBook.Domain.Validation;

@@ -2,7 +2,7 @@
 using PhoneBook.Domain.Validation;
 using PhoneBook.Domain.Validation.Errors;
 
-namespace PhoneBook.Application.SaveChanges;
+namespace PhoneBook.Application.Contacts.SaveChanges;
 
 internal class SaveChangesHandler
 {

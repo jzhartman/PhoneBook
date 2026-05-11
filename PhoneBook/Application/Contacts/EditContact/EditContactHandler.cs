@@ -1,10 +1,10 @@
-﻿using PhoneBook.Application.DTOs;
+﻿using PhoneBook.Application.Contacts.DTOs;
 using PhoneBook.Application.Interfaces;
 using PhoneBook.Domain.Entities;
 using PhoneBook.Domain.Validation;
 using PhoneBook.Domain.Validation.Errors;
 
-namespace PhoneBook.Application.EditContact;
+namespace PhoneBook.Application.Contacts.EditContact;
 
 public class EditContactHandler
 {

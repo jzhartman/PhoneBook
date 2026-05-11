@@ -1,10 +1,10 @@
-﻿using PhoneBook.Application.DTOs;
+﻿using PhoneBook.Application.Contacts.DTOs;
 using PhoneBook.Application.Interfaces;
 using PhoneBook.Domain.Entities;
 using PhoneBook.Domain.Validation;
 using PhoneBook.Domain.Validation.Errors;
 
-namespace PhoneBook.Application.DeleteContact;
+namespace PhoneBook.Application.Contacts.DeleteContact;
 
 public class DeleteContactHandler
 {

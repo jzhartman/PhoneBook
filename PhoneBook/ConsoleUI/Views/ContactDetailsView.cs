@@ -1,4 +1,4 @@
-﻿using PhoneBook.Application.DTOs;
+﻿using PhoneBook.Application.Contacts.DTOs;
 using Spectre.Console;
 
 namespace PhoneBook.ConsoleUI.Views;

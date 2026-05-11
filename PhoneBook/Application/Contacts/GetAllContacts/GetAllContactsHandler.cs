@@ -1,9 +1,9 @@
-﻿using PhoneBook.Application.DTOs;
+﻿using PhoneBook.Application.Contacts.DTOs;
 using PhoneBook.Application.Interfaces;
 using PhoneBook.Domain.Entities;
 using PhoneBook.Domain.Validation;
 
-namespace PhoneBook.Application.GetAllContacts;
+namespace PhoneBook.Application.Contacts.GetAllContacts;
 
 public class GetAllContactsHandler
 {

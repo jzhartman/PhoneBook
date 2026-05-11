@@ -3,7 +3,7 @@ using PhoneBook.Domain.Entities;
 using PhoneBook.Domain.Validation;
 using PhoneBook.Domain.Validation.Errors;
 
-namespace PhoneBook.Application.AddContact;
+namespace PhoneBook.Application.Contacts.AddContact;
 
 public class AddContactHandler
 {

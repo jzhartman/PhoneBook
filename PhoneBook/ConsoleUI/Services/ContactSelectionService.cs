@@ -1,5 +1,5 @@
-﻿using PhoneBook.Application.DTOs;
-using PhoneBook.Application.GetAllContacts;
+﻿using PhoneBook.Application.Contacts.DTOs;
+using PhoneBook.Application.Contacts.GetAllContacts;
 using PhoneBook.ConsoleUI.Views;
 using PhoneBook.Domain.Validation;
 using PhoneBook.Domain.Validation.Errors;

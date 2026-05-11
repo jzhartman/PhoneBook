@@ -1,4 +1,4 @@
-﻿namespace PhoneBook.Application.AddContact;
+﻿namespace PhoneBook.Application.Contacts.AddContact;
 
 public record AddContactRequest
 (

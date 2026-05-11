@@ -1,4 +1,4 @@
-﻿namespace PhoneBook.Application.DTOs;
+﻿namespace PhoneBook.Application.Contacts.DTOs;
 
 public record ContactResponse
 (
