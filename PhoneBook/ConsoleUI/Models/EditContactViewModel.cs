@@ -1,4 +1,4 @@
-﻿using PhoneBook.Application.DTOs;
+﻿using PhoneBook.Application.Contacts.DTOs;
 
 namespace PhoneBook.ConsoleUI.Models;
 

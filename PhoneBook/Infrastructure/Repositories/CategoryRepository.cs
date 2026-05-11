@@ -53,7 +53,7 @@ public class CategoryRepository : ICategoryRepository
         try
         {
             if (await CategoryExists(category))
-                return Result.Failure(Errors.ContactExists);
+                return Result.Failure(Errors.CategoryExists);
 
             await _context.ContactCategories.AddAsync(category);
             return Result.Success();
@@ -123,6 +123,6 @@ public class CategoryRepository : ICategoryRepository
 
     private async Task<bool> CategoryExists(ContactCategory category)
     {
-        return await _context.ContactCategories.AnyAsync(cat => cat.Name == category.Name);
+        return await _context.ContactCategories.AnyAsync(cat => cat.Name.ToUpper() == category.Name.ToUpper());
     }
 }
