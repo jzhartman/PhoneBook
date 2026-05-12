@@ -22,7 +22,8 @@ public class AddContactHandler
                 FirstName = contact.FirstName,
                 LastName = contact.LastName,
                 PhoneNumber = contact.PhoneNumber,
-                Email = contact.Email
+                Email = contact.Email,
+                CategoryId = contact.CategoryId
             });
 
         if (result is null)

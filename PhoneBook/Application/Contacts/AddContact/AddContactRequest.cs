@@ -5,5 +5,6 @@ public record AddContactRequest
     string FirstName,
     string LastName,
     string PhoneNumber,
-    string Email
+    string Email,
+    int CategoryId = 1
 );
