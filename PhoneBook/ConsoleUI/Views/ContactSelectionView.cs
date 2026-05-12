@@ -5,9 +5,9 @@ namespace PhoneBook.ConsoleUI.Views;
 
 internal class ContactSelectionView
 {
-    public ContactResponse Render(ContactResponse[] contacts)
+    public ContactResponse Render(IEnumerable<ContactResponse> contacts)
     {
-        contacts = contacts.OrderBy(c => c.LastName).ToArray();
+        contacts = contacts.OrderBy(c => c.LastName);
 
         var selection = AnsiConsole.Prompt(
                             new SelectionPrompt<ContactResponse>()

@@ -2,6 +2,8 @@
 using PhoneBook.ConsoleUI.Input;
 using PhoneBook.ConsoleUI.Output;
 using PhoneBook.ConsoleUI.Services;
+using PhoneBook.ConsoleUI.Services.Categories;
+using PhoneBook.ConsoleUI.Services.Contacts;
 using PhoneBook.ConsoleUI.Views;
 
 namespace PhoneBook.ConsoleUI;
@@ -17,6 +19,7 @@ internal static class DependencyInjection
         services.AddTransient<ContactSelectionView>();
         services.AddTransient<ContactDetailsView>();
         services.AddTransient<EditContactView>();
+        services.AddTransient<CategorySelectionView>();
 
         services.AddTransient<MainMenuService>();
         services.AddTransient<AddContactService>();
@@ -27,6 +30,7 @@ internal static class DependencyInjection
 
         services.AddTransient<AddCategoryService>();
         services.AddTransient<LookupCategoryMenuService>();
+        services.AddTransient<CategorySelectionService>();
 
         return services;
     }

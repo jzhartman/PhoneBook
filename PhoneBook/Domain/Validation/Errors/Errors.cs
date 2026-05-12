@@ -9,7 +9,7 @@ public static class Errors
     public static readonly Error DeleteResponseNull = new("DeleteResponseNull", "Delete action returned null value");
     public static readonly Error SaveResponseNull = new("SaveResponseNull", "Save action returned null value");
     public static readonly Error UpdateResponseNull = new("UpdateResponseNull", "Update action returned null value");
-    public static readonly Error GetResponseNull = new("GetResponseNull", "Get Contact action returned null value");
+    public static readonly Error GetResponseNull = new("GetResponseNull", "Get action returned null value");
 
 
 
