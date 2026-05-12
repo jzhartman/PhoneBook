@@ -1,4 +1,6 @@
 ﻿using PhoneBook.ConsoleUI.Enums;
+using PhoneBook.ConsoleUI.Services.Categories;
+using PhoneBook.ConsoleUI.Services.Contacts;
 using PhoneBook.ConsoleUI.Views;
 
 namespace PhoneBook.ConsoleUI.Services;
