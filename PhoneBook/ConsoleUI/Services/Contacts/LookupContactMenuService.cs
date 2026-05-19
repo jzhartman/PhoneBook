@@ -40,7 +40,7 @@ internal class LookupContactMenuService
     internal async Task RunAsync()
     {
         bool returnToMainMenu = false;
-        LookupMenuOptions[] menuOptions = Enum.GetValues<LookupMenuOptions>();
+        ManageSubMenuOptions[] menuOptions = Enum.GetValues<ManageSubMenuOptions>();
 
         Console.Clear();
         var contactResult = await _contactSelectionService.RunAsync();
@@ -66,8 +66,8 @@ internal class LookupContactMenuService
             var keyInfo = Console.ReadKey(true);
             var operation = await ManageKeyPressMenu(keyInfo, contactResult.Value);
 
-            if (operation == LookupMenuOptions.Exit || operation == LookupMenuOptions.Delete) returnToMainMenu = true;
-            if (operation == LookupMenuOptions.Update) contactResult = await _getContactByIdHandler.HandleAsync(contactResult.Value.ContactId);
+            if (operation == ManageSubMenuOptions.Exit || operation == ManageSubMenuOptions.Delete) returnToMainMenu = true;
+            if (operation == ManageSubMenuOptions.Edit) contactResult = await _getContactByIdHandler.HandleAsync(contactResult.Value.ContactId);
 
             if (contactResult.IsFailure)
             {
@@ -95,23 +95,23 @@ internal class LookupContactMenuService
         AnsiConsole.Write(table);
     }
 
-    private async Task<LookupMenuOptions> ManageKeyPressMenu(ConsoleKeyInfo keyInfo, ContactResponse contact)
+    private async Task<ManageSubMenuOptions> ManageKeyPressMenu(ConsoleKeyInfo keyInfo, ContactResponse contact)
     {
         switch (keyInfo.Key)
         {
             case ConsoleKey.D:
                 await _deleteContactService.RunAsync(contact);
-                return LookupMenuOptions.Delete;
+                return ManageSubMenuOptions.Delete;
             case ConsoleKey.E:
                 await _editContactService.RunAsync(contact);
-                return LookupMenuOptions.Update;
+                return ManageSubMenuOptions.Edit;
             case ConsoleKey.M:
-                return LookupMenuOptions.Exit;
+                return ManageSubMenuOptions.Exit;
             default:
                 _messages.ErrorMessage(new[] { new Error("Input", "Invalid key press") });
                 Console.WriteLine("ERROR! Invalid key press");
                 _userInput.PressAnyKeyToContinue();
-                return LookupMenuOptions.Unknown;
+                return ManageSubMenuOptions.Unknown;
         }
     }
 }

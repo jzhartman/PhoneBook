@@ -10,18 +10,22 @@ using Spectre.Console;
 
 namespace PhoneBook.ConsoleUI.Services;
 
-internal class LookupCategoryMenuService
+internal class ManageCategoriesMenuService
 {
     private readonly CategorySelectionService _categorySelectionService;
+    private readonly AddCategoryService _addCategoryService;
     private readonly GetCategoryByIdHandler _getCategoryByIdHandler;
     private readonly Messages _messages;
     private readonly UserInput _userInput;
 
-    public LookupCategoryMenuService(CategorySelectionService categorySelectionService, GetCategoryByIdHandler getCategoryByIdHandler,
+    public ManageCategoriesMenuService(CategorySelectionService categorySelectionService, GetCategoryByIdHandler getCategoryByIdHandler,
+                                    AddCategoryService addCategoryService,
                                     Messages messages, UserInput userInput)
     {
         _categorySelectionService = categorySelectionService;
         _getCategoryByIdHandler = getCategoryByIdHandler;
+
+        _addCategoryService = addCategoryService;
 
         _messages = messages;
         _userInput = userInput;
@@ -30,7 +34,7 @@ internal class LookupCategoryMenuService
     internal async Task RunAsync()
     {
         bool returnToMainMenu = false;
-        LookupMenuOptions[] menuOptions = Enum.GetValues<LookupMenuOptions>();
+        ManageSubMenuOptions[] menuOptions = Enum.GetValues<ManageSubMenuOptions>();
 
         Console.Clear();
         var categegoryResult = await _categorySelectionService.RunAsync();
@@ -46,18 +50,16 @@ internal class LookupCategoryMenuService
         {
             Console.Clear();
 
-            AnsiConsole.WriteLine($"Viewing contacts in category {categegoryResult.Value.Name}:");
-            AnsiConsole.WriteLine();
-            //_contactDetailsView.Render(contactResult.Value);
+            AnsiConsole.WriteLine($"Managing category: {categegoryResult?.Value?.Name ?? "UNKNOWN"}:");
             AnsiConsole.WriteLine();
 
-            RenderContactDetailKeyOptions();
+            RenderManageCategoriesKeyOptions();
 
             var keyInfo = Console.ReadKey(true);
             var operation = await ManageKeyPressMenu(keyInfo, categegoryResult.Value);
 
-            if (operation == LookupMenuOptions.Exit || operation == LookupMenuOptions.Delete) returnToMainMenu = true;
-            if (operation == LookupMenuOptions.Update) categegoryResult = await _getCategoryByIdHandler.HandleAsync(categegoryResult.Value.Id);
+            if (operation == ManageSubMenuOptions.Exit || operation == ManageSubMenuOptions.Delete) returnToMainMenu = true;
+            if (operation == ManageSubMenuOptions.Edit) categegoryResult = await _getCategoryByIdHandler.HandleAsync(categegoryResult.Value.Id);
 
             if (categegoryResult.IsFailure)
             {
@@ -68,7 +70,7 @@ internal class LookupCategoryMenuService
     }
 
 
-    private void RenderContactDetailKeyOptions()
+    private void RenderManageCategoriesKeyOptions()
     {
         var table = new Table()
                         .RoundedBorder()
@@ -78,30 +80,34 @@ internal class LookupCategoryMenuService
         table.AddColumn("Key");
         table.AddColumn("Operation");
 
-        table.AddRow("D", "Delete Contact");
-        table.AddRow("E", "Edit Contact");
-        table.AddRow("M", "Return to Main Menu");
+        table.AddRow("D", "Delete Category");
+        table.AddRow("R", "Rename Category");
+        table.AddRow("X", "Return to Main Menu");
 
         AnsiConsole.Write(table);
     }
 
-    private async Task<LookupMenuOptions> ManageKeyPressMenu(ConsoleKeyInfo keyInfo, CategoryResponse contact)
+    private async Task<ManageSubMenuOptions> ManageKeyPressMenu(ConsoleKeyInfo keyInfo, CategoryResponse category)
     {
         switch (keyInfo.Key)
         {
             case ConsoleKey.D:
-                //await _deleteContactService.RunAsync(contact);
-                return LookupMenuOptions.Delete;
-            case ConsoleKey.E:
                 //await _editContactService.RunAsync(contact);
-                return LookupMenuOptions.Update;
-            case ConsoleKey.M:
-                return LookupMenuOptions.Exit;
+                Console.WriteLine("Delete this someday");
+                _userInput.PressAnyKeyToContinue();
+                return ManageSubMenuOptions.Delete;
+            case ConsoleKey.R:
+                //await _editContactService.RunAsync(contact);
+                Console.WriteLine("Rename this someday");
+                _userInput.PressAnyKeyToContinue();
+                return ManageSubMenuOptions.Edit;
+            case ConsoleKey.X:
+                return ManageSubMenuOptions.Exit;
             default:
                 _messages.ErrorMessage(new[] { new Error("Input", "Invalid key press") });
                 Console.WriteLine("ERROR! Invalid key press");
                 _userInput.PressAnyKeyToContinue();
-                return LookupMenuOptions.Unknown;
+                return ManageSubMenuOptions.Unknown;
         }
     }
 }

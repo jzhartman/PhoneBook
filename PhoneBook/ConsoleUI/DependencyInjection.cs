@@ -29,7 +29,7 @@ internal static class DependencyInjection
         services.AddTransient<EditContactService>();
 
         services.AddTransient<AddCategoryService>();
-        services.AddTransient<LookupCategoryMenuService>();
+        services.AddTransient<ManageCategoriesMenuService>();
         services.AddTransient<CategorySelectionService>();
 
         return services;

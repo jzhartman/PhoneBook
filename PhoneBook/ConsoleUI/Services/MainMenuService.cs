@@ -11,21 +11,24 @@ internal class MainMenuService
 
     private readonly AddContactService _addContactService;
     private readonly LookupContactMenuService _lookupContactMenuService;
+    private readonly ManageCategoriesMenuService _manageCategoriesMenuService;
 
     private readonly AddCategoryService _addCategoryService;
-    private readonly LookupCategoryMenuService _lookupCategoryMenuService;
+    //private readonly LookupCategoryMenuService _lookupCategoryMenuService;
 
     public MainMenuService(MainMenuView mainMenu,
                             AddContactService addContactService, LookupContactMenuService lookupContactMenuService,
-                            AddCategoryService addCategoryService, LookupCategoryMenuService lookupCategoryMenuService)
+                            ManageCategoriesMenuService manageCategoriesMenuService, AddCategoryService addCategoryService)
+    //LookupCategoryMenuService lookupCategoryMenuService)
     {
         _mainMenu = mainMenu;
 
         _addContactService = addContactService;
         _lookupContactMenuService = lookupContactMenuService;
+        _manageCategoriesMenuService = manageCategoriesMenuService;
 
         _addCategoryService = addCategoryService;
-        _lookupCategoryMenuService = lookupCategoryMenuService;
+        //_lookupCategoryMenuService = lookupCategoryMenuService;
     }
 
     internal async Task RunAsync()
@@ -43,14 +46,14 @@ internal class MainMenuService
                 case MainMenuOptions.AddContact:
                     await _addContactService.RunAsync();
                     break;
-                case MainMenuOptions.ReadContacts:
+                case MainMenuOptions.ViewContacts:
                     await _lookupContactMenuService.RunAsync();
                     break;
                 case MainMenuOptions.AddCategory:
                     await _addCategoryService.RunAsync();
                     break;
-                case MainMenuOptions.ReadCategory:
-                    await _lookupCategoryMenuService.RunAsync();
+                case MainMenuOptions.ManageCategories:
+                    await _manageCategoriesMenuService.RunAsync();
                     break;
                 case MainMenuOptions.Exit:
                     Console.WriteLine("Goodbye...");

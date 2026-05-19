@@ -1,9 +1,10 @@
 ﻿namespace PhoneBook.ConsoleUI.Enums;
 
-internal enum LookupMenuOptions
+internal enum ManageSubMenuOptions
 {
+    Add,
     Delete,
-    Update,
+    Edit,
     Exit,
     Unknown
 }
