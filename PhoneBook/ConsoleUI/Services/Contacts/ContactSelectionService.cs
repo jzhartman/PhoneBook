@@ -1,8 +1,9 @@
 ﻿using PhoneBook.Application.Contacts.DTOs;
 using PhoneBook.Application.Contacts.GetAllContacts;
+using PhoneBook.ConsoleUI.Input;
+using PhoneBook.ConsoleUI.Output;
 using PhoneBook.ConsoleUI.Views;
-using PhoneBook.Domain.Validation;
-using PhoneBook.Domain.Validation.Errors;
+
 
 namespace PhoneBook.ConsoleUI.Services.Contacts;
 
@@ -10,23 +11,29 @@ internal class ContactSelectionService
 {
     private readonly GetAllContactsHandler _getAllContactsHandler;
     private readonly ContactSelectionView _contactSelectionView;
+    private readonly Messages _messages;
+    private readonly UserInput _userInput;
 
-    public ContactSelectionService(GetAllContactsHandler getAllContactsHandler, ContactSelectionView contactSelectionView)
+    public ContactSelectionService(GetAllContactsHandler getAllContactsHandler, ContactSelectionView contactSelectionView,
+                                    Messages messages, UserInput userInput)
     {
         _getAllContactsHandler = getAllContactsHandler;
         _contactSelectionView = contactSelectionView;
+        _messages = messages;
+        _userInput = userInput;
     }
 
-    public async Task<Result<ContactResponse>> RunAsync()
+    public async Task<ContactResponse?> RunAsync()
     {
         var result = await _getAllContactsHandler.HandleAsync();
 
-        if (result.IsFailure)
-            return Result<ContactResponse>.Failure(result.Errors);
+        if (result.IsFailure || result.Value is null)
+        {
+            _messages.ErrorMessage(result.Errors);
+            _userInput.PressAnyKeyToContinue();
+            return null;
+        }
 
-        if (result.Value is null)
-            return Result<ContactResponse>.Failure(new[] { Errors.GetResponseNull });
-
-        return Result<ContactResponse>.Success(_contactSelectionView.Render(result.Value));
+        return _contactSelectionView.Render(result.Value);
     }
 }

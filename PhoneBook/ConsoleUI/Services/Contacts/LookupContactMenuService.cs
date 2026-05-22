@@ -43,36 +43,38 @@ internal class LookupContactMenuService
         ManageSubMenuOptions[] menuOptions = Enum.GetValues<ManageSubMenuOptions>();
 
         Console.Clear();
-        var contactResult = await _contactSelectionService.RunAsync();
+        var contact = await _contactSelectionService.RunAsync();
 
-        if (contactResult.IsFailure || contactResult.Value is null)
-        {
-            _messages.ErrorMessage(contactResult.Errors);
-            _userInput.PressAnyKeyToContinue();
-            return;
-        }
 
         while (returnToMainMenu == false)
         {
             Console.Clear();
 
-            AnsiConsole.WriteLine($"Viewing contact entry for {contactResult.Value.FirstName} {contactResult.Value.LastName}:");
+            AnsiConsole.WriteLine($"Viewing contact entry for {contact.FirstName} {contact.LastName}:");
             AnsiConsole.WriteLine();
-            _contactDetailsView.Render(contactResult.Value);
+            _contactDetailsView.Render(contact);
             AnsiConsole.WriteLine();
 
             RenderContactDetailKeyOptions();
 
             var keyInfo = Console.ReadKey(true);
-            var operation = await ManageKeyPressMenu(keyInfo, contactResult.Value);
+            var operation = await ManageKeyPressMenu(keyInfo, contact);
 
-            if (operation == ManageSubMenuOptions.Exit || operation == ManageSubMenuOptions.Delete) returnToMainMenu = true;
-            if (operation == ManageSubMenuOptions.Edit) contactResult = await _getContactByIdHandler.HandleAsync(contactResult.Value.ContactId);
+            if (operation == ManageSubMenuOptions.Exit || operation == ManageSubMenuOptions.Delete)
+                returnToMainMenu = true;
 
-            if (contactResult.IsFailure)
+            if (operation == ManageSubMenuOptions.Edit)
             {
-                _messages.ErrorMessage(new[] { Errors.LoadEditDataFailed });
-                _userInput.PressAnyKeyToContinue();
+                var updatedContact = await _getContactByIdHandler.HandleAsync(contact.ContactId);
+
+                if (updatedContact.IsFailure)
+                {
+                    _messages.ErrorMessage(new[] { Errors.LoadEditDataFailed });
+                    _userInput.PressAnyKeyToContinue();
+                    return;
+                }
+
+                contact = updatedContact.Value;
             }
         }
     }

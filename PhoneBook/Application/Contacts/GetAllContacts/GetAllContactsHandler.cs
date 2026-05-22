@@ -2,6 +2,7 @@
 using PhoneBook.Application.Interfaces;
 using PhoneBook.Domain.Entities;
 using PhoneBook.Domain.Validation;
+using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.Application.Contacts.GetAllContacts;
 
@@ -19,7 +20,7 @@ public class GetAllContactsHandler
         var result = await _repo.GetAllAsync();
 
         if (result is null || result.Value is null)
-            return Result<List<ContactResponse>>.Success(new List<ContactResponse>());
+            return Result<List<ContactResponse>>.Failure(new Error[] { Errors.ContactNotFound });
 
         if (result.IsFailure)
             return Result<List<ContactResponse>>.Failure(result.Errors);
