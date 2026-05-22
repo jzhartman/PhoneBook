@@ -14,7 +14,7 @@ internal class MainMenuView
             .UseConverter(m => m switch
             {
                 MainMenuOptions.AddContact => "Add Contact",
-                MainMenuOptions.ViewContacts => "View All Contacts",
+                MainMenuOptions.ViewContact => "View All Contacts",
                 MainMenuOptions.AddCategory => "Add Category",
                 MainMenuOptions.Exit => "Exit Application",
                 _ => m.ToString()

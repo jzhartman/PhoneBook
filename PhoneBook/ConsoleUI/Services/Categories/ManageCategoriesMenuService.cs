@@ -37,34 +37,35 @@ internal class ManageCategoriesMenuService
         ManageSubMenuOptions[] menuOptions = Enum.GetValues<ManageSubMenuOptions>();
 
         Console.Clear();
-        var categegoryResult = await _categorySelectionService.RunAsync();
-
-        if (categegoryResult.IsFailure || categegoryResult.Value is null)
-        {
-            _messages.ErrorMessage(categegoryResult.Errors);
-            _userInput.PressAnyKeyToContinue();
-            return;
-        }
+        var category = await _categorySelectionService.RunAsync();
 
         while (returnToMainMenu == false)
         {
             Console.Clear();
 
-            AnsiConsole.WriteLine($"Managing category: {categegoryResult?.Value?.Name ?? "UNKNOWN"}:");
+            AnsiConsole.WriteLine($"Managing category: {category?.Name ?? "UNKNOWN"}:");
             AnsiConsole.WriteLine();
 
             RenderManageCategoriesKeyOptions();
 
             var keyInfo = Console.ReadKey(true);
-            var operation = await ManageKeyPressMenu(keyInfo, categegoryResult.Value);
+            var operation = await ManageKeyPressMenu(keyInfo, category);
 
-            if (operation == ManageSubMenuOptions.Exit || operation == ManageSubMenuOptions.Delete) returnToMainMenu = true;
-            if (operation == ManageSubMenuOptions.Edit) categegoryResult = await _getCategoryByIdHandler.HandleAsync(categegoryResult.Value.Id);
+            if (operation == ManageSubMenuOptions.Exit || operation == ManageSubMenuOptions.Delete)
+                returnToMainMenu = true;
 
-            if (categegoryResult.IsFailure)
+            if (operation == ManageSubMenuOptions.Edit)
             {
-                _messages.ErrorMessage(new[] { Errors.LoadEditDataFailed });
-                _userInput.PressAnyKeyToContinue();
+                var updatedCategory = await _getCategoryByIdHandler.HandleAsync(category.Id);
+
+                if (updatedCategory.IsFailure)
+                {
+                    _messages.ErrorMessage(new[] { Errors.LoadEditDataFailed });
+                    _userInput.PressAnyKeyToContinue();
+                    return;
+                }
+
+                category = updatedCategory.Value;
             }
         }
     }

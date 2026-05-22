@@ -63,11 +63,21 @@ internal class AddContactService
 
     private async Task<int> GetCategoryIdFromUser()
     {
-        var categoryResponse = await _categorySelectionService.RunAsync();
+        bool categoryIdIsValid = false;
+        int categoryId = 0;
 
-        if (categoryResponse is null || categoryResponse.Value is null || categoryResponse.IsFailure)
-            return 0;
+        while (categoryIdIsValid == false)
+        {
+            var category = await _categorySelectionService.RunAsync();
 
-        return categoryResponse.Value.Id;
+            if (category is not null)
+            {
+                categoryIdIsValid = true;
+                categoryId = category.Id;
+            }
+        }
+
+        return categoryId;
+
     }
 }

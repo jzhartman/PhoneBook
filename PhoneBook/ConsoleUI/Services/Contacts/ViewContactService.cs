@@ -3,6 +3,7 @@ using PhoneBook.Application.GetById;
 using PhoneBook.ConsoleUI.Enums;
 using PhoneBook.ConsoleUI.Input;
 using PhoneBook.ConsoleUI.Output;
+using PhoneBook.ConsoleUI.Services.Categories;
 using PhoneBook.ConsoleUI.Views;
 using PhoneBook.Domain.Validation;
 using PhoneBook.Domain.Validation.Errors;
@@ -10,8 +11,9 @@ using Spectre.Console;
 
 namespace PhoneBook.ConsoleUI.Services.Contacts;
 
-internal class LookupContactMenuService
+internal class ViewContactService
 {
+    private readonly CategorySelectionService _categorySelectionService;
     private readonly ContactSelectionService _contactSelectionService;
     private readonly DeleteContactService _deleteContactService;
     private readonly GetContactByIdHandler _getContactByIdHandler;
@@ -20,11 +22,13 @@ internal class LookupContactMenuService
     private readonly Messages _messages;
     private readonly UserInput _userInput;
 
-    public LookupContactMenuService(ContactSelectionService contactSelectionService, DeleteContactService deleteContactService,
+    public ViewContactService(ContactSelectionService contactSelectionService, DeleteContactService deleteContactService,
+        CategorySelectionService categorySelectionService,
                                     GetContactByIdHandler getContactByIdHandler,
                                     EditContactService editContactService, ContactDetailsView contactDetailsView,
                                     Messages messages, UserInput userInput)
     {
+        _categorySelectionService = categorySelectionService;
         _contactSelectionService = contactSelectionService;
         _deleteContactService = deleteContactService;
         _editContactService = editContactService;
@@ -43,8 +47,9 @@ internal class LookupContactMenuService
         ManageSubMenuOptions[] menuOptions = Enum.GetValues<ManageSubMenuOptions>();
 
         Console.Clear();
-        var contact = await _contactSelectionService.RunAsync();
+        var category = await _categorySelectionService.RunAsync(true);
 
+        var contact = await _contactSelectionService.RunAsync(category ?? new(-1, "ALL"));
 
         while (returnToMainMenu == false)
         {

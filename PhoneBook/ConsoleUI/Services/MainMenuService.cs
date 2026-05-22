@@ -10,19 +10,19 @@ internal class MainMenuService
     private readonly MainMenuView _mainMenu;
 
     private readonly AddContactService _addContactService;
-    private readonly LookupContactMenuService _lookupContactMenuService;
+    private readonly ViewContactService _viewContactService;
     private readonly ManageCategoriesMenuService _manageCategoriesMenuService;
 
     private readonly AddCategoryService _addCategoryService;
 
     public MainMenuService(MainMenuView mainMenu,
-                            AddContactService addContactService, LookupContactMenuService lookupContactMenuService,
+                            AddContactService addContactService, ViewContactService viewContactService,
                             ManageCategoriesMenuService manageCategoriesMenuService, AddCategoryService addCategoryService)
     {
         _mainMenu = mainMenu;
 
         _addContactService = addContactService;
-        _lookupContactMenuService = lookupContactMenuService;
+        _viewContactService = viewContactService;
         _manageCategoriesMenuService = manageCategoriesMenuService;
 
         _addCategoryService = addCategoryService;
@@ -43,8 +43,8 @@ internal class MainMenuService
                 case MainMenuOptions.AddContact:
                     await _addContactService.RunAsync();
                     break;
-                case MainMenuOptions.ViewContacts:              // ToDo: Refactor this to force selection by category -- Will need an ALL option
-                    await _lookupContactMenuService.RunAsync();
+                case MainMenuOptions.ViewContact:              // ToDo: Refactor this to force selection by category -- Will need an ALL option
+                    await _viewContactService.RunAsync();
                     break;
                 case MainMenuOptions.AddCategory:               // ToDo: Would be nicer if this existed inside ManageCategories option
                     await _addCategoryService.RunAsync();

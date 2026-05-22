@@ -2,6 +2,7 @@
 using PhoneBook.Application.Interfaces;
 using PhoneBook.Domain.Entities;
 using PhoneBook.Domain.Validation;
+using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.Application.Categories.GetAllCategories;
 
@@ -19,7 +20,7 @@ internal class GetAllCategoriesHandler
         var result = await _repo.GetAllAsync();
 
         if (result is null || result.Value is null)
-            return Result<List<CategoryResponse>>.Success(new List<CategoryResponse>());
+            return Result<List<CategoryResponse>>.Failure(new Error[] { Errors.CategoryNotFound });
 
         if (result.IsFailure)
             return Result<List<CategoryResponse>>.Failure(result.Errors);
