@@ -1,10 +1,12 @@
-﻿using PhoneBook.Application.Contacts.DTOs;
+﻿using PhoneBook.Application.Categories.DTOs;
+using PhoneBook.Application.Contacts.DTOs;
 using PhoneBook.Application.Contacts.EditContact;
 using PhoneBook.Application.Contacts.SaveChanges;
 using PhoneBook.ConsoleUI.Enums;
 using PhoneBook.ConsoleUI.Input;
 using PhoneBook.ConsoleUI.Models;
 using PhoneBook.ConsoleUI.Output;
+using PhoneBook.ConsoleUI.Services.Categories;
 using PhoneBook.ConsoleUI.Views;
 using PhoneBook.Domain.Validation;
 using PhoneBook.Domain.Validation.Errors;
@@ -19,21 +21,24 @@ internal class EditContactService
     private readonly Messages _messages;
     private readonly EditContactHandler _editContactHandler;
     private readonly SaveChangesHandler _saveChangesHandler;
+    private readonly CategorySelectionService _categorySelectionService;
 
     public EditContactService(EditContactView editContactView, UserInput userInput, Messages messages,
-                                EditContactHandler editContactHandler, SaveChangesHandler saveChangesHandler)
+                                EditContactHandler editContactHandler, SaveChangesHandler saveChangesHandler,
+                                CategorySelectionService categorySelectionService)
     {
         _editContactView = editContactView;
         _userInput = userInput;
         _messages = messages;
         _editContactHandler = editContactHandler;
         _saveChangesHandler = saveChangesHandler;
+        _categorySelectionService = categorySelectionService;
     }
 
-    public async Task RunAsync(ContactResponse originalContact)
+    public async Task RunAsync(ContactResponse originalContact, CategoryResponse originalCategory)
     {
         bool stillEditing = true;
-        var contact = new EditContactViewModel(originalContact);
+        var contact = new EditContactViewModel(originalContact, originalCategory);
 
         while (stillEditing)
         {
@@ -47,12 +52,12 @@ internal class EditContactService
             RenderEditContactKeyOptions();
 
             var keyInfo = Console.ReadKey(true);
-            var exitCode = await ManageKeyPressMenuFromCategory(keyInfo, originalContact, contact);
+            var exitCode = await ManageKeyPressMenuFromCategory(keyInfo, originalContact, originalCategory, contact);
 
             if (exitCode == EditContactExitCode.Save)
             {
                 stillEditing = false;
-                await UpdateContact(contact);
+                await UpdateContactAsync(contact);
             }
 
             if (exitCode == EditContactExitCode.Cancel) stillEditing = false;
@@ -83,6 +88,7 @@ internal class EditContactService
 
     private async Task<EditContactExitCode> ManageKeyPressMenuFromCategory(ConsoleKeyInfo keyInfo,
                                                                             ContactResponse originalContact,
+                                                                            CategoryResponse originalCategory,
                                                                             EditContactViewModel contact)
     {
         switch (keyInfo.Key)
@@ -100,8 +106,7 @@ internal class EditContactService
                 ManageUpdateEmail(originalContact, contact);
                 break;
             case ConsoleKey.C:
-                Console.WriteLine("TBD");
-                _userInput.PressAnyKeyToContinue();
+                await ManageUpdateCategory(originalCategory, contact);
                 break;
             case ConsoleKey.S:
                 return EditContactExitCode.Save;
@@ -113,7 +118,7 @@ internal class EditContactService
         return EditContactExitCode.None;
     }
 
-    private async Task UpdateContact(EditContactViewModel contact)
+    private async Task UpdateContactAsync(EditContactViewModel contact)
     {
         var updateResult = await _editContactHandler.HandleAsync(new ContactResponse(contact.Id,
                                                                         contact.FirstName,
@@ -135,6 +140,14 @@ internal class EditContactService
 
         _messages.ErrorMessage(errors);
         _userInput.PressAnyKeyToContinue();
+    }
+
+    private async Task ManageUpdateCategory(CategoryResponse originalCategory, EditContactViewModel contact)
+    {
+        var newCategory = await _categorySelectionService.RunAsync(true);
+        contact.CategoryName = newCategory.Name;
+        contact.CategoryId = newCategory.Id;
+        contact.ChangedCategory = (contact.CategoryName == originalCategory.Name) ? false : true;
     }
 
     private void ManageUpdateFirstName(ContactResponse originalContact, EditContactViewModel contact)

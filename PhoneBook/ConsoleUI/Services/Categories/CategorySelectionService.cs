@@ -34,10 +34,10 @@ internal class CategorySelectionService
         }
 
         if (allowAll)
-            result.Value.Prepend(new(-1, "All"));       //ToDo: Address this warning -- may cause some issues
+            result.Value.Insert(0, new(-1, "ALL"));       //ToDo: Address this warning -- may cause some issues
 
         if (allowAdd)
-            result.Value.Prepend(new(-1, "Add New Category"));
+            result.Value.Insert(0, new(-1, "ADD NEW CATEGORY"));
 
         return _categorySelectionView.Render(result.Value);
     }

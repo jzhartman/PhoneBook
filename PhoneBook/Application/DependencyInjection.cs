@@ -6,6 +6,7 @@ using PhoneBook.Application.Contacts.AddContact;
 using PhoneBook.Application.Contacts.DeleteContact;
 using PhoneBook.Application.Contacts.EditContact;
 using PhoneBook.Application.Contacts.GetAllContacts;
+using PhoneBook.Application.Contacts.GetContactsByCategoryId;
 using PhoneBook.Application.Contacts.SaveChanges;
 using PhoneBook.Application.GetById;
 
@@ -16,6 +17,7 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddTransient<GetAllContactsHandler>();
+        services.AddTransient<GetAllContactsByCategoryIdHandler>();
         services.AddTransient<GetContactByIdHandler>();
         services.AddTransient<AddContactHandler>();
         services.AddTransient<DeleteContactHandler>();

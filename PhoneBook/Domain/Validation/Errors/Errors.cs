@@ -11,7 +11,7 @@ public static class Errors
     public static readonly Error UpdateResponseNull = new("UpdateResponseNull", "Update action returned null value");
     public static readonly Error GetResponseNull = new("GetResponseNull", "Get action returned null value");
 
-
+    public static readonly Error NoContactsInCategory = new("NoContactsInCategory", "No contacts where found in the selected category");
 
     public static readonly Error ContactExists = new("ContactExists", "A contact with that information already exists.");
     public static readonly Error ContactDoesNotExist = new("ContactDoesNotExist", "A contact with that information does not exist.");

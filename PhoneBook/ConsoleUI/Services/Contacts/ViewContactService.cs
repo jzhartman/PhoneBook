@@ -1,4 +1,5 @@
-﻿using PhoneBook.Application.Contacts.DTOs;
+﻿using PhoneBook.Application.Categories.DTOs;
+using PhoneBook.Application.Contacts.DTOs;
 using PhoneBook.Application.GetById;
 using PhoneBook.ConsoleUI.Enums;
 using PhoneBook.ConsoleUI.Input;
@@ -51,19 +52,38 @@ internal class ViewContactService
 
         var contact = await _contactSelectionService.RunAsync(category ?? new(-1, "ALL"));
 
+        if (contact is null)
+            return;
+
         while (returnToMainMenu == false)
         {
             Console.Clear();
 
             AnsiConsole.WriteLine($"Viewing contact entry for {contact.FirstName} {contact.LastName}:");
             AnsiConsole.WriteLine();
-            _contactDetailsView.Render(contact);
+
+
+            /*
+             *  HERE IS WHERE WE LEFT OFF
+             * 
+             * Passing category to view is incorrect... this is assigned -1 and ALL is user selects all
+             * These are not values that define the contact
+             * Should create a contact view model and pass that in
+             * ViewModel should be created in ContactSelectionService
+             *      - Should include a call to a repo method to GetCategoryNameById(id)
+             */
+
+
+
+
+
+            _contactDetailsView.Render(contact, category);
             AnsiConsole.WriteLine();
 
             RenderContactDetailKeyOptions();
 
             var keyInfo = Console.ReadKey(true);
-            var operation = await ManageKeyPressMenu(keyInfo, contact);
+            var operation = await ManageKeyPressMenu(keyInfo, contact, category);
 
             if (operation == ManageSubMenuOptions.Exit || operation == ManageSubMenuOptions.Delete)
                 returnToMainMenu = true;
@@ -102,7 +122,7 @@ internal class ViewContactService
         AnsiConsole.Write(table);
     }
 
-    private async Task<ManageSubMenuOptions> ManageKeyPressMenu(ConsoleKeyInfo keyInfo, ContactResponse contact)
+    private async Task<ManageSubMenuOptions> ManageKeyPressMenu(ConsoleKeyInfo keyInfo, ContactResponse contact, CategoryResponse category)
     {
         switch (keyInfo.Key)
         {
@@ -110,7 +130,7 @@ internal class ViewContactService
                 await _deleteContactService.RunAsync(contact);
                 return ManageSubMenuOptions.Delete;
             case ConsoleKey.E:
-                await _editContactService.RunAsync(contact);
+                await _editContactService.RunAsync(contact, category);
                 return ManageSubMenuOptions.Edit;
             case ConsoleKey.M:
                 return ManageSubMenuOptions.Exit;

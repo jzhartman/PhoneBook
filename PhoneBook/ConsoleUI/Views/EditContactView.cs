@@ -11,6 +11,8 @@ internal class EditContactView
         var lastNameTextColor = (contact.ChangedLastName) ? "[green]" : "[white]";
         var phoneNumberTextColor = (contact.ChangedPhoneNumber) ? "[green]" : "[white]";
         var emailTextColor = (contact.ChangedEmail) ? "[green]" : "[white]";
+        var categoryTextColor = (contact.ChangedCategory) ? "[green]" : "[white]";
+
 
         AnsiConsole.MarkupInterpolated($"[bold blue]Contact Entry:[/]");
 
@@ -27,6 +29,7 @@ internal class EditContactView
         table.AddRow("[blue]Name:[/]", $"{firstNameTextColor}{contact.FirstName}[/] {lastNameTextColor}{contact.LastName}[/]");
         table.AddRow("[blue]Phone Number:[/]", $"{phoneNumberTextColor}{contact.PhoneNumber}[/]");
         table.AddRow("[blue]Email:[/]", $"{emailTextColor}{contact.Email}[/]");
+        table.AddRow("[blue]Category:[/]", $"{categoryTextColor}{contact.CategoryName}[/]");
 
         AnsiConsole.Write(table);
     }

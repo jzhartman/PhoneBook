@@ -11,4 +11,5 @@ public interface IContactRepository
     Task<Result> UpdateAsync(Contact contact);
     Task<Result> DeleteAsync(Contact contact);
     Task<Result> SaveChangesAsync();
+    Task<Result<List<Contact>>> GetByCategoryIdAsync(int id);
 }

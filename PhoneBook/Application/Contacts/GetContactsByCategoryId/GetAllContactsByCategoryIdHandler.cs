@@ -1,22 +1,23 @@
-﻿using PhoneBook.Application.Contacts.DTOs;
+﻿using PhoneBook.Application.Categories.DTOs;
+using PhoneBook.Application.Contacts.DTOs;
 using PhoneBook.Application.Interfaces;
 using PhoneBook.Domain.Validation;
 using PhoneBook.Domain.Validation.Errors;
 
-namespace PhoneBook.Application.Contacts.GetAllContacts;
+namespace PhoneBook.Application.Contacts.GetContactsByCategoryId;
 
-public class GetAllContactsHandler
+public class GetAllContactsByCategoryIdHandler
 {
     private readonly IContactRepository _repo;
 
-    public GetAllContactsHandler(IContactRepository repo)
+    public GetAllContactsByCategoryIdHandler(IContactRepository repo)
     {
         _repo = repo;
     }
 
-    public async Task<Result<List<ContactResponse>>> HandleAsync()
+    public async Task<Result<List<ContactResponse>>> HandleAsync(CategoryResponse category)
     {
-        var result = await _repo.GetAllAsync();
+        var result = await _repo.GetByCategoryIdAsync(category.Id);
 
         if (result is null || result.Value is null)
             return Result<List<ContactResponse>>.Failure(new Error[] { Errors.ContactNotFound });

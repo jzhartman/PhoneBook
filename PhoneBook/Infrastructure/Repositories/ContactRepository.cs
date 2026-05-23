@@ -24,6 +24,7 @@ public class ContactRepository : IContactRepository
                 return Result.Failure(Errors.ContactExists);
 
             await _context.Contacts.AddAsync(contact);
+
             return Result.Success();
         }
         catch (Exception ex)
@@ -42,6 +43,7 @@ public class ContactRepository : IContactRepository
             await _context.Contacts
                 .Where(c => c.Id == contact.Id)
                 .ExecuteDeleteAsync();
+
             return Result.Success();
         }
         catch (Exception ex)
@@ -55,7 +57,9 @@ public class ContactRepository : IContactRepository
     {
         try
         {
-            var contacts = await _context.Contacts.AsNoTracking().ToListAsync();
+            var contacts = await _context.Contacts
+                .AsNoTracking()
+                .ToListAsync();
 
             if (contacts is null)
                 contacts = new List<Contact>();
@@ -72,7 +76,9 @@ public class ContactRepository : IContactRepository
     {
         try
         {
-            var contact = await _context.Contacts.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+            var contact = await _context.Contacts
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (contact is null)
                 contact = new Contact();
@@ -82,6 +88,26 @@ public class ContactRepository : IContactRepository
         catch (Exception ex)
         {
             return Result<Contact>.Failure(new Error("Retreival Failed", ex.Message));
+        }
+    }
+
+    public async Task<Result<List<Contact>>> GetByCategoryIdAsync(int id)
+    {
+        try
+        {
+            var contacts = await _context.Contacts
+                .AsNoTracking()
+                .Where(c => c.CategoryId == id)
+                .ToListAsync();
+
+            if (contacts is null)
+                contacts = new List<Contact>();
+
+            return Result<List<Contact>>.Success(contacts);
+        }
+        catch (Exception ex)
+        {
+            return Result<List<Contact>>.Failure(new Error("Retrieval Failed", ex.Message));
         }
     }
 
@@ -96,6 +122,7 @@ public class ContactRepository : IContactRepository
                     .SetProperty(c => c.LastName, contact.LastName)
                     .SetProperty(c => c.PhoneNumber, contact.PhoneNumber)
                     .SetProperty(c => c.Email, contact.Email)
+                    .SetProperty(c => c.CategoryId, contact.CategoryId)
                 );
 
             if (response <= 0)
