@@ -49,7 +49,7 @@ internal class ManageCategoriesMenuService
             RenderManageCategoriesKeyOptions();
 
             var keyInfo = Console.ReadKey(true);
-            var operation = await ManageKeyPressMenu(keyInfo, category);
+            var operation = await ManageKeyPressMenuAsyn(keyInfo, category);
 
             if (operation == ManageSubMenuOptions.Exit || operation == ManageSubMenuOptions.Delete)
                 returnToMainMenu = true;
@@ -88,7 +88,7 @@ internal class ManageCategoriesMenuService
         AnsiConsole.Write(table);
     }
 
-    private async Task<ManageSubMenuOptions> ManageKeyPressMenu(ConsoleKeyInfo keyInfo, CategoryResponse category)
+    private async Task<ManageSubMenuOptions> ManageKeyPressMenuAsyn(ConsoleKeyInfo keyInfo, CategoryResponse category)
     {
         switch (keyInfo.Key)
         {

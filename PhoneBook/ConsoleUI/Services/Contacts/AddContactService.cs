@@ -32,7 +32,7 @@ internal class AddContactService
         var lastName = _userInput.GetNameFromUser($"Enter your [green]LAST NAME[/]:");
         var email = _userInput.GetEmailAddressFromUser();
         var phoneNumber = _userInput.GetPhoneNumberFromUser();
-        var categoryId = await GetCategoryIdFromUser();
+        var categoryId = await GetCategoryIdFromUserAsync();
 
         var addResult = await _addContactHandler.HandleAsync(new(firstName, lastName, phoneNumber, email, categoryId));
         var errors = new List<Error>();
@@ -61,7 +61,7 @@ internal class AddContactService
         _userInput.PressAnyKeyToContinue();
     }
 
-    private async Task<int> GetCategoryIdFromUser()
+    private async Task<int> GetCategoryIdFromUserAsync()
     {
         bool categoryIdIsValid = false;
         int categoryId = 0;

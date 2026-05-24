@@ -34,7 +34,7 @@ internal class CategorySelectionService
         }
 
         if (allowAll)
-            result.Value.Insert(0, new(-1, "ALL"));       //ToDo: Address this warning -- may cause some issues
+            result.Value.Insert(0, new(-1, "ALL"));
 
         if (allowAdd)
             result.Value.Insert(0, new(-1, "ADD NEW CATEGORY"));

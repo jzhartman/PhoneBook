@@ -51,7 +51,7 @@ internal class EditContactService
             RenderEditContactKeyOptions();
 
             var keyInfo = Console.ReadKey(true);
-            var exitCode = await ManageKeyPressMenuFromCategory(keyInfo, originalContact, contact);
+            var exitCode = await ManageKeyPressMenuFromCategoryAsync(keyInfo, originalContact, contact);
 
             if (exitCode == EditContactExitCode.Save)
             {
@@ -85,7 +85,7 @@ internal class EditContactService
         AnsiConsole.Write(table);
     }
 
-    private async Task<EditContactExitCode> ManageKeyPressMenuFromCategory(ConsoleKeyInfo keyInfo,
+    private async Task<EditContactExitCode> ManageKeyPressMenuFromCategoryAsync(ConsoleKeyInfo keyInfo,
                                                                             FullContactViewModel originalContact,
                                                                             EditContactViewModel contact)
     {
@@ -104,7 +104,7 @@ internal class EditContactService
                 ManageUpdateEmail(originalContact, contact);
                 break;
             case ConsoleKey.C:
-                await ManageUpdateCategory(originalContact, contact);
+                await ManageUpdateCategoryAsync(originalContact, contact);
                 break;
             case ConsoleKey.S:
                 return EditContactExitCode.Save;
@@ -140,7 +140,7 @@ internal class EditContactService
         _userInput.PressAnyKeyToContinue();
     }
 
-    private async Task ManageUpdateCategory(FullContactViewModel originalContact, EditContactViewModel contact)
+    private async Task ManageUpdateCategoryAsync(FullContactViewModel originalContact, EditContactViewModel contact)
     {
         var newCategory = await _categorySelectionService.RunAsync(true);
         contact.CategoryName = newCategory.Name;
