@@ -2,6 +2,7 @@
 using PhoneBook.Application.Contacts.DTOs;
 using PhoneBook.Application.Contacts.SaveChanges;
 using PhoneBook.ConsoleUI.Input;
+using PhoneBook.ConsoleUI.Models;
 using PhoneBook.ConsoleUI.Output;
 using PhoneBook.Domain.Validation;
 using PhoneBook.Domain.Validation.Errors;
@@ -23,9 +24,16 @@ internal class DeleteContactService
         _userInput = userInput;
     }
 
-    internal async Task RunAsync(ContactResponse contact)
+    internal async Task RunAsync(FullContactViewModel contact)
     {
-        var deleteResult = await _deleteContactHandler.HandleAsync(contact);
+        var contactRequest = new ContactResponse(contact.Id,
+                                                contact.FirstName,
+                                                contact.LastName,
+                                                contact.PhoneNumber,
+                                                contact.Email,
+                                                contact.CategoryId);
+
+        var deleteResult = await _deleteContactHandler.HandleAsync(contactRequest);
         var errors = new List<Error>();
 
         if (deleteResult.IsSuccess)

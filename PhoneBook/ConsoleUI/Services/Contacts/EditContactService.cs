@@ -1,5 +1,4 @@
-﻿using PhoneBook.Application.Categories.DTOs;
-using PhoneBook.Application.Contacts.DTOs;
+﻿using PhoneBook.Application.Contacts.DTOs;
 using PhoneBook.Application.Contacts.EditContact;
 using PhoneBook.Application.Contacts.SaveChanges;
 using PhoneBook.ConsoleUI.Enums;
@@ -35,10 +34,10 @@ internal class EditContactService
         _categorySelectionService = categorySelectionService;
     }
 
-    public async Task RunAsync(ContactResponse originalContact, CategoryResponse originalCategory)
+    public async Task RunAsync(FullContactViewModel originalContact)
     {
         bool stillEditing = true;
-        var contact = new EditContactViewModel(originalContact, originalCategory);
+        var contact = new EditContactViewModel(originalContact);
 
         while (stillEditing)
         {
@@ -52,7 +51,7 @@ internal class EditContactService
             RenderEditContactKeyOptions();
 
             var keyInfo = Console.ReadKey(true);
-            var exitCode = await ManageKeyPressMenuFromCategory(keyInfo, originalContact, originalCategory, contact);
+            var exitCode = await ManageKeyPressMenuFromCategory(keyInfo, originalContact, contact);
 
             if (exitCode == EditContactExitCode.Save)
             {
@@ -87,8 +86,7 @@ internal class EditContactService
     }
 
     private async Task<EditContactExitCode> ManageKeyPressMenuFromCategory(ConsoleKeyInfo keyInfo,
-                                                                            ContactResponse originalContact,
-                                                                            CategoryResponse originalCategory,
+                                                                            FullContactViewModel originalContact,
                                                                             EditContactViewModel contact)
     {
         switch (keyInfo.Key)
@@ -106,7 +104,7 @@ internal class EditContactService
                 ManageUpdateEmail(originalContact, contact);
                 break;
             case ConsoleKey.C:
-                await ManageUpdateCategory(originalCategory, contact);
+                await ManageUpdateCategory(originalContact, contact);
                 break;
             case ConsoleKey.S:
                 return EditContactExitCode.Save;
@@ -142,32 +140,32 @@ internal class EditContactService
         _userInput.PressAnyKeyToContinue();
     }
 
-    private async Task ManageUpdateCategory(CategoryResponse originalCategory, EditContactViewModel contact)
+    private async Task ManageUpdateCategory(FullContactViewModel originalContact, EditContactViewModel contact)
     {
         var newCategory = await _categorySelectionService.RunAsync(true);
         contact.CategoryName = newCategory.Name;
         contact.CategoryId = newCategory.Id;
-        contact.ChangedCategory = (contact.CategoryName == originalCategory.Name) ? false : true;
+        contact.ChangedCategory = (contact.CategoryName == originalContact.CategoryName) ? false : true;
     }
 
-    private void ManageUpdateFirstName(ContactResponse originalContact, EditContactViewModel contact)
+    private void ManageUpdateFirstName(FullContactViewModel originalContact, EditContactViewModel contact)
     {
         contact.FirstName = _userInput.GetNameFromUser("Please enter the new first name:");
         contact.ChangedFirstName = (contact.FirstName == originalContact.FirstName) ? false : true;
     }
-    private void ManageUpdateLastName(ContactResponse originalContact, EditContactViewModel contact)
+    private void ManageUpdateLastName(FullContactViewModel originalContact, EditContactViewModel contact)
     {
         contact.LastName = _userInput.GetNameFromUser("Please enter the new last name:");
         contact.ChangedLastName = (contact.LastName == originalContact.LastName) ? false : true;
     }
 
-    private void ManageUpdatePhoneNumber(ContactResponse originalContact, EditContactViewModel contact)
+    private void ManageUpdatePhoneNumber(FullContactViewModel originalContact, EditContactViewModel contact)
     {
         contact.PhoneNumber = _userInput.GetPhoneNumberFromUser();
         contact.ChangedPhoneNumber = (contact.PhoneNumber == originalContact.PhoneNumber) ? false : true;
     }
 
-    private void ManageUpdateEmail(ContactResponse originalContact, EditContactViewModel contact)
+    private void ManageUpdateEmail(FullContactViewModel originalContact, EditContactViewModel contact)
     {
         contact.Email = _userInput.GetEmailAddressFromUser();
         contact.ChangedEmail = (contact.Email == originalContact.Email) ? false : true;

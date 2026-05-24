@@ -1,7 +1,4 @@
-﻿using PhoneBook.Application.Categories.DTOs;
-using PhoneBook.Application.Contacts.DTOs;
-
-namespace PhoneBook.ConsoleUI.Models;
+﻿namespace PhoneBook.ConsoleUI.Models;
 
 internal class EditContactViewModel
 {
@@ -19,14 +16,14 @@ internal class EditContactViewModel
     public int CategoryId { get; set; }
     public string CategoryName { get; set; }
 
-    public EditContactViewModel(ContactResponse originalContact, CategoryResponse originalCategory)
+    public EditContactViewModel(FullContactViewModel originalContact)
     {
-        Id = originalContact.ContactId;
+        Id = originalContact.Id;
         FirstName = originalContact.FirstName;
         LastName = originalContact.LastName;
         PhoneNumber = originalContact.PhoneNumber;
         Email = originalContact.Email;
         CategoryId = originalContact.CategoryId;
-        CategoryName = originalCategory.Name;
+        CategoryName = originalContact.CategoryName;
     }
 }

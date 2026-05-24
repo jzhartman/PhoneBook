@@ -31,6 +31,7 @@ internal static class DependencyInjection
         services.AddTransient<AddCategoryService>();
         services.AddTransient<ManageCategoriesMenuService>();
         services.AddTransient<CategorySelectionService>();
+        services.AddTransient<GenerateFullContactService>();
 
         return services;
     }

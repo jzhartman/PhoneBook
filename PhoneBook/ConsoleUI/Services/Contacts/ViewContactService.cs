@@ -1,8 +1,7 @@
-﻿using PhoneBook.Application.Categories.DTOs;
-using PhoneBook.Application.Contacts.DTOs;
-using PhoneBook.Application.GetById;
+﻿using PhoneBook.Application.GetById;
 using PhoneBook.ConsoleUI.Enums;
 using PhoneBook.ConsoleUI.Input;
+using PhoneBook.ConsoleUI.Models;
 using PhoneBook.ConsoleUI.Output;
 using PhoneBook.ConsoleUI.Services.Categories;
 using PhoneBook.ConsoleUI.Views;
@@ -17,6 +16,7 @@ internal class ViewContactService
     private readonly CategorySelectionService _categorySelectionService;
     private readonly ContactSelectionService _contactSelectionService;
     private readonly DeleteContactService _deleteContactService;
+    private readonly GenerateFullContactService _generateFullContactService;
     private readonly GetContactByIdHandler _getContactByIdHandler;
     private readonly EditContactService _editContactService;
     private readonly ContactDetailsView _contactDetailsView;
@@ -24,7 +24,7 @@ internal class ViewContactService
     private readonly UserInput _userInput;
 
     public ViewContactService(ContactSelectionService contactSelectionService, DeleteContactService deleteContactService,
-        CategorySelectionService categorySelectionService,
+                                    CategorySelectionService categorySelectionService, GenerateFullContactService generateFullContactService,
                                     GetContactByIdHandler getContactByIdHandler,
                                     EditContactService editContactService, ContactDetailsView contactDetailsView,
                                     Messages messages, UserInput userInput)
@@ -33,6 +33,7 @@ internal class ViewContactService
         _contactSelectionService = contactSelectionService;
         _deleteContactService = deleteContactService;
         _editContactService = editContactService;
+        _generateFullContactService = generateFullContactService;
 
         _getContactByIdHandler = getContactByIdHandler;
 
@@ -62,46 +63,48 @@ internal class ViewContactService
             AnsiConsole.WriteLine($"Viewing contact entry for {contact.FirstName} {contact.LastName}:");
             AnsiConsole.WriteLine();
 
-
-            /*
-             *  HERE IS WHERE WE LEFT OFF
-             * 
-             * Passing category to view is incorrect... this is assigned -1 and ALL is user selects all
-             * These are not values that define the contact
-             * Should create a contact view model and pass that in
-             * ViewModel should be created in ContactSelectionService
-             *      - Should include a call to a repo method to GetCategoryNameById(id)
-             */
-
-
-
-
-
-            _contactDetailsView.Render(contact, category);
+            _contactDetailsView.Render(contact);
             AnsiConsole.WriteLine();
 
             RenderContactDetailKeyOptions();
 
             var keyInfo = Console.ReadKey(true);
-            var operation = await ManageKeyPressMenu(keyInfo, contact, category);
+            var operation = await ManageKeyPressMenuAsync(keyInfo, contact);
 
             if (operation == ManageSubMenuOptions.Exit || operation == ManageSubMenuOptions.Delete)
                 returnToMainMenu = true;
 
             if (operation == ManageSubMenuOptions.Edit)
             {
-                var updatedContact = await _getContactByIdHandler.HandleAsync(contact.ContactId);
+                var updatedContact = await ReloadUpdatedContactAsync(contact.Id);
 
-                if (updatedContact.IsFailure)
-                {
-                    _messages.ErrorMessage(new[] { Errors.LoadEditDataFailed });
-                    _userInput.PressAnyKeyToContinue();
+                if (updatedContact is null)
                     return;
-                }
 
-                contact = updatedContact.Value;
+                contact = updatedContact;
             }
         }
+    }
+
+    private async Task<FullContactViewModel?> ReloadUpdatedContactAsync(int contactId)
+    {
+        var updatedContact = await _getContactByIdHandler.HandleAsync(contactId);
+
+        var errors = new List<Error>();
+
+        if (updatedContact is null || updatedContact.Value is null)
+            errors.Add(Errors.GetResponseNull);
+        else if (updatedContact.IsFailure)
+            errors.AddRange(updatedContact.Errors);
+
+        if (errors.Count > 0)
+        {
+            _messages.ErrorMessage(errors);
+            _userInput.PressAnyKeyToContinue();
+            return null;
+        }
+
+        return await _generateFullContactService.RunAsync(updatedContact.Value);
     }
 
 
@@ -122,7 +125,7 @@ internal class ViewContactService
         AnsiConsole.Write(table);
     }
 
-    private async Task<ManageSubMenuOptions> ManageKeyPressMenu(ConsoleKeyInfo keyInfo, ContactResponse contact, CategoryResponse category)
+    private async Task<ManageSubMenuOptions> ManageKeyPressMenuAsync(ConsoleKeyInfo keyInfo, FullContactViewModel contact)
     {
         switch (keyInfo.Key)
         {
@@ -130,7 +133,7 @@ internal class ViewContactService
                 await _deleteContactService.RunAsync(contact);
                 return ManageSubMenuOptions.Delete;
             case ConsoleKey.E:
-                await _editContactService.RunAsync(contact, category);
+                await _editContactService.RunAsync(contact);
                 return ManageSubMenuOptions.Edit;
             case ConsoleKey.M:
                 return ManageSubMenuOptions.Exit;
