@@ -43,11 +43,8 @@ internal class MainMenuService
                 case MainMenuOptions.AddContact:
                     await _addContactService.RunAsync();
                     break;
-                case MainMenuOptions.ViewContact:              // ToDo: Refactor this to force selection by category -- Will need an ALL option
+                case MainMenuOptions.ViewContact:
                     await _viewContactService.RunAsync();
-                    break;
-                case MainMenuOptions.AddCategory:               // ToDo: Would be nicer if this existed inside ManageCategories option
-                    await _addCategoryService.RunAsync();
                     break;
                 case MainMenuOptions.ManageCategories:
                     await _manageCategoriesMenuService.RunAsync();

@@ -1,6 +1,6 @@
 ﻿using Moq;
-using PhoneBook.Application.DeleteContact;
-using PhoneBook.Application.DTOs;
+using PhoneBook.Application.Contacts.DeleteContact;
+using PhoneBook.Application.Contacts.DTOs;
 using PhoneBook.Application.Interfaces;
 using PhoneBook.Domain.Entities;
 using PhoneBook.Domain.Validation;
@@ -20,7 +20,7 @@ public class DeleteContactHandlerTests
             .ReturnsAsync((Result<Contact>?)null);
 
         var handler = new DeleteContactHandler(repoMock.Object);
-        var request = new ContactResponse(1, "Billy", "Smith", "555-0147", "bs@mail.com");
+        var request = new ContactResponse(1, "Billy", "Smith", "555-0147", "bs@mail.com", 1);
 
         // Act
         var result = await handler.HandleAsync(request);
@@ -42,7 +42,7 @@ public class DeleteContactHandlerTests
             .ReturnsAsync((Result<Contact>.Failure(errors)));
 
         var handler = new DeleteContactHandler(repoMock.Object);
-        var request = new ContactResponse(1, "Billy", "Smith", "555-0147", "bs@mail.com");
+        var request = new ContactResponse(1, "Billy", "Smith", "555-0147", "bs@mail.com", 1);
 
         // Act
         var result = await handler.HandleAsync(request);
@@ -62,7 +62,7 @@ public class DeleteContactHandlerTests
             .ReturnsAsync((Result<Contact>.Success(new Contact())));
 
         var handler = new DeleteContactHandler(repoMock.Object);
-        var request = new ContactResponse(1, "Billy", "Smith", "555-0147", "bs@mail.com");
+        var request = new ContactResponse(1, "Billy", "Smith", "555-0147", "bs@mail.com", 1);
 
         // Act
         var result = await handler.HandleAsync(request);

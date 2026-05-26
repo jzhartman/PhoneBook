@@ -1,5 +1,5 @@
 ﻿using Moq;
-using PhoneBook.Application.AddContact;
+using PhoneBook.Application.Contacts.AddContact;
 using PhoneBook.Application.Interfaces;
 using PhoneBook.Domain.Entities;
 using PhoneBook.Domain.Validation;

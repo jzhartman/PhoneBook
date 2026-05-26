@@ -15,7 +15,6 @@ internal class MainMenuView
             {
                 MainMenuOptions.AddContact => "Add Contact",
                 MainMenuOptions.ViewContact => "View Contact",
-                MainMenuOptions.AddCategory => "Add Category",
                 MainMenuOptions.ManageCategories => "Manage Categories",
                 MainMenuOptions.Exit => "Exit Application",
                 _ => m.ToString()
