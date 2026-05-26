@@ -136,6 +136,29 @@ public class ContactRepository : IContactRepository
             return Result.Failure(new Error("Update Failed", ex.Message));
         }
     }
+    public async Task<Result> SetCategoryToDefaultByCategoryIdAsync(ContactCategory category)
+    {
+        try
+        {
+            if (!await _context.ContactCategories.AnyAsync(cat => cat.Name.ToUpper() == category.Name.ToUpper()))
+                return Result.Failure(Errors.CategoryDoesNotExist);
+
+            var response = await _context.Contacts
+                                .Where(c => c.CategoryId == category.Id)
+                                .ExecuteUpdateAsync(setters => setters
+                                    .SetProperty(c => c.CategoryId, 1));
+
+            if (response <= 0)
+                return Result.Failure(Errors.UpdateDataFailed);
+
+            return Result.Success();
+
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure(new Error("Update Failed", ex.Message));
+        }
+    }
     public async Task<Result> SaveChangesAsync()
     {
         try

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PhoneBook.Application.Categories.AddCategory;
+using PhoneBook.Application.Categories.DeleteCategory;
 using PhoneBook.Application.Categories.GetAllCategories;
 using PhoneBook.Application.Categories.GetCategoryById;
 using PhoneBook.Application.Contacts.AddContact;
@@ -25,6 +26,7 @@ public static class DependencyInjection
         services.AddTransient<EditContactHandler>();
 
         services.AddTransient<AddCategoryHandler>();
+        services.AddTransient<DeleteCategoryByIdHandler>();
         services.AddTransient<GetCategoryByIdHandler>();
         services.AddTransient<GetAllCategoriesHandler>();
 

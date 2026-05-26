@@ -69,7 +69,7 @@ public class CategoryRepository : ICategoryRepository
         try
         {
             if (!(await CategoryExists(category)))
-                return Result.Failure(Errors.ContactDoesNotExist);
+                return Result.Failure(Errors.CategoryDoesNotExist);
 
             await _context.ContactCategories
                 .Where(cat => cat.Id == category.Id)
@@ -102,6 +102,7 @@ public class CategoryRepository : ICategoryRepository
             return Result.Failure(new Error("Update Failed", ex.Message));
         }
     }
+
 
     public async Task<Result> SaveChangesAsync()
     {

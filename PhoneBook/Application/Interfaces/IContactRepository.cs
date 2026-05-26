@@ -12,4 +12,5 @@ public interface IContactRepository
     Task<Result> DeleteAsync(Contact contact);
     Task<Result> SaveChangesAsync();
     Task<Result<List<Contact>>> GetByCategoryIdAsync(int id);
+    Task<Result> SetCategoryToDefaultByCategoryIdAsync(ContactCategory category);
 }
