@@ -29,6 +29,8 @@ public static class Errors
     public static readonly Error UpdateDataFailed = new("UpdateDataFailed", "Database returned no records were successfully updated");
     public static readonly Error SaveDataFailed = new("SaveDataFailed", "Database returned no records were successfully saved");
 
+    public static readonly Error UpdateDenied = new("UpdateDenied", "The selected category cannot be renamed.");
+
 
     public static readonly Error DBConnectionFailure = new("DBConnectionFailure", "Failed to connect to database.");
 }

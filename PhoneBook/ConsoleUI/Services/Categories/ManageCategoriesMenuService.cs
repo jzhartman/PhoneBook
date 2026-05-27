@@ -13,13 +13,14 @@ internal class ManageCategoriesMenuService
     private readonly DeleteCategoryService _deleteCategoryService;
     private readonly CategorySelectionService _categorySelectionService;
     private readonly AddCategoryService _addCategoryService;
+    private readonly EditCategoryService _editCategoryService;
     private readonly GetCategoryByIdHandler _getCategoryByIdHandler;
     private readonly Messages _messages;
     private readonly UserInput _userInput;
 
     public ManageCategoriesMenuService(ManageCategoriesMenuView manageCategoriesMenuView, DeleteCategoryService deleteCategoryService,
                                     CategorySelectionService categorySelectionService, GetCategoryByIdHandler getCategoryByIdHandler,
-                                    AddCategoryService addCategoryService,
+                                    AddCategoryService addCategoryService, EditCategoryService editCategoryService,
                                     Messages messages, UserInput userInput)
     {
         _manageCategoriesMenuView = manageCategoriesMenuView;
@@ -29,6 +30,7 @@ internal class ManageCategoriesMenuService
         _getCategoryByIdHandler = getCategoryByIdHandler;
 
         _addCategoryService = addCategoryService;
+        _editCategoryService = editCategoryService;
 
         _messages = messages;
         _userInput = userInput;
@@ -59,9 +61,7 @@ internal class ManageCategoriesMenuService
                     await _deleteCategoryService.RunAsync();
                     break;
                 case ManageSubMenuOptions.Edit:
-                    Console.WriteLine("Editing category...");
-                    _userInput.PressAnyKeyToContinue();
-                    //await _manageCategoriesMenuService.RunAsync();
+                    await _editCategoryService.RunAsync();
                     break;
                 case ManageSubMenuOptions.Exit:
                     returnToMainMenu = true;

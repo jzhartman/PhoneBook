@@ -86,6 +86,9 @@ public class CategoryRepository : ICategoryRepository
     {
         try
         {
+            if (await CategoryExistsByNameCaseInsensitive(category))
+                return Result.Failure(Errors.CategoryExists);
+
             var response = await _context.ContactCategories
                 .Where(cat => cat.Id == category.Id)
                 .ExecuteUpdateAsync(setters => setters
@@ -120,6 +123,11 @@ public class CategoryRepository : ICategoryRepository
         {
             return Result.Failure(new Error("Save Failed", ex.Message));
         }
+    }
+
+    private async Task<bool> CategoryExistsByNameCaseInsensitive(ContactCategory category)
+    {
+        return await _context.ContactCategories.AnyAsync(cat => cat.Name == category.Name);
     }
 
     private async Task<bool> CategoryExists(ContactCategory category)
