@@ -16,7 +16,8 @@ internal class DeleteContactService
     private readonly Messages _messages;
     private readonly UserInput _userInput;
 
-    public DeleteContactService(DeleteContactHandler deleteContactHandler, SaveChangesHandler saveChangesHandler, Messages messages, UserInput userInput)
+    public DeleteContactService(DeleteContactHandler deleteContactHandler, SaveChangesHandler saveChangesHandler,
+                                Messages messages, UserInput userInput)
     {
         _deleteContactHandler = deleteContactHandler;
         _saveChangesHandler = saveChangesHandler;

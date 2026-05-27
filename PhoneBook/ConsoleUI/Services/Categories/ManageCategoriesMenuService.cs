@@ -37,7 +37,11 @@ internal class ManageCategoriesMenuService
     internal async Task RunAsync()
     {
         bool returnToMainMenu = false;
-        ManageSubMenuOptions[] menuOptions = Enum.GetValues<ManageSubMenuOptions>();
+        var excludedOption = ManageSubMenuOptions.Unknown;
+        ManageSubMenuOptions[] menuOptions = Enum.GetValues(typeof(ManageSubMenuOptions))
+                                                        .Cast<ManageSubMenuOptions>()
+                                                        .Where(o => o != excludedOption)
+                                                        .ToArray();
 
         Console.Clear();
 
@@ -52,8 +56,6 @@ internal class ManageCategoriesMenuService
                     await _addCategoryService.RunAsync();
                     break;
                 case ManageSubMenuOptions.Delete:
-                    Console.WriteLine("Deleting category...");
-                    _userInput.PressAnyKeyToContinue();
                     await _deleteCategoryService.RunAsync();
                     break;
                 case ManageSubMenuOptions.Edit:

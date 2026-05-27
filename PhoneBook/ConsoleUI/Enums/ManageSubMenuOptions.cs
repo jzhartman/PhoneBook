@@ -6,4 +6,5 @@ internal enum ManageSubMenuOptions
     Delete,
     Edit,
     Exit,
+    Unknown
 }
