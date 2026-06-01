@@ -65,6 +65,10 @@ public class UserInput
     public bool GetDeleteConfirmationFromUser(string name, string deleteType)
     {
         return AnsiConsole.Confirm($"Confirm deleting [green]{name}[/] from the {deleteType}?");
+    }
+    public bool GetRenameCategoryConfirmationFromUser(string originalName, string newName)
+    {
+        return AnsiConsole.Confirm($"Confirm renaming [yellow]{originalName}[/] to [green]{newName}[/]?");
 
         // Confirm changing {contact details} to {new contact details}
         // Confirm renaming {Category Name} to {New Name}

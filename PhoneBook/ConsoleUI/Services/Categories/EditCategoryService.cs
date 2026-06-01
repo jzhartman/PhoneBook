@@ -34,18 +34,28 @@ internal class EditCategoryService
 
         var newName = _userInput.GetNameFromUser($"Enter new name for category [green]{category.Name}[/]:");
 
-        var result = await _updateCategoryNameHandler.HandleAsync(new(category.Id, category.Name, newName));
+        var confirmRename = _userInput.GetRenameCategoryConfirmationFromUser(category.Name, newName);
 
-        if (result.IsFailure)
+        if (confirmRename)
         {
-            _messages.ErrorMessage(result.Errors);
-            _userInput.PressAnyKeyToContinue();
-            return; ;
+            var result = await _updateCategoryNameHandler.HandleAsync(new(category.Id, category.Name, newName));
+
+            if (result.IsFailure)
+            {
+                _messages.ErrorMessage(result.Errors);
+                _userInput.PressAnyKeyToContinue();
+                return; ;
+            }
+            else
+            {
+                _messages.RenameCategorySuccessfulMessage(category.Name, newName);
+            }
         }
         else
         {
-            Console.WriteLine($"Successefully updated {category.Name} to {newName}!");
-            _userInput.PressAnyKeyToContinue();
+            _messages.RenameCategorCancelledMessage(category.Name, newName);
         }
+
+        _userInput.PressAnyKeyToContinue();
     }
 }

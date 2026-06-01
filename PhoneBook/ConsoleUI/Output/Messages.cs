@@ -29,4 +29,12 @@ internal class Messages
     {
         AnsiConsole.MarkupLineInterpolated($"Successfully deleted [green]{name}[/] from {addType}");
     }
+    internal void RenameCategorySuccessfulMessage(string originalName, string newName)
+    {
+        AnsiConsole.MarkupLineInterpolated($"Successfully changed [yellow]{originalName}[/] to [green]{newName}[/]");
+    }
+    internal void RenameCategorCancelledMessage(string originalName, string newName)
+    {
+        AnsiConsole.MarkupLineInterpolated($"Cancelled changing [yellow]{originalName}[/] to [green]{newName}[/]");
+    }
 }
