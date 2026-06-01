@@ -37,4 +37,13 @@ internal class Messages
     {
         AnsiConsole.MarkupLineInterpolated($"Cancelled changing [yellow]{originalName}[/] to [green]{newName}[/]");
     }
+
+    internal void EditContactCancelledMessage(string name)
+    {
+        AnsiConsole.MarkupLineInterpolated($"Cancelled editing [green]{name}[/]");
+    }
+    internal void EditContactSuccessuflMessage(string name)
+    {
+        AnsiConsole.MarkupLineInterpolated($"Successfully updated [green]{name}[/]");
+    }
 }

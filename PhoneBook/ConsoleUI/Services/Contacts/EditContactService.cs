@@ -55,12 +55,22 @@ internal class EditContactService
 
             if (exitCode == EditContactExitCode.Save)
             {
-                stillEditing = false;
-                await UpdateContactAsync(contact);
+                var confirmEdits = _userInput.GetEditContactConfirmationFromUser(originalContact, contact);
+                if (confirmEdits)
+                {
+                    _messages.EditContactSuccessuflMessage($"{contact.FirstName} {contact.LastName}");
+                    stillEditing = false;
+                    await UpdateContactAsync(contact);
+                }
             }
 
-            if (exitCode == EditContactExitCode.Cancel) stillEditing = false;
+            if (exitCode == EditContactExitCode.Cancel)
+            {
+                stillEditing = false;
+                _messages.EditContactCancelledMessage($"{originalContact.FirstName} {originalContact.LastName}");
+            }
         }
+        _userInput.PressAnyKeyToContinue();
     }
 
     private void RenderEditContactKeyOptions()
