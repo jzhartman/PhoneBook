@@ -40,23 +40,27 @@ internal class UserInput
 
     internal string GetPhoneNumberFromUser()
     {
-        var phoneNumberPrompt = new TextPrompt<string>("Enter your [green]PHONE NUMBER[/]:")
+        var invalidChars = new[] { '-', '(', ')', '+' };
+
+        var phoneNumberPrompt = new TextPrompt<string>("Enter your [green]PHONE NUMBER[/] (7 to 15 digits, '-', '(', ')', and '+' will be ignored):")
             .AllowEmpty()
             .Validate(input =>
             {
-                if (input.Any(char.IsLetter))
+                var inputMinusCommonSymbols = new string(input.Where(c => !invalidChars.Contains(c)).ToArray());
+
+                if (inputMinusCommonSymbols.Any(char.IsNumber) == false)
                     return ValidationResult.Error("[red]Please enter a valid phone number[/]");
 
-                if (string.IsNullOrWhiteSpace(input))
+                if (string.IsNullOrWhiteSpace(inputMinusCommonSymbols))
                     return ValidationResult.Error("[red]Phone number cannot be empty[/]");
 
-                if (input.Length < 7 || input.Length > 15)
+                if (inputMinusCommonSymbols.Length < 7 || inputMinusCommonSymbols.Length > 15)
                     return ValidationResult.Error("[red]Please enter a valid phone number[/]");
 
                 return ValidationResult.Success();
             });
 
-        return AnsiConsole.Prompt(phoneNumberPrompt);
+        return new string(AnsiConsole.Prompt(phoneNumberPrompt).Where(c => !invalidChars.Contains(c)).ToArray()).Replace(" ", "");
     }
 
     internal bool GetAddConfirmationFromUser(string name, string addType)
@@ -83,8 +87,6 @@ internal class UserInput
         if (newContact.ChangedCategory) changes += $"\t[yellow]{originalContact.CategoryName}[/] to [green]{newContact.CategoryName}[/]\r\n";
 
         return AnsiConsole.Confirm($"{preamble}\r\n\r\n{changes}\r\nConfirm:");
-
-        // Confirm cancelling changes to {contact name}
     }
 
     internal void PressAnyKeyToContinue()
