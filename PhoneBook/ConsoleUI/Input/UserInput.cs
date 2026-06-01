@@ -22,11 +22,13 @@ internal class UserInput
 
     internal string GetEmailAddressFromUser()
     {
-        var emailPrompt = new TextPrompt<string>("Enter your [green]EMAIL[/]:")
+        var emailPrompt = new TextPrompt<string>("Enter your [green]EMAIL[/] (format must match: name@example.com):")
             .AllowEmpty()
             .Validate(input =>
             {
-                if (input.Contains("@") && input.Contains(".") && input.IndexOf(".") > input.IndexOf("@") && input.Length >= 5)
+                if (input.Contains("@") && input.IndexOf("@") >= 1 && input.Count('@') == 1 &&
+                    input.Contains(".") && input.IndexOf(".") > input.IndexOf("@" + 1) &&
+                    input.Length >= 5)
                     return ValidationResult.Success();
 
                 if (string.IsNullOrWhiteSpace(input))
