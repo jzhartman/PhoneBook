@@ -34,30 +34,43 @@ internal class AddContactService
         var phoneNumber = _userInput.GetPhoneNumberFromUser();
         var categoryId = await GetCategoryIdFromUserAsync();
 
-        var addResult = await _addContactHandler.HandleAsync(new(firstName, lastName, phoneNumber, email, categoryId));
-        var errors = new List<Error>();
+        bool confirmAdd = _userInput.GetAddConfirmationFromUser($"{firstName} {lastName}", "contact list");
 
-        if (addResult.IsSuccess)
+        if (confirmAdd)
         {
-            var saveResult = await _saveChangesHandler.HandleAsync();
+            var addResult = await _addContactHandler.HandleAsync(new(firstName, lastName, phoneNumber, email, categoryId));
+            var errors = new List<Error>();
 
-            if (saveResult is null)
-                errors.Add(Errors.SaveResponseNull);
+            if (addResult.IsSuccess)
+            {
+                var saveResult = await _saveChangesHandler.HandleAsync();
 
-            else if (saveResult.IsFailure)
-                errors.AddRange(saveResult.Errors);
+                if (saveResult is null)
+                    errors.Add(Errors.SaveResponseNull);
 
-            else if (saveResult.IsSuccess)
-                return;
+                else if (saveResult.IsFailure)
+                    errors.AddRange(saveResult.Errors);
+
+                else if (saveResult.IsSuccess)
+                {
+                    _messages.AddSucessfulMessage($"{firstName} {lastName}", "contact list");
+                    _userInput.PressAnyKeyToContinue();
+                    return;
+                }
+            }
+
+            if (addResult.IsFailure)
+                errors.AddRange(addResult.Errors);
+
+            if (addResult is null)
+                errors.Add(Errors.AddResponseNull);
+
+            _messages.ErrorMessage(errors);
         }
-
-        if (addResult.IsFailure)
-            errors.AddRange(addResult.Errors);
-
-        if (addResult is null)
-            errors.Add(Errors.AddResponseNull);
-
-        _messages.ErrorMessage(errors);
+        else
+        {
+            _messages.AddCancelledMessage($"{firstName} {lastName}", "contact list");
+        }
         _userInput.PressAnyKeyToContinue();
     }
 
@@ -78,6 +91,5 @@ internal class AddContactService
         }
 
         return categoryId;
-
     }
 }

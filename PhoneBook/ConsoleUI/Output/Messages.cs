@@ -12,4 +12,13 @@ internal class Messages
             AnsiConsole.MarkupLineInterpolated($"[red]{error.Code} ERROR:[/] {error.Description}");
         }
     }
+
+    internal void AddCancelledMessage(string name, string addType)
+    {
+        AnsiConsole.MarkupLineInterpolated($"Cancelled adding [green]{name}[/] to {addType}.");
+    }
+    internal void AddSucessfulMessage(string name, string addType)
+    {
+        AnsiConsole.MarkupLineInterpolated($"Successfully added [green]{name}[/] to {addType}");
+    }
 }
