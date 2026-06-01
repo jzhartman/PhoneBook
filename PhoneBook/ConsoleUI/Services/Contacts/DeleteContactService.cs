@@ -34,30 +34,43 @@ internal class DeleteContactService
                                                 contact.Email,
                                                 contact.CategoryId);
 
-        var deleteResult = await _deleteContactHandler.HandleAsync(contactRequest);
-        var errors = new List<Error>();
+        var confirmDelete = _userInput.GetDeleteConfirmationFromUser($"{contact.FirstName} {contact.LastName}", "contact list");
 
-        if (deleteResult.IsSuccess)
+        if (confirmDelete)
         {
-            var saveResult = await _saveChangesHandler.HandleAsync();
+            var deleteResult = await _deleteContactHandler.HandleAsync(contactRequest);
+            var errors = new List<Error>();
 
-            if (saveResult is null)
-                errors.Add(Errors.SaveResponseNull);
+            if (deleteResult.IsSuccess)
+            {
+                var saveResult = await _saveChangesHandler.HandleAsync();
 
-            else if (saveResult.IsFailure)
-                errors.AddRange(saveResult.Errors);
+                if (saveResult is null)
+                    errors.Add(Errors.SaveResponseNull);
 
-            else if (saveResult.IsSuccess)
-                return;
+                else if (saveResult.IsFailure)
+                    errors.AddRange(saveResult.Errors);
+
+                else if (saveResult.IsSuccess)
+                {
+                    _messages.DeleteSucessfulMessage($"{contact.FirstName} {contact.LastName}", "contact list");
+                    _userInput.PressAnyKeyToContinue();
+                    return;
+                }
+            }
+
+            if (deleteResult.IsFailure)
+                errors.AddRange(deleteResult.Errors);
+
+            if (deleteResult is null)
+                errors.Add(Errors.DeleteResponseNull);
+
+            _messages.ErrorMessage(errors);
         }
-
-        if (deleteResult.IsFailure)
-            errors.AddRange(deleteResult.Errors);
-
-        if (deleteResult is null)
-            errors.Add(Errors.DeleteResponseNull);
-
-        _messages.ErrorMessage(errors);
+        else
+        {
+            _messages.DeleteCancelledMessage($"{contact.FirstName} {contact.LastName}", "contact list");
+        }
         _userInput.PressAnyKeyToContinue();
     }
 }

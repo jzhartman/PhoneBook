@@ -19,6 +19,9 @@ internal class DeleteCategoryByIdHandler
 
     internal async Task<Result> HandleAsync(CategoryResponse categoryResponse)
     {
+        if (categoryResponse.Name.ToUpper() == "UNCATEGORIZED")
+            return Result.Failure(Errors.CannotDeleteDefaultCategory);
+
         var category = new ContactCategory
         {
             Id = categoryResponse.Id,

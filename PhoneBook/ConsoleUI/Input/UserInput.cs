@@ -61,14 +61,14 @@ public class UserInput
     public bool GetAddConfirmationFromUser(string name, string addType)
     {
         return AnsiConsole.Confirm($"Confirm adding [green]{name}[/] to the {addType}?");
+    }
+    public bool GetDeleteConfirmationFromUser(string name, string deleteType)
+    {
+        return AnsiConsole.Confirm($"Confirm deleting [green]{name}[/] from the {deleteType}?");
 
-        // Confirm adding {contact name} to contact list?
         // Confirm changing {contact details} to {new contact details}
-        // Confirm deleting {contact name} from contact list?
-        // Confirm adding {category name} to category list?
         // Confirm renaming {Category Name} to {New Name}
         // Confirm cancelling changes to {contact name}
-        // Confirm deleting {category name} from category list
     }
 
     public void PressAnyKeyToContinue()

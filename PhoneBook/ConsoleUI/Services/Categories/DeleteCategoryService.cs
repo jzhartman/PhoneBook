@@ -28,31 +28,45 @@ internal class DeleteCategoryService
     internal async Task RunAsync()
     {
         var category = await _categorySelectionService.RunAsync();
-        var deleteResult = await _deleteCategoryByIdHandler.HandleAsync(category);
 
-        var errors = new List<Error>();
+        var confirmDelete = _userInput.GetDeleteConfirmationFromUser(category.Name, "category list");
 
-        if (deleteResult.IsSuccess)
+        if (confirmDelete)
         {
-            var saveResult = await _saveChangesHandler.HandleAsync();
+            var deleteResult = await _deleteCategoryByIdHandler.HandleAsync(category);
 
-            if (saveResult is null)
-                errors.Add(Errors.SaveResponseNull);
+            var errors = new List<Error>();
 
-            else if (saveResult.IsFailure)
-                errors.AddRange(saveResult.Errors);
+            if (deleteResult.IsSuccess)
+            {
+                var saveResult = await _saveChangesHandler.HandleAsync();
 
-            else if (saveResult.IsSuccess)
-                return;
+                if (saveResult is null)
+                    errors.Add(Errors.SaveResponseNull);
+
+                else if (saveResult.IsFailure)
+                    errors.AddRange(saveResult.Errors);
+
+                else if (saveResult.IsSuccess)
+                {
+                    _messages.DeleteSucessfulMessage(category.Name, "category list");
+                    _userInput.PressAnyKeyToContinue();
+                    return;
+                }
+            }
+
+            if (deleteResult.IsFailure)
+                errors.AddRange(deleteResult.Errors);
+
+            if (deleteResult is null)
+                errors.Add(Errors.DeleteResponseNull);
+
+            _messages.ErrorMessage(errors);
         }
-
-        if (deleteResult.IsFailure)
-            errors.AddRange(deleteResult.Errors);
-
-        if (deleteResult is null)
-            errors.Add(Errors.DeleteResponseNull);
-
-        _messages.ErrorMessage(errors);
+        else
+        {
+            _messages.DeleteCancelledMessage(category.Name, "category list");
+        }
         _userInput.PressAnyKeyToContinue();
     }
 }

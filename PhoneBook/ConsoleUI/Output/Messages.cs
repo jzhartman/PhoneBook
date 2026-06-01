@@ -9,7 +9,7 @@ internal class Messages
     {
         foreach (var error in errors)
         {
-            AnsiConsole.MarkupLineInterpolated($"[red]{error.Code} ERROR:[/] {error.Description}");
+            AnsiConsole.MarkupLineInterpolated($"[red]ERROR:[/] {error.Description}");
         }
     }
 
@@ -20,5 +20,13 @@ internal class Messages
     internal void AddSucessfulMessage(string name, string addType)
     {
         AnsiConsole.MarkupLineInterpolated($"Successfully added [green]{name}[/] to {addType}");
+    }
+    internal void DeleteCancelledMessage(string name, string addType)
+    {
+        AnsiConsole.MarkupLineInterpolated($"Cancelled deleting [green]{name}[/] from {addType}.");
+    }
+    internal void DeleteSucessfulMessage(string name, string addType)
+    {
+        AnsiConsole.MarkupLineInterpolated($"Successfully deleted [green]{name}[/] from {addType}");
     }
 }
