@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PhoneBook.Application.Interfaces;
+using PhoneBook.Infrastructure.Database;
 using PhoneBook.Infrastructure.Repositories;
 
 namespace PhoneBook.Infrastructure;
@@ -11,6 +12,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, HostBuilderContext context)
     {
+        services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
         services.AddTransient<IContactRepository, ContactRepository>();
         services.AddTransient<ICategoryRepository, CategoryRepository>();
 
