@@ -42,8 +42,18 @@ internal class Messages
     {
         AnsiConsole.MarkupLineInterpolated($"Cancelled editing [green]{name}[/]");
     }
-    internal void EditContactSuccessuflMessage(string name)
+    internal void EditContactSuccessfulMessage(string name)
     {
         AnsiConsole.MarkupLineInterpolated($"Successfully updated [green]{name}[/]");
+    }
+
+    internal void EmailSendSuccessfulMessage()
+    {
+        AnsiConsole.MarkupLineInterpolated($"Email successfully sent!");
+    }
+
+    internal void RetryingSendEmailMessage(int retryCount)
+    {
+        AnsiConsole.MarkupLineInterpolated($"Attempting to resend email. Total attempts: {retryCount}...");
     }
 }

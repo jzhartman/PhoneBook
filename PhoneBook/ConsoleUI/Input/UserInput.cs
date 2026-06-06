@@ -12,7 +12,7 @@ internal class UserInput
             .Validate(input =>
             {
                 if (string.IsNullOrWhiteSpace(input))
-                    return ValidationResult.Error("[red]Name cannot be empty[/]");
+                    return ValidationResult.Error("[red]Required Field:[/] Name cannot be empty.");
 
                 return ValidationResult.Success();
             });
@@ -32,9 +32,9 @@ internal class UserInput
                     return ValidationResult.Success();
 
                 if (string.IsNullOrWhiteSpace(input))
-                    return ValidationResult.Error("[red]Email cannot be empty[/]");
+                    return ValidationResult.Error("[red]Required Field:[/] Email cannot be empty.");
 
-                return ValidationResult.Error("[red]Please enter a valid email address[/]");
+                return ValidationResult.Error("[red]Invalid Entry:[/] Please enter a valid email address with the format [yellow]name@domain.com[/].");
             });
 
         return AnsiConsole.Prompt(emailPrompt);
@@ -51,18 +51,49 @@ internal class UserInput
                 var inputMinusCommonSymbols = new string(input.Where(c => !invalidChars.Contains(c)).ToArray());
 
                 if (inputMinusCommonSymbols.Any(char.IsNumber) == false)
-                    return ValidationResult.Error("[red]Please enter a valid phone number[/]");
+                    return ValidationResult.Error("[red]Invalid Phone Number[/] Phone number cannot contain letters.");
 
                 if (string.IsNullOrWhiteSpace(inputMinusCommonSymbols))
-                    return ValidationResult.Error("[red]Phone number cannot be empty[/]");
+                    return ValidationResult.Error("[red]Required Field:[/] Phone number cannot be empty.");
 
                 if (inputMinusCommonSymbols.Length < 7 || inputMinusCommonSymbols.Length > 15)
-                    return ValidationResult.Error("[red]Please enter a valid phone number[/]");
+                    return ValidationResult.Error("[red]Invalid Phone Number[/] Please enter a valid phone number.");
 
                 return ValidationResult.Success();
             });
 
         return new string(AnsiConsole.Prompt(phoneNumberPrompt).Where(c => !invalidChars.Contains(c)).ToArray()).Replace(" ", "");
+    }
+    internal string GetEmailSubjectFromUser()
+    {
+        var subjectPrompt = new TextPrompt<string>("Enter email [green]SUBJECT[/]:")
+            .AllowEmpty()
+            .Validate(input =>
+            {
+                if (string.IsNullOrWhiteSpace(input))
+                    return ValidationResult.Error("[red]Required Field:[/] Subject cannot be empty.");
+
+                if (input.Length > 50)
+                    return ValidationResult.Error("[red]Exceeded Max Lenght:[/] Subject must be 50 characters or less.");
+
+                return ValidationResult.Success();
+            });
+
+        return AnsiConsole.Prompt(subjectPrompt);
+    }
+    internal string GetEmailBodyFromUser()
+    {
+        var bodyPrompt = new TextPrompt<string>("Enter email [green]BODY[/]:")
+            .AllowEmpty()
+            .Validate(input =>
+            {
+                if (string.IsNullOrWhiteSpace(input))
+                    return ValidationResult.Error("[red]Required Field:[/] Body cannot be empty.");
+
+                return ValidationResult.Success();
+            });
+
+        return AnsiConsole.Prompt(bodyPrompt);
     }
 
     internal bool GetAddConfirmationFromUser(string name, string addType)
@@ -90,7 +121,19 @@ internal class UserInput
 
         return AnsiConsole.Confirm($"{preamble}\r\n\r\n{changes}\r\nConfirm:");
     }
+    internal bool GetEmailContentsConfirmationFromUser(FullContactViewModel contact, string subject, string body)
+    {
+        string email = "Please confirm the following email:\r\n\r\n";
+        email += $"To: {contact.Email} ({contact.FirstName} {contact.LastName})\r\n";
+        email += $"Subject: {subject}\r\n\r\n";
+        email += $"Body:\r\n{body}\r\n\r\n";
 
+        return AnsiConsole.Confirm($"{email}\r\nConfirm send:");
+    }
+    internal bool GetRetrySendConfirmationFromUser()
+    {
+        return AnsiConsole.Confirm($"Retry sending email?");
+    }
     internal void PressAnyKeyToContinue()
     {
         Console.Write("Press any key to continue...");

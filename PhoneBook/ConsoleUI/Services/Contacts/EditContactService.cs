@@ -58,7 +58,7 @@ internal class EditContactService
                 var confirmEdits = _userInput.GetEditContactConfirmationFromUser(originalContact, contact);
                 if (confirmEdits)
                 {
-                    _messages.EditContactSuccessuflMessage($"{contact.FirstName} {contact.LastName}");
+                    _messages.EditContactSuccessfulMessage($"{contact.FirstName} {contact.LastName}");
                     stillEditing = false;
                     await UpdateContactAsync(contact);
                 }

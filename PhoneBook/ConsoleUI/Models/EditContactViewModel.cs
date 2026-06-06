@@ -2,21 +2,21 @@
 
 internal class EditContactViewModel
 {
-    public bool ChangedFirstName { get; set; } = false;
-    public bool ChangedLastName { get; set; } = false;
-    public bool ChangedPhoneNumber { get; set; } = false;
-    public bool ChangedEmail { get; set; } = false;
-    public bool ChangedCategory { get; set; } = false;
+    internal bool ChangedFirstName { get; set; } = false;
+    internal bool ChangedLastName { get; set; } = false;
+    internal bool ChangedPhoneNumber { get; set; } = false;
+    internal bool ChangedEmail { get; set; } = false;
+    internal bool ChangedCategory { get; set; } = false;
 
-    public int Id { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string PhoneNumber { get; set; }
-    public string Email { get; set; }
-    public int CategoryId { get; set; }
-    public string CategoryName { get; set; }
+    internal int Id { get; set; }
+    internal string FirstName { get; set; }
+    internal string LastName { get; set; }
+    internal string PhoneNumber { get; set; }
+    internal string Email { get; set; }
+    internal int CategoryId { get; set; }
+    internal string CategoryName { get; set; }
 
-    public EditContactViewModel(FullContactViewModel originalContact)
+    internal EditContactViewModel(FullContactViewModel originalContact)
     {
         Id = originalContact.Id;
         FirstName = originalContact.FirstName;

@@ -4,6 +4,7 @@ using PhoneBook.ConsoleUI.Output;
 using PhoneBook.ConsoleUI.Services;
 using PhoneBook.ConsoleUI.Services.Categories;
 using PhoneBook.ConsoleUI.Services.Contacts;
+using PhoneBook.ConsoleUI.Services.Email;
 using PhoneBook.ConsoleUI.Views;
 
 namespace PhoneBook.ConsoleUI;
@@ -35,6 +36,8 @@ internal static class DependencyInjection
         services.AddTransient<CategorySelectionService>();
         services.AddTransient<GenerateFullContactService>();
         services.AddTransient<EditCategoryService>();
+
+        services.AddTransient<SendEmailService>();
 
         return services;
     }

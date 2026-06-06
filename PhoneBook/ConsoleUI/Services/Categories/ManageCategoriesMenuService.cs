@@ -39,10 +39,10 @@ internal class ManageCategoriesMenuService
     internal async Task RunAsync()
     {
         bool returnToMainMenu = false;
-        var excludedOption = ManageSubMenuOptions.Unknown;
+        var excludedOption = new List<ManageSubMenuOptions> { ManageSubMenuOptions.Unknown, ManageSubMenuOptions.Email };
         ManageSubMenuOptions[] menuOptions = Enum.GetValues(typeof(ManageSubMenuOptions))
                                                         .Cast<ManageSubMenuOptions>()
-                                                        .Where(o => o != excludedOption)
+                                                        .Where(o => !excludedOption.Contains(o))
                                                         .ToArray();
 
         Console.Clear();

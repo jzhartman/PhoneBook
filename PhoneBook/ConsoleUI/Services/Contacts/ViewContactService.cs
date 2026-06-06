@@ -4,6 +4,7 @@ using PhoneBook.ConsoleUI.Input;
 using PhoneBook.ConsoleUI.Models;
 using PhoneBook.ConsoleUI.Output;
 using PhoneBook.ConsoleUI.Services.Categories;
+using PhoneBook.ConsoleUI.Services.Email;
 using PhoneBook.ConsoleUI.Views;
 using PhoneBook.Domain.Validation;
 using PhoneBook.Domain.Validation.Errors;
@@ -18,6 +19,7 @@ internal class ViewContactService
     private readonly DeleteContactService _deleteContactService;
     private readonly GenerateFullContactService _generateFullContactService;
     private readonly GetContactByIdHandler _getContactByIdHandler;
+    private readonly SendEmailService _sendEmailService;
     private readonly EditContactService _editContactService;
     private readonly ContactDetailsView _contactDetailsView;
     private readonly Messages _messages;
@@ -25,7 +27,7 @@ internal class ViewContactService
 
     public ViewContactService(ContactSelectionService contactSelectionService, DeleteContactService deleteContactService,
                                     CategorySelectionService categorySelectionService, GenerateFullContactService generateFullContactService,
-                                    GetContactByIdHandler getContactByIdHandler,
+                                    GetContactByIdHandler getContactByIdHandler, SendEmailService sendEmailService,
                                     EditContactService editContactService, ContactDetailsView contactDetailsView,
                                     Messages messages, UserInput userInput)
     {
@@ -34,6 +36,7 @@ internal class ViewContactService
         _deleteContactService = deleteContactService;
         _editContactService = editContactService;
         _generateFullContactService = generateFullContactService;
+        _sendEmailService = sendEmailService;
 
         _getContactByIdHandler = getContactByIdHandler;
 
@@ -118,9 +121,10 @@ internal class ViewContactService
         table.AddColumn("Key");
         table.AddColumn("Operation");
 
-        table.AddRow("D", "Delete Contact");
-        table.AddRow("E", "Edit Contact");
-        table.AddRow("M", "Return to Main Menu");
+        table.AddRow("1", "Delete Contact");
+        table.AddRow("2", "Edit Contact");
+        table.AddRow("3", "Send Email");
+        table.AddRow("4", "Return to Main Menu");
 
         AnsiConsole.Write(table);
     }
@@ -129,13 +133,16 @@ internal class ViewContactService
     {
         switch (keyInfo.Key)
         {
-            case ConsoleKey.D:
+            case ConsoleKey.D1:
                 await _deleteContactService.RunAsync(contact);
                 return ManageSubMenuOptions.Delete;
-            case ConsoleKey.E:
+            case ConsoleKey.D2:
                 await _editContactService.RunAsync(contact);
                 return ManageSubMenuOptions.Edit;
-            case ConsoleKey.M:
+            case ConsoleKey.D3:
+                await _sendEmailService.RunAsync(contact);
+                return ManageSubMenuOptions.Email;
+            case ConsoleKey.D4:
                 return ManageSubMenuOptions.Exit;
             default:
                 _messages.ErrorMessage(new[] { new Error("Input", "Invalid key press") });

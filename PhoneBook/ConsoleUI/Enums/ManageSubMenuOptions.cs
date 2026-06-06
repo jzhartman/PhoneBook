@@ -6,5 +6,6 @@ internal enum ManageSubMenuOptions
     Delete,
     Edit,
     Exit,
+    Email,
     Unknown
 }
