@@ -30,8 +30,8 @@ internal class AddContactService
     {
         var firstName = _userInput.GetNameFromUser($"Enter your [green]FIRST NAME[/]:");
         var lastName = _userInput.GetNameFromUser($"Enter your [green]LAST NAME[/]:");
-        var email = _userInput.GetEmailAddressFromUser();
         var phoneNumber = _userInput.GetPhoneNumberFromUser();
+        var email = _userInput.GetEmailAddressFromUser();
         var categoryId = await GetCategoryIdFromUserAsync();
 
         bool confirmAdd = _userInput.GetAddConfirmationFromUser($"{firstName} {lastName}", "contact list");
@@ -87,6 +87,10 @@ internal class AddContactService
             {
                 categoryIdIsValid = true;
                 categoryId = category.Id;
+            }
+            else
+            {
+                _messages.SettingDefaultCategory();
             }
         }
 

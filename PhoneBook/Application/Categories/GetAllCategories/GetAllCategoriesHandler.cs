@@ -19,7 +19,7 @@ internal class GetAllCategoriesHandler
     {
         var result = await _repo.GetAllAsync();
 
-        if (result is null || result.Value is null)
+        if (result is null || result.Value is null || result.Value.Count < 1)
             return Result<List<CategoryResponse>>.Failure(new Error[] { Errors.CategoryNotFound });
 
         if (result.IsFailure)

@@ -56,4 +56,10 @@ internal class Messages
     {
         AnsiConsole.MarkupLineInterpolated($"Attempting to resend email. Total attempts: {retryCount}...");
     }
+
+    internal void SettingDefaultCategory()
+    {
+        AnsiConsole.MarkupLineInterpolated($"Category will be set to the default value: [yellow]UNCATEGORIZED[/].");
+
+    }
 }

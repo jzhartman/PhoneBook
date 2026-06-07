@@ -51,13 +51,13 @@ internal class UserInput
                 var inputMinusCommonSymbols = new string(input.Where(c => !invalidChars.Contains(c)).ToArray());
 
                 if (inputMinusCommonSymbols.Any(char.IsNumber) == false)
-                    return ValidationResult.Error("[red]Invalid Phone Number[/] Phone number cannot contain letters.");
+                    return ValidationResult.Error("[red]Invalid Phone Number[/] Phone number cannot contain letters or symbols.");
 
                 if (string.IsNullOrWhiteSpace(inputMinusCommonSymbols))
                     return ValidationResult.Error("[red]Required Field:[/] Phone number cannot be empty.");
 
                 if (inputMinusCommonSymbols.Length < 7 || inputMinusCommonSymbols.Length > 15)
-                    return ValidationResult.Error("[red]Invalid Phone Number[/] Please enter a valid phone number.");
+                    return ValidationResult.Error("[red]Invalid Phone Number[/] Phone number length must be between 7 and 15 numbers long.");
 
                 return ValidationResult.Success();
             });
