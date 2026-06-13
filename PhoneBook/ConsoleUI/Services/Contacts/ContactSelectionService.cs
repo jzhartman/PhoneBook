@@ -54,7 +54,7 @@ internal class ContactSelectionService
     {
         Result<List<ContactResponse>> contactResult;
 
-        if (category.Id == -1 && category.Name == "ALL")
+        if (category.Id == -1 && category.Name.ToUpper() == "ALL")
             contactResult = await _getAllContactsHandler.HandleAsync();
         else
             contactResult = await _getAllContactsByCategoryIdHandler.HandleAsync(category);
@@ -67,7 +67,7 @@ internal class ContactSelectionService
         }
         if (contactResult.Value.Count == 0)
         {
-            _messages.ErrorMessage(new Error[] { Errors.NoContactsInCategory });
+            _messages.ErrorMessage(new Error[] { ContactRepositoryErrors.NoContactsInCategory });
             _userInput.PressAnyKeyToContinue();
             return null;
         }

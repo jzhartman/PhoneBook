@@ -5,7 +5,7 @@ using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.Application.GetById;
 
-internal class GetContactByIdHandler
+public class GetContactByIdHandler
 {
     private readonly IContactRepository _repo;
 
@@ -19,7 +19,7 @@ internal class GetContactByIdHandler
         var result = await _repo.GetByIdAsync(contactId);
 
         if (result is null || result.Value is null)
-            return Result<ContactResponse>.Failure(Errors.ContactNotFound);
+            return Result<ContactResponse>.Failure(ContactRepositoryErrors.ContactNotFound);
 
         if (result.IsFailure)
             return Result<ContactResponse>.Failure(result.Errors);

@@ -5,7 +5,7 @@ using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.Application.Categories.UpdateCategory;
 
-internal class UpdateCategoryNameHandler
+public class UpdateCategoryNameHandler
 {
     private readonly ICategoryRepository _repo;
 
@@ -14,15 +14,15 @@ internal class UpdateCategoryNameHandler
         _repo = repo;
     }
 
-    internal async Task<Result> HandleAsync(UpdateCategoryNameRequest category)
+    public async Task<Result> HandleAsync(UpdateCategoryNameRequest category)
     {
         if (category.OriginalName.ToUpper() == "UNCATEGORIZED")
-            return Result.Failure(Errors.UpdateDenied);
+            return Result.Failure(CategoryRepositoryErrors.UpdateDefault);
 
         var result = await _repo.UpdateAsync(new ContactCategory { Id = category.Id, Name = category.NewName });
 
         if (result is null)
-            return Result.Failure(Errors.UpdateResponseNull);
+            return Result.Failure(CategoryRepositoryErrors.UpdateResponseNull);
 
         if (result.IsFailure)
             return Result.Failure(result.Errors);

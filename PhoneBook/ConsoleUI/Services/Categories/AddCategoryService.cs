@@ -39,7 +39,7 @@ internal class AddCategoryService
                 var saveResult = await _saveChangesHandler.HandleAsync();
 
                 if (saveResult is null)
-                    errors.Add(Errors.SaveResponseNull);
+                    errors.Add(ContactRepositoryErrors.SaveResponseNull);
 
                 else if (saveResult.IsFailure)
                     errors.AddRange(saveResult.Errors);
@@ -56,7 +56,7 @@ internal class AddCategoryService
                 errors.AddRange(addResult.Errors);
 
             if (addResult is null)
-                errors.Add(Errors.AddResponseNull);
+                errors.Add(CategoryRepositoryErrors.AddResponseNull);
 
             _messages.ErrorMessage(errors);
         }

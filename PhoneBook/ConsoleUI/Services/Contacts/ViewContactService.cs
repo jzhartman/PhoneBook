@@ -96,7 +96,7 @@ internal class ViewContactService
         var errors = new List<Error>();
 
         if (updatedContact is null || updatedContact.Value is null)
-            errors.Add(Errors.GetResponseNull);
+            errors.Add(ContactRepositoryErrors.NullResponse);
         else if (updatedContact.IsFailure)
             errors.AddRange(updatedContact.Errors);
 
@@ -109,7 +109,6 @@ internal class ViewContactService
 
         return await _generateFullContactService.RunAsync(updatedContact.Value);
     }
-
 
     private void RenderContactDetailKeyOptions()
     {
@@ -134,8 +133,8 @@ internal class ViewContactService
         switch (keyInfo.Key)
         {
             case ConsoleKey.D1:
-                await _deleteContactService.RunAsync(contact);
-                return ManageSubMenuOptions.Delete;
+                var contactDeleted = await _deleteContactService.RunAsync(contact);
+                return (contactDeleted) ? ManageSubMenuOptions.Delete : ManageSubMenuOptions.Unknown;
             case ConsoleKey.D2:
                 await _editContactService.RunAsync(contact);
                 return ManageSubMenuOptions.Edit;
@@ -145,7 +144,7 @@ internal class ViewContactService
             case ConsoleKey.D4:
                 return ManageSubMenuOptions.Exit;
             default:
-                _messages.ErrorMessage(new[] { new Error("Input", "Invalid key press") });
+                _messages.ErrorMessage(new[] { Errors.InvalidKeyPress });
                 Console.WriteLine("ERROR! Invalid key press");
                 _userInput.PressAnyKeyToContinue();
                 return ManageSubMenuOptions.Unknown;

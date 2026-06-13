@@ -28,7 +28,7 @@ public class CategoryRepository : ICategoryRepository
         }
         catch (Exception ex)
         {
-            return Result<List<ContactCategory>>.Failure(new Error("Retreival Failed", ex.Message));
+            return Result<List<ContactCategory>>.Failure(new Error("DatabaseError", "Failed to load:" + ex.Message));
         }
     }
     public async Task<Result<ContactCategory>> GetByIdAsync(int id)
@@ -44,7 +44,7 @@ public class CategoryRepository : ICategoryRepository
         }
         catch (Exception ex)
         {
-            return Result<ContactCategory>.Failure(new Error("Retreival Failed", ex.Message));
+            return Result<ContactCategory>.Failure(new Error("DatabaseError", "Failed to load:" + ex.Message));
         }
     }
 
@@ -53,14 +53,14 @@ public class CategoryRepository : ICategoryRepository
         try
         {
             if (await CategoryExists(category))
-                return Result.Failure(Errors.CategoryExists);
+                return Result.Failure(CategoryRepositoryErrors.CategoryExists);
 
             await _context.ContactCategories.AddAsync(category);
             return Result.Success();
         }
         catch (Exception ex)
         {
-            return Result.Failure(new Error("Add Failed", ex.Message));
+            return Result.Failure(new Error("DatabaseError", "Failed to add:" + ex.Message));
         }
     }
 
@@ -69,7 +69,7 @@ public class CategoryRepository : ICategoryRepository
         try
         {
             if (!(await CategoryExists(category)))
-                return Result.Failure(Errors.CategoryDoesNotExist);
+                return Result.Failure(CategoryRepositoryErrors.CategoryDoesNotExist);
 
             await _context.ContactCategories
                 .Where(cat => cat.Id == category.Id)
@@ -79,7 +79,7 @@ public class CategoryRepository : ICategoryRepository
         catch (Exception ex)
         {
 
-            return Result.Failure(new Error("Delete Failed", ex.Message));
+            return Result.Failure(new Error("DatabaseError", "Failed to delete:" + ex.Message));
         }
     }
     public async Task<Result> UpdateAsync(ContactCategory category)
@@ -87,7 +87,7 @@ public class CategoryRepository : ICategoryRepository
         try
         {
             if (await CategoryExistsByNameCaseInsensitive(category))
-                return Result.Failure(Errors.CategoryExists);
+                return Result.Failure(CategoryRepositoryErrors.CategoryExists);
 
             var response = await _context.ContactCategories
                 .Where(cat => cat.Id == category.Id)
@@ -96,16 +96,15 @@ public class CategoryRepository : ICategoryRepository
                 );
 
             if (response <= 0)
-                return Result.Failure(Errors.UpdateDataFailed);
+                return Result.Failure(CategoryRepositoryErrors.UpdateDataFailed);
 
             return Result.Success();
         }
         catch (Exception ex)
         {
-            return Result.Failure(new Error("Update Failed", ex.Message));
+            return Result.Failure(new Error("DatabaseError", "Failed to update:" + ex.Message));
         }
     }
-
 
     public async Task<Result> SaveChangesAsync()
     {
@@ -113,15 +112,11 @@ public class CategoryRepository : ICategoryRepository
         {
             var response = await _context.SaveChangesAsync();
 
-            // ToDo: Fix this so that it it confirms changes for untracked items
-            //if (response <= 0)
-            //    return Result.Failure(Errors.SaveDataFailed);
-
             return Result.Success();
         }
         catch (Exception ex)
         {
-            return Result.Failure(new Error("Save Failed", ex.Message));
+            return Result.Failure(new Error("DatabaseError", "Failed to save:" + ex.Message));
         }
     }
 

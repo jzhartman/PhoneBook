@@ -81,6 +81,24 @@ internal class ContactConfiguration : IEntityTypeConfiguration<Contact>
                     PhoneNumber = "7777777777",
                     Email = "miranda@serenity.com",
                     CategoryId = 1
+                },
+                new Contact
+                {
+                    Id = 8,
+                    FirstName = "Hoban",
+                    LastName = "Washburne",
+                    PhoneNumber = "8888888",
+                    Email = "leafOnTheWind@serenity.com",
+                    CategoryId = 1
+                },
+                new Contact
+                {
+                    Id = 9,
+                    FirstName = "Zoe",
+                    LastName = "Washburne",
+                    PhoneNumber = "99999999",
+                    Email = "browncoats@serenity.com",
+                    CategoryId = 1
                 }
         });
     }

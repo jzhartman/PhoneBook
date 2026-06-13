@@ -2,6 +2,8 @@
 using PhoneBook.ConsoleUI.Input;
 using PhoneBook.ConsoleUI.Models;
 using PhoneBook.ConsoleUI.Output;
+using PhoneBook.Domain.Validation;
+using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.ConsoleUI.Services.Email;
 
@@ -35,13 +37,15 @@ internal class SendEmailService
                     _messages.RetryingSendEmailMessage(retryCount);
 
                 var emailResult = await _sendEmailHandler.HandleAsync(new(contact.Email, subject, body));
+                var errors = new List<Error>();
 
-                if (emailResult.IsFailure)
+                if (emailResult is null)
                 {
-                    _messages.ErrorMessage(emailResult.Errors);
-
-                    retrySend = _userInput.GetRetrySendConfirmationFromUser();
-                    if (retrySend) retryCount++;
+                    errors.Add(EmailErrors.NullResponse);
+                }
+                else if (emailResult.IsFailure)
+                {
+                    errors.AddRange(emailResult.Errors);
                 }
                 else
                 {
@@ -49,7 +53,20 @@ internal class SendEmailService
                     _userInput.PressAnyKeyToContinue();
                     retrySend = false;
                 }
+
+                if (errors.Count > 0)
+                {
+                    _messages.ErrorMessage(errors);
+
+                    retrySend = _userInput.GetRetrySendConfirmationFromUser();
+                    if (retrySend) retryCount++;
+                }
             }
+        }
+        else
+        {
+            _messages.EmailSendCancelledMessage();
+            _userInput.PressAnyKeyToContinue();
         }
     }
 }

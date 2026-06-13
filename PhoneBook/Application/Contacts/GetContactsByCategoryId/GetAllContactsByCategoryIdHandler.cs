@@ -20,7 +20,7 @@ public class GetAllContactsByCategoryIdHandler
         var result = await _repo.GetByCategoryIdAsync(category.Id);
 
         if (result is null || result.Value is null || result.Value.Count < 1)
-            return Result<List<ContactResponse>>.Failure(new Error[] { Errors.ContactNotFound });
+            return Result<List<ContactResponse>>.Failure(ContactRepositoryErrors.ContactNotFound);
 
         if (result.IsFailure)
             return Result<List<ContactResponse>>.Failure(result.Errors);

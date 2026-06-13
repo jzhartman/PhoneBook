@@ -25,7 +25,7 @@ internal class DeleteContactService
         _userInput = userInput;
     }
 
-    internal async Task RunAsync(FullContactViewModel contact)
+    internal async Task<bool> RunAsync(FullContactViewModel contact)
     {
         var contactRequest = new ContactResponse(contact.Id,
                                                 contact.FirstName,
@@ -46,7 +46,7 @@ internal class DeleteContactService
                 var saveResult = await _saveChangesHandler.HandleAsync();
 
                 if (saveResult is null)
-                    errors.Add(Errors.SaveResponseNull);
+                    errors.Add(ContactRepositoryErrors.SaveResponseNull);
 
                 else if (saveResult.IsFailure)
                     errors.AddRange(saveResult.Errors);
@@ -55,7 +55,7 @@ internal class DeleteContactService
                 {
                     _messages.DeleteSucessfulMessage($"{contact.FirstName} {contact.LastName}", "contact list");
                     _userInput.PressAnyKeyToContinue();
-                    return;
+                    return true;
                 }
             }
 
@@ -63,7 +63,7 @@ internal class DeleteContactService
                 errors.AddRange(deleteResult.Errors);
 
             if (deleteResult is null)
-                errors.Add(Errors.DeleteResponseNull);
+                errors.Add(ContactRepositoryErrors.DeleteResponseNull);
 
             _messages.ErrorMessage(errors);
         }
@@ -72,5 +72,7 @@ internal class DeleteContactService
             _messages.DeleteCancelledMessage($"{contact.FirstName} {contact.LastName}", "contact list");
         }
         _userInput.PressAnyKeyToContinue();
+
+        return false;
     }
 }

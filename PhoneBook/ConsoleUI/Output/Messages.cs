@@ -33,7 +33,7 @@ internal class Messages
     {
         AnsiConsole.MarkupLineInterpolated($"Successfully changed [yellow]{originalName}[/] to [green]{newName}[/]");
     }
-    internal void RenameCategorCancelledMessage(string originalName, string newName)
+    internal void RenameCategoryCancelledMessage(string originalName, string newName)
     {
         AnsiConsole.MarkupLineInterpolated($"Cancelled changing [yellow]{originalName}[/] to [green]{newName}[/]");
     }
@@ -46,10 +46,18 @@ internal class Messages
     {
         AnsiConsole.MarkupLineInterpolated($"Successfully updated [green]{name}[/]");
     }
+    internal void EditContactCancelSaveMessage(string name)
+    {
+        AnsiConsole.MarkupLineInterpolated($"Changes to [green]{name}[/] not saved");
+    }
 
     internal void EmailSendSuccessfulMessage()
     {
         AnsiConsole.MarkupLineInterpolated($"Email successfully sent!");
+    }
+    internal void EmailSendCancelledMessage()
+    {
+        AnsiConsole.MarkupLineInterpolated($"Email cancelled!");
     }
 
     internal void RetryingSendEmailMessage(int retryCount)

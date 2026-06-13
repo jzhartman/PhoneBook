@@ -5,7 +5,7 @@ using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.Application.Categories.GetCategoryById;
 
-internal class GetCategoryByIdHandler
+public class GetCategoryByIdHandler
 {
     private readonly ICategoryRepository _repo;
 
@@ -19,7 +19,7 @@ internal class GetCategoryByIdHandler
         var result = await _repo.GetByIdAsync(categoryId);
 
         if (result is null || result.Value is null)
-            return Result<CategoryResponse>.Failure(Errors.CategoryNotFound);
+            return Result<CategoryResponse>.Failure(CategoryRepositoryErrors.CategoryNotFound);
 
         if (result.IsFailure)
             return Result<CategoryResponse>.Failure(result.Errors);

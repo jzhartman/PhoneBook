@@ -28,7 +28,7 @@ public class EditContactHandler
         });
 
         if (result is null)
-            return Result.Failure(Errors.UpdateResponseNull);
+            return Result.Failure(ContactRepositoryErrors.UpdateResponseNull);
 
         if (result.IsFailure)
             return Result.Failure(result.Errors);

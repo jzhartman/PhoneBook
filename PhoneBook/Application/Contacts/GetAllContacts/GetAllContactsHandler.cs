@@ -19,7 +19,7 @@ public class GetAllContactsHandler
         var result = await _repo.GetAllAsync();
 
         if (result is null || result.Value is null || result.Value.Count < 1)
-            return Result<List<ContactResponse>>.Failure(new Error[] { Errors.ContactNotFound });
+            return Result<List<ContactResponse>>.Failure(ContactRepositoryErrors.ContactNotFound);
 
         if (result.IsFailure)
             return Result<List<ContactResponse>>.Failure(result.Errors);

@@ -18,7 +18,7 @@ internal class SaveChangesHandler
         var result = await _repo.SaveChangesAsync();
 
         if (result is null)
-            return Result.Failure(Errors.SaveResponseNull);
+            return Result.Failure(ContactRepositoryErrors.SaveResponseNull);
 
         if (result.IsFailure)
             return Result.Failure(result.Errors);

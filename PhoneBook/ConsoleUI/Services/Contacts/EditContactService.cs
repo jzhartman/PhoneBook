@@ -62,6 +62,11 @@ internal class EditContactService
                     stillEditing = false;
                     await UpdateContactAsync(contact);
                 }
+                else
+                {
+                    _messages.EditContactCancelSaveMessage($"{originalContact.FirstName} {originalContact.LastName}");
+                    _userInput.PressAnyKeyToContinue();
+                }
             }
 
             if (exitCode == EditContactExitCode.Cancel)
@@ -78,19 +83,19 @@ internal class EditContactService
         var table = new Table()
                         .RoundedBorder()
                         .BorderColor(Spectre.Console.Color.Blue)
-                        .Title("Select an field to edit")
+                        .Title("Select an field to edit:")
                         .ShowRowSeparators();
 
         table.AddColumn("Key");
         table.AddColumn("Operation");
 
-        table.AddRow("F", "First Name");
-        table.AddRow("L", "Last Name");
-        table.AddRow("P", "Phone Number");
-        table.AddRow("E", "Email");
-        table.AddRow("C", "Category");
-        table.AddRow("S", "Save Changes");
-        table.AddRow("X", "Cancel");
+        table.AddRow("1", "First Name");
+        table.AddRow("2", "Last Name");
+        table.AddRow("3", "Phone Number");
+        table.AddRow("4", "Email");
+        table.AddRow("5", "Category");
+        table.AddRow("6", "Save Changes");
+        table.AddRow("7", "Cancel");
 
         AnsiConsole.Write(table);
     }
@@ -101,27 +106,27 @@ internal class EditContactService
     {
         switch (keyInfo.Key)
         {
-            case ConsoleKey.F:
+            case ConsoleKey.D1:
                 ManageUpdateFirstName(originalContact, contact);
                 break;
-            case ConsoleKey.L:
+            case ConsoleKey.D2:
                 ManageUpdateLastName(originalContact, contact);
                 break;
-            case ConsoleKey.P:
+            case ConsoleKey.D3:
                 ManageUpdatePhoneNumber(originalContact, contact);
                 break;
-            case ConsoleKey.E:
+            case ConsoleKey.D4:
                 ManageUpdateEmail(originalContact, contact);
                 break;
-            case ConsoleKey.C:
+            case ConsoleKey.D5:
                 await ManageUpdateCategoryAsync(originalContact, contact);
                 break;
-            case ConsoleKey.S:
+            case ConsoleKey.D6:
                 return EditContactExitCode.Save;
-            case ConsoleKey.X:
+            case ConsoleKey.D7:
                 return EditContactExitCode.Cancel;
             default:
-                return EditContactExitCode.Cancel;
+                return EditContactExitCode.None;
         }
         return EditContactExitCode.None;
     }
@@ -144,7 +149,7 @@ internal class EditContactService
             errors.AddRange(updateResult.Errors);
 
         if (updateResult is null)
-            errors.Add(Errors.UpdateResponseNull);
+            errors.Add(ContactRepositoryErrors.UpdateResponseNull);
 
         _messages.ErrorMessage(errors);
         _userInput.PressAnyKeyToContinue();

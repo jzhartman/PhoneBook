@@ -28,7 +28,7 @@ internal class GenerateFullContactService
         var errors = new List<Error>();
 
         if (categoryResult.Value is null || categoryResult is null)
-            errors.Add(Errors.GetResponseNull);
+            errors.Add(ContactRepositoryErrors.NullResponse);
 
         else if (categoryResult.IsFailure)
             errors.AddRange(categoryResult.Errors);

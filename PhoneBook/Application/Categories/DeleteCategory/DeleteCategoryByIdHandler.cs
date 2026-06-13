@@ -17,10 +17,10 @@ internal class DeleteCategoryByIdHandler
         _contactRepo = contactRepo;
     }
 
-    internal async Task<Result> HandleAsync(CategoryResponse categoryResponse)
+    public async Task<Result> HandleAsync(CategoryResponse categoryResponse)
     {
         if (categoryResponse.Name.ToUpper() == "UNCATEGORIZED")
-            return Result.Failure(Errors.CannotDeleteDefaultCategory);
+            return Result.Failure(CategoryRepositoryErrors.DeleteDefault);
 
         var category = new ContactCategory
         {
@@ -28,15 +28,11 @@ internal class DeleteCategoryByIdHandler
             Name = categoryResponse.Name
         };
 
-        var setContactsToDefaultResponse = await _contactRepo.SetCategoryToDefaultByCategoryIdAsync(category);
-
-        if (setContactsToDefaultResponse is null)
-            return Result.Failure(Errors.GenericNull);
-
         var deleteCategoryResponse = await _categoryRepo.DeleteAsync(category);
 
         if (deleteCategoryResponse is null)
-            return Result.Failure(Errors.DeleteResponseNull);
+            return Result.Failure(CategoryRepositoryErrors.DeleteResponseNull);
+
         if (deleteCategoryResponse.IsFailure)
             return Result.Failure(deleteCategoryResponse.Errors);
 

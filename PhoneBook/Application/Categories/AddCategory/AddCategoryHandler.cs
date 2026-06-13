@@ -23,7 +23,8 @@ public class AddCategoryHandler
             });
 
         if (result is null)
-            return Result.Failure(Errors.AddResponseNull);
+            return Result.Failure(CategoryRepositoryErrors.AddResponseNull);
+
         if (result.IsFailure)
             return Result.Failure(result.Errors);
 

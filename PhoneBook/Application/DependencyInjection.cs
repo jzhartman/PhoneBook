@@ -10,6 +10,7 @@ using PhoneBook.Application.Contacts.EditContact;
 using PhoneBook.Application.Contacts.GetAllContacts;
 using PhoneBook.Application.Contacts.GetContactsByCategoryId;
 using PhoneBook.Application.Contacts.SaveChanges;
+using PhoneBook.Application.Contacts.SetCategoryIdToDefault;
 using PhoneBook.Application.Email;
 using PhoneBook.Application.GetById;
 
@@ -26,6 +27,7 @@ public static class DependencyInjection
         services.AddTransient<DeleteContactHandler>();
         services.AddTransient<SaveChangesHandler>();
         services.AddTransient<EditContactHandler>();
+        services.AddTransient<SetCategoryIdForContactsToDefaultHandler>();
 
         services.AddTransient<AddCategoryHandler>();
         services.AddTransient<DeleteCategoryByIdHandler>();

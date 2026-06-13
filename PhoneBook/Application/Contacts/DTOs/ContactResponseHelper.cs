@@ -2,9 +2,9 @@
 
 namespace PhoneBook.Application.Contacts.DTOs;
 
-internal static class ContactResponseHelper
+public static class ContactResponseHelper
 {
-    internal static List<ContactResponse> MapToContactResponse(List<Contact> contacts)
+    public static List<ContactResponse> MapToContactResponse(List<Contact> contacts)
     {
         var contactResponseList = new List<ContactResponse>();
 

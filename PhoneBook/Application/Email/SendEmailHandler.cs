@@ -4,7 +4,7 @@ using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.Application.Email;
 
-internal class SendEmailHandler
+public class SendEmailHandler
 {
     private readonly IEmailService _email;
 
@@ -21,7 +21,7 @@ internal class SendEmailHandler
             body: request.body);
 
         if (result is null)
-            return Result.Failure(Errors.GenericNull);
+            return Result.Failure(EmailErrors.NullResponse);
 
         if (result.IsFailure)
             return Result.Failure(result.Errors);

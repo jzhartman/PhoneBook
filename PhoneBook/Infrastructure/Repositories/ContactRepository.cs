@@ -15,13 +15,12 @@ public class ContactRepository : IContactRepository
         _context = context;
     }
 
-
     public async Task<Result> AddAsync(Contact contact)
     {
         try
         {
             if (await ContactExists(contact))
-                return Result.Failure(Errors.ContactExists);
+                return Result.Failure(ContactRepositoryErrors.ContactExists);
 
             await _context.Contacts.AddAsync(contact);
 
@@ -29,7 +28,7 @@ public class ContactRepository : IContactRepository
         }
         catch (Exception ex)
         {
-            return Result.Failure(new Error("Add Failed", ex.Message));
+            return Result.Failure(new Error("DatabaseError", "Failed to add:" + ex.Message));
         }
     }
 
@@ -38,7 +37,7 @@ public class ContactRepository : IContactRepository
         try
         {
             if (!(await ContactExists(contact)))
-                return Result.Failure(Errors.ContactDoesNotExist);
+                return Result.Failure(ContactRepositoryErrors.ContactDoesNotExist);
 
             await _context.Contacts
                 .Where(c => c.Id == contact.Id)
@@ -49,7 +48,7 @@ public class ContactRepository : IContactRepository
         catch (Exception ex)
         {
 
-            return Result.Failure(new Error("Delete Failed", ex.Message));
+            return Result.Failure(new Error("DatabaseError", "Failed to delete:" + ex.Message));
         }
     }
 
@@ -68,7 +67,7 @@ public class ContactRepository : IContactRepository
         }
         catch (Exception ex)
         {
-            return Result<List<Contact>>.Failure(new Error("Retreival Failed", ex.Message));
+            return Result<List<Contact>>.Failure(new Error("DatabaseError", "Failed to load:" + ex.Message));
         }
     }
 
@@ -87,7 +86,7 @@ public class ContactRepository : IContactRepository
         }
         catch (Exception ex)
         {
-            return Result<Contact>.Failure(new Error("Retreival Failed", ex.Message));
+            return Result<Contact>.Failure(new Error("DatabaseError", "Failed to load:" + ex.Message));
         }
     }
 
@@ -107,7 +106,7 @@ public class ContactRepository : IContactRepository
         }
         catch (Exception ex)
         {
-            return Result<List<Contact>>.Failure(new Error("Retrieval Failed", ex.Message));
+            return Result<List<Contact>>.Failure(new Error("DatabaseError", "Failed to load:" + ex.Message));
         }
     }
 
@@ -126,22 +125,25 @@ public class ContactRepository : IContactRepository
                 );
 
             if (response <= 0)
-                return Result.Failure(Errors.UpdateDataFailed);
+                return Result.Failure(ContactRepositoryErrors.UpdateDataFailed);
 
             return Result.Success();
 
         }
         catch (Exception ex)
         {
-            return Result.Failure(new Error("Update Failed", ex.Message));
+            return Result.Failure(new Error("DatabaseError", "Failed to update:" + ex.Message));
         }
     }
-    public async Task<Result> SetCategoryToDefaultByCategoryIdAsync(ContactCategory category)
+    public async Task<Result> SetCategoryIdForContactsToDefaultByCategoryIdAsync(ContactCategory category)
     {
         try
         {
             if (!await _context.ContactCategories.AnyAsync(cat => cat.Name.ToUpper() == category.Name.ToUpper()))
-                return Result.Failure(Errors.CategoryDoesNotExist);
+                return Result.Failure(CategoryRepositoryErrors.CategoryDoesNotExist);
+
+            if (!await _context.Contacts.AnyAsync(c => c.CategoryId == category.Id))
+                return Result.Success();
 
             var response = await _context.Contacts
                                 .Where(c => c.CategoryId == category.Id)
@@ -149,14 +151,13 @@ public class ContactRepository : IContactRepository
                                     .SetProperty(c => c.CategoryId, 1));
 
             if (response <= 0)
-                return Result.Failure(Errors.UpdateDataFailed);
+                return Result.Failure(ContactRepositoryErrors.UpdateDataFailed);
 
             return Result.Success();
-
         }
         catch (Exception ex)
         {
-            return Result.Failure(new Error("Update Failed", ex.Message));
+            return Result.Failure(new Error("DatabaseError", "Failed to set to default:" + ex.Message));
         }
     }
     public async Task<Result> SaveChangesAsync()
@@ -169,7 +170,7 @@ public class ContactRepository : IContactRepository
         }
         catch (Exception ex)
         {
-            return Result.Failure(new Error("Save Failed", ex.Message));
+            return Result.Failure(new Error("DatabaseError", "Failed to save:" + ex.Message));
         }
     }
 

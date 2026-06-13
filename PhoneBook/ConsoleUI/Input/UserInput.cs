@@ -124,9 +124,9 @@ internal class UserInput
     internal bool GetEmailContentsConfirmationFromUser(FullContactViewModel contact, string subject, string body)
     {
         string email = "Please confirm the following email:\r\n\r\n";
-        email += $"To: {contact.Email} ({contact.FirstName} {contact.LastName})\r\n";
-        email += $"Subject: {subject}\r\n\r\n";
-        email += $"Body:\r\n{body}\r\n\r\n";
+        email += $"[green]To:[/] [yellow]{contact.Email}[/] ({contact.FirstName} {contact.LastName})\r\n";
+        email += $"[green]Subject:[/] {subject}\r\n\r\n";
+        email += $"[green]Body:[/]\r\n{body}\r\n\r\n";
 
         return AnsiConsole.Confirm($"{email}\r\nConfirm send:");
     }

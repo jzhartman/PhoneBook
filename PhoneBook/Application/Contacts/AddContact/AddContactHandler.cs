@@ -27,7 +27,8 @@ public class AddContactHandler
             });
 
         if (result is null)
-            return Result.Failure(Errors.AddResponseNull);
+            return Result.Failure(ContactRepositoryErrors.AddResponseNull);
+
         if (result.IsFailure)
             return Result.Failure(result.Errors);
 

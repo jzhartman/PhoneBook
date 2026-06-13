@@ -1,6 +1,7 @@
 ﻿using PhoneBook.Application.Categories.UpdateCategory;
 using PhoneBook.ConsoleUI.Input;
 using PhoneBook.ConsoleUI.Output;
+using PhoneBook.Domain.Validation;
 using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.ConsoleUI.Services.Categories;
@@ -27,7 +28,7 @@ internal class EditCategoryService
 
         if (category is null)
         {
-            _messages.ErrorMessage(new[] { Errors.GetResponseNull });
+            _messages.ErrorMessage(new[] { CategoryRepositoryErrors.NullResponse });
             _userInput.PressAnyKeyToContinue();
             return; ;
         }
@@ -40,20 +41,25 @@ internal class EditCategoryService
         {
             var result = await _updateCategoryNameHandler.HandleAsync(new(category.Id, category.Name, newName));
 
-            if (result.IsFailure)
+            var errors = new List<Error>();
+
+            if (result is null)
+                errors.Add(CategoryRepositoryErrors.NullResponse);
+            else if (result.IsFailure)
+                errors.AddRange(result.Errors);
+            else
+                _messages.RenameCategorySuccessfulMessage(category.Name, newName);
+
+            if (errors.Count > 0)
             {
-                _messages.ErrorMessage(result.Errors);
+                _messages.ErrorMessage(errors);
                 _userInput.PressAnyKeyToContinue();
                 return; ;
-            }
-            else
-            {
-                _messages.RenameCategorySuccessfulMessage(category.Name, newName);
             }
         }
         else
         {
-            _messages.RenameCategorCancelledMessage(category.Name, newName);
+            _messages.RenameCategoryCancelledMessage(category.Name, newName);
         }
 
         _userInput.PressAnyKeyToContinue();

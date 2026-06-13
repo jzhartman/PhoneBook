@@ -29,7 +29,8 @@ public class DeleteContactHandler
                 });
 
         if (result is null)
-            return Result.Failure(Errors.DeleteResponseNull);
+            return Result.Failure(ContactRepositoryErrors.DeleteResponseNull);
+
         if (result.IsFailure)
             return Result.Failure(result.Errors);
 
