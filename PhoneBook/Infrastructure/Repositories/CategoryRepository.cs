@@ -38,7 +38,7 @@ public class CategoryRepository : ICategoryRepository
             var category = await _context.ContactCategories.AsNoTracking().FirstOrDefaultAsync(cat => cat.Id == id);
 
             if (category is null)
-                category = new ContactCategory();       //ToDo: Review why I did this
+                category = new ContactCategory();
 
             return Result<ContactCategory>.Success(category);
         }
