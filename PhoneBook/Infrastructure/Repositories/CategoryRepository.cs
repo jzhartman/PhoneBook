@@ -21,14 +21,11 @@ public class CategoryRepository : ICategoryRepository
         {
             var categories = await _context.ContactCategories.AsNoTracking().ToListAsync();
 
-            if (categories is null)
-                categories = new List<ContactCategory>();
-
             return Result<List<ContactCategory>>.Success(categories);
         }
         catch (Exception ex)
         {
-            return Result<List<ContactCategory>>.Failure(new Error("DatabaseError", "Failed to load:" + ex.Message));
+            return Result<List<ContactCategory>>.Failure(new Error("DatabaseError", ex.Message));
         }
     }
     public async Task<Result<ContactCategory>> GetByIdAsync(int id)
@@ -37,14 +34,11 @@ public class CategoryRepository : ICategoryRepository
         {
             var category = await _context.ContactCategories.AsNoTracking().FirstOrDefaultAsync(cat => cat.Id == id);
 
-            if (category is null)
-                category = new ContactCategory();
-
             return Result<ContactCategory>.Success(category);
         }
         catch (Exception ex)
         {
-            return Result<ContactCategory>.Failure(new Error("DatabaseError", "Failed to load:" + ex.Message));
+            return Result<ContactCategory>.Failure(new Error("DatabaseError", ex.Message));
         }
     }
 
@@ -60,7 +54,7 @@ public class CategoryRepository : ICategoryRepository
         }
         catch (Exception ex)
         {
-            return Result.Failure(new Error("DatabaseError", "Failed to add:" + ex.Message));
+            return Result.Failure(new Error("DatabaseError", ex.Message));
         }
     }
 
@@ -79,14 +73,14 @@ public class CategoryRepository : ICategoryRepository
         catch (Exception ex)
         {
 
-            return Result.Failure(new Error("DatabaseError", "Failed to delete:" + ex.Message));
+            return Result.Failure(new Error("DatabaseError", ex.Message));
         }
     }
     public async Task<Result> UpdateAsync(ContactCategory category)
     {
         try
         {
-            if (await CategoryExistsByNameCaseInsensitive(category))
+            if (await CategoryExistsByNameCaseIndependent(category))
                 return Result.Failure(CategoryRepositoryErrors.CategoryExists);
 
             var response = await _context.ContactCategories
@@ -102,7 +96,7 @@ public class CategoryRepository : ICategoryRepository
         }
         catch (Exception ex)
         {
-            return Result.Failure(new Error("DatabaseError", "Failed to update:" + ex.Message));
+            return Result.Failure(new Error("DatabaseError", ex.Message));
         }
     }
 
@@ -116,11 +110,11 @@ public class CategoryRepository : ICategoryRepository
         }
         catch (Exception ex)
         {
-            return Result.Failure(new Error("DatabaseError", "Failed to save:" + ex.Message));
+            return Result.Failure(new Error("DatabaseError", ex.Message));
         }
     }
 
-    private async Task<bool> CategoryExistsByNameCaseInsensitive(ContactCategory category)
+    private async Task<bool> CategoryExistsByNameCaseIndependent(ContactCategory category)
     {
         return await _context.ContactCategories.AnyAsync(cat => cat.Name == category.Name);
     }

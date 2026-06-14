@@ -10,5 +10,5 @@ public class Contact
 
     public int CategoryId { get; set; }
 
-    public ContactCategory Category { get; set; }
+    public ContactCategory? Category { get; set; }
 }

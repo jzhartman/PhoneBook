@@ -28,7 +28,7 @@ public class ContactRepository : IContactRepository
         }
         catch (Exception ex)
         {
-            return Result.Failure(new Error("DatabaseError", "Failed to add:" + ex.Message));
+            return Result.Failure(new Error("DatabaseError", ex.Message));
         }
     }
 
@@ -48,7 +48,7 @@ public class ContactRepository : IContactRepository
         catch (Exception ex)
         {
 
-            return Result.Failure(new Error("DatabaseError", "Failed to delete:" + ex.Message));
+            return Result.Failure(new Error("DatabaseError", ex.Message));
         }
     }
 
@@ -60,14 +60,11 @@ public class ContactRepository : IContactRepository
                 .AsNoTracking()
                 .ToListAsync();
 
-            if (contacts is null)
-                contacts = new List<Contact>();
-
             return Result<List<Contact>>.Success(contacts);
         }
         catch (Exception ex)
         {
-            return Result<List<Contact>>.Failure(new Error("DatabaseError", "Failed to load:" + ex.Message));
+            return Result<List<Contact>>.Failure(new Error("DatabaseError", ex.Message));
         }
     }
 
@@ -79,14 +76,11 @@ public class ContactRepository : IContactRepository
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            if (contact is null)
-                contact = new Contact();
-
             return Result<Contact>.Success(contact);
         }
         catch (Exception ex)
         {
-            return Result<Contact>.Failure(new Error("DatabaseError", "Failed to load:" + ex.Message));
+            return Result<Contact>.Failure(new Error("DatabaseError", ex.Message));
         }
     }
 
@@ -99,14 +93,11 @@ public class ContactRepository : IContactRepository
                 .Where(c => c.CategoryId == id)
                 .ToListAsync();
 
-            if (contacts is null)
-                contacts = new List<Contact>();
-
             return Result<List<Contact>>.Success(contacts);
         }
         catch (Exception ex)
         {
-            return Result<List<Contact>>.Failure(new Error("DatabaseError", "Failed to load:" + ex.Message));
+            return Result<List<Contact>>.Failure(new Error("DatabaseError", ex.Message));
         }
     }
 
@@ -132,7 +123,7 @@ public class ContactRepository : IContactRepository
         }
         catch (Exception ex)
         {
-            return Result.Failure(new Error("DatabaseError", "Failed to update:" + ex.Message));
+            return Result.Failure(new Error("DatabaseError", ex.Message));
         }
     }
     public async Task<Result> SetCategoryIdForContactsToDefaultByCategoryIdAsync(ContactCategory category)
@@ -157,7 +148,7 @@ public class ContactRepository : IContactRepository
         }
         catch (Exception ex)
         {
-            return Result.Failure(new Error("DatabaseError", "Failed to set to default:" + ex.Message));
+            return Result.Failure(new Error("DatabaseError", ex.Message));
         }
     }
     public async Task<Result> SaveChangesAsync()
@@ -170,7 +161,7 @@ public class ContactRepository : IContactRepository
         }
         catch (Exception ex)
         {
-            return Result.Failure(new Error("DatabaseError", "Failed to save:" + ex.Message));
+            return Result.Failure(new Error("DatabaseError", ex.Message));
         }
     }
 
