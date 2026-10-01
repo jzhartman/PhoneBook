@@ -6,7 +6,7 @@ using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.Application.Categories.GetAllCategories;
 
-internal class GetAllCategoriesHandler
+public class GetAllCategoriesHandler
 {
     private readonly ICategoryRepository _repo;
 
@@ -19,11 +19,14 @@ internal class GetAllCategoriesHandler
     {
         var result = await _repo.GetAllAsync();
 
-        if (result is null || result.Value is null || result.Value.Count < 1)
+        if (result is null)
             return Result<List<CategoryResponse>>.Failure(new Error[] { CategoryRepositoryErrors.CategoryNotFound });
 
         if (result.IsFailure)
             return Result<List<CategoryResponse>>.Failure(result.Errors);
+
+        if (result.Value is null || result.Value.Count < 1)
+            return Result<List<CategoryResponse>>.Failure(new Error[] { CategoryRepositoryErrors.CategoryNotFound });
 
         return Result<List<CategoryResponse>>.Success(MapToCategoryResponse(result.Value));
     }
