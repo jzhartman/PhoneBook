@@ -6,15 +6,13 @@ using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.Application.Categories.DeleteCategory;
 
-internal class DeleteCategoryByIdHandler
+public class DeleteCategoryByIdHandler
 {
     private readonly ICategoryRepository _categoryRepo;
-    private readonly IContactRepository _contactRepo;
 
-    public DeleteCategoryByIdHandler(ICategoryRepository categoryRepo, IContactRepository contactRepo)
+    public DeleteCategoryByIdHandler(ICategoryRepository categoryRepo)
     {
         _categoryRepo = categoryRepo;
-        _contactRepo = contactRepo;
     }
 
     public async Task<Result> HandleAsync(CategoryResponse categoryResponse)

@@ -1,6 +1,6 @@
 ﻿namespace PhoneBook.Domain.Validation.Errors;
 
-internal class CategoryRepositoryErrors
+public class CategoryRepositoryErrors
 {
     public static readonly Error None = Error.None;
 
