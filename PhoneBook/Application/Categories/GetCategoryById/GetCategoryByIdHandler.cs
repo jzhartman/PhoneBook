@@ -18,11 +18,14 @@ public class GetCategoryByIdHandler
     {
         var result = await _repo.GetByIdAsync(categoryId);
 
-        if (result is null || result.Value is null)
+        if (result is null)
             return Result<CategoryResponse>.Failure(CategoryRepositoryErrors.CategoryNotFound);
 
         if (result.IsFailure)
             return Result<CategoryResponse>.Failure(result.Errors);
+
+        if (result.Value is null)
+            return Result<CategoryResponse>.Failure(CategoryRepositoryErrors.CategoryNotFound);
 
         return Result<CategoryResponse>.Success(new CategoryResponse
             (
