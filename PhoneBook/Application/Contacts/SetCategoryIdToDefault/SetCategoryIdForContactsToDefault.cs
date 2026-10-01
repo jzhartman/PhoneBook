@@ -6,7 +6,7 @@ using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.Application.Contacts.SetCategoryIdToDefault;
 
-internal class SetCategoryIdForContactsToDefaultHandler
+public class SetCategoryIdForContactsToDefaultHandler
 {
     private readonly IContactRepository _contactRepo;
 
@@ -15,7 +15,7 @@ internal class SetCategoryIdForContactsToDefaultHandler
         _contactRepo = contactRepo;
     }
 
-    internal async Task<Result> HandleAsync(CategoryResponse category)
+    public async Task<Result> HandleAsync(CategoryResponse category)
     {
         if (category.Name.ToUpper() == "UNCATEGORIZED")
             return Result.Failure(CategoryRepositoryErrors.DeleteDefault);
