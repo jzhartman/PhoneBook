@@ -39,4 +39,5 @@ internal class Program
         var mainMenu = host.Services.GetRequiredService<MainMenuService>();
         await mainMenu.RunAsync();
     }
+    // ToDo: Review ConsoleUI methods for UnitTest capabilities
 }
