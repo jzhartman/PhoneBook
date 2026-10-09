@@ -82,32 +82,23 @@ public class GetAllContactsTests
         Assert.Contains(ContactRepositoryErrors.ContactNotFound, result.Errors);
     }
 
-    //[Fact]
-    //public async Task GetAllContacts_ReturnsSuccess_WhenResultIsSuccessful()
-    //{
-    //    // Arrange
-    //    _contactRepoMock
-    //        .Setup(x => x.GetAllAsync())
-    //        .ReturnsAsync(Result<List<Contact>>.Success());
+    [Fact]
+    public async Task GetAllContacts_ReturnsSuccess_WhenResultIsSuccessful()
+    {
+        // Arrange
+        var contacts = new List<Contact> {
+            new Contact {Id = 1, FirstName = "Leeroy", LastName = "Jenkins", PhoneNumber = "1234567890", Email = "me@email.com", CategoryId = 1 },
+            new Contact {Id = 1, FirstName = "Steve", LastName = "Irwin", PhoneNumber = "0987654321", Email = "crikey@crocs.com", CategoryId = 2 } ,
+            new Contact {Id = 1, FirstName = "Jimmy", LastName = "John", PhoneNumber = "1111111111", Email = "jj@jj.com", CategoryId = 3 } };
+        _contactRepoMock
+            .Setup(x => x.GetAllAsync())
+            .ReturnsAsync(Result<List<Contact>>.Success(contacts));
 
-    //    // Act
-    //    var result = await _sut.HandleAsync();
+        // Act
+        var result = await _sut.HandleAsync();
 
-    //    // Assert
-    //    Assert.True(result.IsSuccess);
-    //}
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.True(result.Value.Count == 3);
+    }
 }
-
-/*
- * 
-        if (result is null)
-            return Result<List<ContactResponse>>.Failure(ContactRepositoryErrors.ContactNotFound);
-
-        if (result.IsFailure)
-            return Result<List<ContactResponse>>.Failure(result.Errors);
-
-        if (result.Value is null || result.Value.Count < 1)
-            return Result<List<ContactResponse>>.Failure(ContactRepositoryErrors.ContactNotFound);
-
-        return Result<List<ContactResponse>>.Success(ContactResponseHelper.MapToContactResponse(result.Value));
- */
