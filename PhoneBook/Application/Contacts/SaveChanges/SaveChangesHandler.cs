@@ -4,7 +4,7 @@ using PhoneBook.Domain.Validation.Errors;
 
 namespace PhoneBook.Application.Contacts.SaveChanges;
 
-internal class SaveChangesHandler
+public class SaveChangesHandler
 {
     private readonly IContactRepository _repo;
 
