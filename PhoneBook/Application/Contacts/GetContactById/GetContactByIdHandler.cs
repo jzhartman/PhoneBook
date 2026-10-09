@@ -18,11 +18,15 @@ public class GetContactByIdHandler
     {
         var result = await _repo.GetByIdAsync(contactId);
 
-        if (result is null || result.Value is null)
+        if (result is null)
             return Result<ContactResponse>.Failure(ContactRepositoryErrors.ContactNotFound);
 
         if (result.IsFailure)
             return Result<ContactResponse>.Failure(result.Errors);
+
+        if (result.Value is null)
+            return Result<ContactResponse>.Failure(ContactRepositoryErrors.ContactNotFound);
+
 
         return Result<ContactResponse>.Success(new ContactResponse
             (
