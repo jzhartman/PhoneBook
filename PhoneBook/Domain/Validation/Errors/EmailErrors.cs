@@ -1,6 +1,6 @@
 ﻿namespace PhoneBook.Domain.Validation.Errors;
 
-internal class EmailErrors
+public class EmailErrors
 {
     public static readonly Error None = Error.None;
 
