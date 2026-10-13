@@ -12,6 +12,7 @@ public class AddAsyncTests : IClassFixture<DatabaseFixture>
     public AddAsyncTests(DatabaseFixture fixture)
     {
         _fixture = fixture;
+        _fixture.SeedCategoryList();
     }
 
     [Fact]
