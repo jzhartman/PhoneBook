@@ -13,7 +13,7 @@ public class GetByIdAsyncTests : IClassFixture<DatabaseFixture>
     }
 
     [Fact]
-    public async Task GetByIdAsync_ReturnsNull_IfNoMatchToId()
+    public async Task GetByIdAsync_ReturnsNull_IfIdIsInvalid()
     {
         // Arrange
         _fixture.ResetDatabase();
@@ -29,7 +29,7 @@ public class GetByIdAsyncTests : IClassFixture<DatabaseFixture>
     }
 
     [Fact]
-    public async Task GetByIdAsync_ReturnsCategory_IfIdMatches()
+    public async Task GetByIdAsync_ReturnsCategory_IfIdIsValid()
     {
         // Arrange
         _fixture.ResetDatabase();

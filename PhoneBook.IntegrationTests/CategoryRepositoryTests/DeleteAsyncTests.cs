@@ -30,7 +30,7 @@ public class DeleteAsyncTests : IClassFixture<DatabaseFixture>
     }
 
     [Fact]
-    public async Task DeleteAsync_ReturnsSuccess_WhenDeleted()
+    public async Task DeleteAsync_ReturnsSuccess_WhenIdIsValid()
     {
         // Arrange
         _fixture.ResetDatabase();

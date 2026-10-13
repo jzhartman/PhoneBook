@@ -27,7 +27,7 @@ public class GetAllAsyncTests : IClassFixture<DatabaseFixture>
     }
 
     [Fact]
-    public async Task GetAllAsync_ReturnsList_WhenTableIsPopulated()
+    public async Task GetAllAsync_ReturnsPopulatedList_WhenTableIsPopulated()
     {
         // Arrange
         _fixture.ResetDatabase();

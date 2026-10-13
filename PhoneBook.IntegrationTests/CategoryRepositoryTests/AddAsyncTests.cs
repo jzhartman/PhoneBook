@@ -36,7 +36,7 @@ public class AddAsyncTests : IClassFixture<DatabaseFixture>
     }
 
     [Fact]
-    public async Task AddAsync_ReturnsSuccess_WhenUniqueCategoryAdded()
+    public async Task AddAsync_ReturnsSuccess_WhenUniqueCategoryIsUnique()
     {
         // Arrange
         var category = new ContactCategory { Name = "Test Category" };
