@@ -5,16 +5,18 @@ namespace PhoneBook.Infrastructure;
 
 public class PhoneBookDbContext : DbContext
 {
+    public bool DisableSeedData { get; }
     public DbSet<Contact> Contacts { get; set; }
     public DbSet<ContactCategory> ContactCategories { get; set; }
 
-    public PhoneBookDbContext(DbContextOptions<PhoneBookDbContext> options) : base(options)
+    public PhoneBookDbContext(DbContextOptions<PhoneBookDbContext> options, bool disableSeedData = false) : base(options)
     {
-
+        DisableSeedData = disableSeedData;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(PhoneBookDbContext).Assembly);
+        if (!DisableSeedData)
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PhoneBookDbContext).Assembly);
     }
 }

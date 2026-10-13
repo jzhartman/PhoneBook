@@ -21,7 +21,7 @@ public class DatabaseFixture : IDisposable
             .UseSqlite($"Data Source={DbFile}")
             .Options;
 
-        Context = new PhoneBookDbContext(options);
+        Context = new PhoneBookDbContext(options, disableSeedData: true);
         Context.Database.EnsureCreated();
 
         CategoryRepository = new CategoryRepository(Context);
