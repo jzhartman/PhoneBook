@@ -15,6 +15,7 @@ public class GetAllAsyncTests : IClassFixture<DatabaseFixture>
     public async Task GetAllAsync_ReturnsEmptyList_WhenTableIsEmpty()
     {
         // Arrange
+        _fixture.ResetDatabase();
 
         // Act
         var result = await _fixture.CategoryRepository.GetAllAsync();
@@ -29,6 +30,7 @@ public class GetAllAsyncTests : IClassFixture<DatabaseFixture>
     public async Task GetAllAsync_ReturnsList_WhenTableIsPopulated()
     {
         // Arrange
+        _fixture.ResetDatabase();
         _fixture.SeedCategoryList();
 
         var expected = new List<ContactCategory>
