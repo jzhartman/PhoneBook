@@ -42,7 +42,7 @@ public class AddContactTests
         var error = new Error("TestCode", "TestMessage");
         _contactRepoMock
             .Setup(x => x.AddAsync(It.IsAny<Contact>()))
-            .ReturnsAsync(Result.Failure(error));
+            .ReturnsAsync(Result<Contact>.Failure(error));
 
         // Act
         var result = await _sut.HandleAsync(addContactRequest);
@@ -59,7 +59,7 @@ public class AddContactTests
         var addContactRequest = new AddContactRequest("Leeroy", "Jenkins", "0123456789", "lee@roy.com", 1);
         _contactRepoMock
             .Setup(x => x.AddAsync(It.IsAny<Contact>()))
-            .ReturnsAsync(Result.Success());
+            .ReturnsAsync(Result<Contact>.Success(It.IsAny<Contact>()));
 
         // Act
         var result = await _sut.HandleAsync(addContactRequest);
