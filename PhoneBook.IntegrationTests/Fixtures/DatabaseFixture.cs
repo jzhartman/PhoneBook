@@ -34,27 +34,33 @@ public class DatabaseFixture : IDisposable
         File.Delete(DbFile);
     }
 
-    public ContactCategory SeedCategory(ContactCategory category)
+    public void SeedCategory(ContactCategory category)
     {
         var input = new ContactCategory { Id = category.Id, Name = category.Name };
         Context.ContactCategories.Add(input);
         Context.SaveChanges();
-        return input;
     }
 
-    public List<ContactCategory> SeedCategoryList()
+    public void SeedCategory(List<ContactCategory> categories)
+    {
+        foreach (var category in categories)
+        {
+            SeedCategory(category);
+        }
+    }
+
+    public void SeedCategoryList()
     {
         var categories = new List<ContactCategory>
         {
             new ContactCategory {Name = "Family"},
-            new ContactCategory {Name = "Firends"},
+            new ContactCategory {Name = "Friends"},
             new ContactCategory {Name = "Work"},
             new ContactCategory {Name = "School"}
         };
 
         Context.ContactCategories.AddRange(categories);
         Context.SaveChanges();
-        return categories;
     }
 
     public Contact SeedContact(string firstName, string lastName, string phoneNumber, string email, int categoryId)
@@ -68,6 +74,11 @@ public class DatabaseFixture : IDisposable
             CategoryId = categoryId
         };
 
+        return SeedContact(contact);
+    }
+
+    public Contact SeedContact(Contact contact)
+    {
         Context.Contacts.Add(contact);
         Context.SaveChanges();
 
@@ -76,7 +87,8 @@ public class DatabaseFixture : IDisposable
 
     public List<Contact> SeedContactList()
     {
-        var category = SeedCategory(new ContactCategory { Name = "Crew" });
+        var category = new ContactCategory { Name = "Crew" };
+        SeedCategory(category);
 
         var contacts = new List<Contact>
         {
