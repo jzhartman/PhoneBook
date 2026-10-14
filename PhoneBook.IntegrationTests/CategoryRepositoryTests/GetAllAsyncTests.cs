@@ -36,7 +36,7 @@ public class GetAllAsyncTests : IClassFixture<DatabaseFixture>
         var expected = new List<ContactCategory>
         {
             new ContactCategory {Name = "Family"},
-            new ContactCategory {Name = "Firends"},
+            new ContactCategory {Name = "Friends"},
             new ContactCategory {Name = "Work"},
             new ContactCategory {Name = "School"}
         };
