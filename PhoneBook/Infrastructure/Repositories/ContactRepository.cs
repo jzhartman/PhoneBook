@@ -15,20 +15,20 @@ public class ContactRepository : IContactRepository
         _context = context;
     }
 
-    public async Task<Result> AddAsync(Contact contact)
+    public async Task<Result<Contact>> AddAsync(Contact contact)
     {
         try
         {
             if (await ContactExists(contact))
-                return Result.Failure(ContactRepositoryErrors.ContactExists);
+                return Result<Contact>.Failure(ContactRepositoryErrors.ContactExists);
 
             await _context.Contacts.AddAsync(contact);
 
-            return Result.Success();
+            return Result<Contact>.Success(contact);
         }
         catch (Exception ex)
         {
-            return Result.Failure(new Error("DatabaseError", ex.Message));
+            return Result<Contact>.Failure(new Error("DatabaseError", ex.Message));
         }
     }
 
@@ -167,7 +167,11 @@ public class ContactRepository : IContactRepository
 
     private async Task<bool> ContactExists(Contact contact)
     {
-        return await _context.Contacts.AnyAsync(c => c.FirstName == contact.FirstName && c.LastName == contact.LastName
-                                                            && c.PhoneNumber == contact.PhoneNumber && c.Email == contact.Email);
+        return await _context.Contacts.AnyAsync(
+            c => c.FirstName == contact.FirstName &&
+            c.LastName == contact.LastName &&
+            c.PhoneNumber == contact.PhoneNumber &&
+            c.Email == contact.Email &&
+            c.CategoryId == contact.CategoryId);
     }
 }
