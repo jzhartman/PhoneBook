@@ -29,8 +29,8 @@ public class AddAsyncTests : IClassFixture<DatabaseFixture>
             CategoryId = category.Id
         };
         _fixture.ResetDatabase();
-        _fixture.SeedCategory(category);
-        _fixture.SeedContact(contact);
+        _fixture.SeedCategoryTable(category);
+        _fixture.SeedContactTable(contact);
 
         // Act
         var result = await _fixture.ContactRepository.AddAsync(contact);
@@ -57,8 +57,8 @@ public class AddAsyncTests : IClassFixture<DatabaseFixture>
             CategoryId = category.Id
         };
         _fixture.ResetDatabase();
-        _fixture.SeedCategory(category);
-        _fixture.SeedContact(contact);
+        _fixture.SeedCategoryTable(category);
+        _fixture.SeedContactTable(contact);
         contact.Id = 0;
         contact.FirstName = "John";
 
@@ -94,8 +94,8 @@ public class AddAsyncTests : IClassFixture<DatabaseFixture>
             CategoryId = category.Id
         };
         _fixture.ResetDatabase();
-        _fixture.SeedCategory(category);
-        _fixture.SeedContact(contact);
+        _fixture.SeedCategoryTable(category);
+        _fixture.SeedContactTable(contact);
         contact.Id = 0;
         contact.LastName = "Smith";
 
@@ -131,8 +131,8 @@ public class AddAsyncTests : IClassFixture<DatabaseFixture>
             CategoryId = category.Id
         };
         _fixture.ResetDatabase();
-        _fixture.SeedCategory(category);
-        _fixture.SeedContact(contact);
+        _fixture.SeedCategoryTable(category);
+        _fixture.SeedContactTable(contact);
         contact.Id = 0;
         contact.PhoneNumber = "999999999";
 
@@ -168,8 +168,8 @@ public class AddAsyncTests : IClassFixture<DatabaseFixture>
             CategoryId = category.Id
         };
         _fixture.ResetDatabase();
-        _fixture.SeedCategory(category);
-        _fixture.SeedContact(contact);
+        _fixture.SeedCategoryTable(category);
+        _fixture.SeedContactTable(contact);
         contact.Id = 0;
         contact.Email = "firefly@serenity.com";
 
@@ -209,8 +209,8 @@ public class AddAsyncTests : IClassFixture<DatabaseFixture>
             CategoryId = categories[0].Id
         };
         _fixture.ResetDatabase();
-        _fixture.SeedCategory(categories);
-        _fixture.SeedContact(contact);
+        _fixture.SeedCategoryTable(categories);
+        _fixture.SeedContactTable(contact);
         contact.Id = 0;
         contact.CategoryId = categories[1].Id;
 

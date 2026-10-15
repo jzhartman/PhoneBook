@@ -28,8 +28,8 @@ public class DeleteAsyncTests : IClassFixture<DatabaseFixture>
             CategoryId = category.Id
         };
         _fixture.ResetDatabase();
-        _fixture.SeedCategory(category);
-        _fixture.SeedContact(contact);
+        _fixture.SeedCategoryTable(category);
+        _fixture.SeedContactTable(contact);
 
         // Act
         var result = await _fixture.ContactRepository.DeleteAsync(
@@ -64,8 +64,8 @@ public class DeleteAsyncTests : IClassFixture<DatabaseFixture>
             CategoryId = category.Id
         };
         _fixture.ResetDatabase();
-        _fixture.SeedCategory(category);
-        _fixture.SeedContact(contact);
+        _fixture.SeedCategoryTable(category);
+        _fixture.SeedContactTable(contact);
 
         // Act
         var result = await _fixture.ContactRepository.DeleteAsync(contact);

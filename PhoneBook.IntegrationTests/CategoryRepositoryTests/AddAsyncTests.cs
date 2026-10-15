@@ -12,7 +12,14 @@ public class AddAsyncTests : IClassFixture<DatabaseFixture>
     public AddAsyncTests(DatabaseFixture fixture)
     {
         _fixture = fixture;
-        _fixture.SeedCategoryList();
+        _fixture.SeedCategoryTable(
+                    new List<ContactCategory>
+                    {
+                        new ContactCategory {Name = "Family"},
+                        new ContactCategory {Name = "Friends"},
+                        new ContactCategory {Name = "Work"},
+                        new ContactCategory {Name = "School"}
+                    });
     }
 
     [Fact]

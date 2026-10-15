@@ -20,7 +20,7 @@ public class UpdateAsyncTests : IClassFixture<DatabaseFixture>
         // Arrange
         _fixture.ResetDatabase();
         var category = new ContactCategory { Name = "Family" };
-        _fixture.SeedCategory(category);
+        _fixture.SeedCategoryTable(category);
 
         // Act
         var result = await _fixture.CategoryRepository.UpdateAsync(category);
@@ -36,7 +36,7 @@ public class UpdateAsyncTests : IClassFixture<DatabaseFixture>
         // Arrange
         _fixture.ResetDatabase();
         var category = new ContactCategory { Id = 1, Name = "Family" };
-        _fixture.SeedCategory(category);
+        _fixture.SeedCategoryTable(category);
 
         // Act
         var result = await _fixture.CategoryRepository.UpdateAsync(new ContactCategory { Id = 2, Name = "Work" });
@@ -55,7 +55,7 @@ public class UpdateAsyncTests : IClassFixture<DatabaseFixture>
         var seedCategory = new ContactCategory { Id = 1, Name = "Family" };
         var updatedCategory = new ContactCategory { Id = 1, Name = "Work" };
         _fixture.ResetDatabase();
-        _fixture.SeedCategory(seedCategory);
+        _fixture.SeedCategoryTable(seedCategory);
 
         // Act
         var result = await _fixture.CategoryRepository.UpdateAsync(updatedCategory);

@@ -34,7 +34,7 @@ public class GetByIdAsyncTests : IClassFixture<DatabaseFixture>
         // Arrange
         _fixture.ResetDatabase();
         var category = new ContactCategory { Id = 1, Name = "GetByIdAsync Test Category" };
-        _fixture.SeedCategory(category);
+        _fixture.SeedCategoryTable(category);
 
         // Act
         var result = await _fixture.CategoryRepository.GetByIdAsync(category.Id);

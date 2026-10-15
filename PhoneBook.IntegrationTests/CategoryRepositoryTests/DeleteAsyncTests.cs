@@ -35,7 +35,7 @@ public class DeleteAsyncTests : IClassFixture<DatabaseFixture>
         // Arrange
         _fixture.ResetDatabase();
         var category = new ContactCategory { Id = 0, Name = "Family" };
-        _fixture.SeedCategory(category);
+        _fixture.SeedCategoryTable(category);
 
         // Act
         var result = await _fixture.CategoryRepository.DeleteAsync(category);

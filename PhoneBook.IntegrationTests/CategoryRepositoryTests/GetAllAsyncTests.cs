@@ -30,9 +30,6 @@ public class GetAllAsyncTests : IClassFixture<DatabaseFixture>
     public async Task GetAllAsync_ReturnsPopulatedList_WhenTableIsPopulated()
     {
         // Arrange
-        _fixture.ResetDatabase();
-        _fixture.SeedCategoryList();
-
         var expected = new List<ContactCategory>
         {
             new ContactCategory {Name = "Family"},
@@ -40,6 +37,8 @@ public class GetAllAsyncTests : IClassFixture<DatabaseFixture>
             new ContactCategory {Name = "Work"},
             new ContactCategory {Name = "School"}
         };
+        _fixture.ResetDatabase();
+        _fixture.SeedCategoryTable(expected);
 
         // Act
         var result = await _fixture.CategoryRepository.GetAllAsync();
