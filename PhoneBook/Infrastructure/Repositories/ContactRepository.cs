@@ -133,6 +133,7 @@ public class ContactRepository : IContactRepository
             if (!await _context.ContactCategories.AnyAsync(cat => cat.Name.ToUpper() == category.Name.ToUpper()))
                 return Result.Failure(CategoryRepositoryErrors.CategoryDoesNotExist);
 
+            // Note: If there are no contacts in this category, then no contacts need updated, therefore success
             if (!await _context.Contacts.AnyAsync(c => c.CategoryId == category.Id))
                 return Result.Success();
 

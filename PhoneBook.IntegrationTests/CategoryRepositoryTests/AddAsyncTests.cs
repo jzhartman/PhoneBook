@@ -12,14 +12,6 @@ public class AddAsyncTests : IClassFixture<DatabaseFixture>
     public AddAsyncTests(DatabaseFixture fixture)
     {
         _fixture = fixture;
-        _fixture.SeedCategoryTable(
-                    new List<ContactCategory>
-                    {
-                        new ContactCategory {Name = "Family"},
-                        new ContactCategory {Name = "Friends"},
-                        new ContactCategory {Name = "Work"},
-                        new ContactCategory {Name = "School"}
-                    });
     }
 
     [Fact]
@@ -27,6 +19,15 @@ public class AddAsyncTests : IClassFixture<DatabaseFixture>
     {
         // Arrange
         var category = new ContactCategory { Name = "Family" };
+        _fixture.ResetDatabase();
+        _fixture.SeedCategoryTable(
+            new List<ContactCategory>
+            {
+                        new ContactCategory {Name = "Family"},
+                        new ContactCategory {Name = "Friends"},
+                        new ContactCategory {Name = "Work"},
+                        new ContactCategory {Name = "School"}
+            });
 
         // Act
         var result = await _fixture.CategoryRepository.AddAsync(category);
@@ -47,6 +48,15 @@ public class AddAsyncTests : IClassFixture<DatabaseFixture>
     {
         // Arrange
         var category = new ContactCategory { Name = "Test Category" };
+        _fixture.ResetDatabase();
+        _fixture.SeedCategoryTable(
+            new List<ContactCategory>
+            {
+                        new ContactCategory {Name = "Family"},
+                        new ContactCategory {Name = "Friends"},
+                        new ContactCategory {Name = "Work"},
+                        new ContactCategory {Name = "School"}
+            });
 
         // Act
         var result = await _fixture.CategoryRepository.AddAsync(category);

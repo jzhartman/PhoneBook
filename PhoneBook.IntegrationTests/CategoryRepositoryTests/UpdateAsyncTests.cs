@@ -18,8 +18,8 @@ public class UpdateAsyncTests : IClassFixture<DatabaseFixture>
     public async Task UpdateAsync_ReturnsFailure_IfNameAlreadyExists()
     {
         // Arrange
-        _fixture.ResetDatabase();
         var category = new ContactCategory { Name = "Family" };
+        _fixture.ResetDatabase();
         _fixture.SeedCategoryTable(category);
 
         // Act
@@ -34,8 +34,8 @@ public class UpdateAsyncTests : IClassFixture<DatabaseFixture>
     public async Task UpdateAsync_ReturnsFailure_IfUpdatedRowResponseEqualsZero()
     {
         // Arrange
-        _fixture.ResetDatabase();
         var category = new ContactCategory { Id = 1, Name = "Family" };
+        _fixture.ResetDatabase();
         _fixture.SeedCategoryTable(category);
 
         // Act

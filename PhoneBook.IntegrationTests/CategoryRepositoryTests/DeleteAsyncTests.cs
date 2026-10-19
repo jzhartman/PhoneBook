@@ -18,8 +18,8 @@ public class DeleteAsyncTests : IClassFixture<DatabaseFixture>
     public async Task DeleteAsync_ReturnsFailure_WhenIdIsInvalid()
     {
         // Arrange
-        _fixture.ResetDatabase();
         var category = new ContactCategory { Name = "Family" };
+        _fixture.ResetDatabase();
 
         // Act
         var result = await _fixture.CategoryRepository.DeleteAsync(category);
@@ -33,8 +33,8 @@ public class DeleteAsyncTests : IClassFixture<DatabaseFixture>
     public async Task DeleteAsync_ReturnsSuccess_WhenIdIsValid()
     {
         // Arrange
-        _fixture.ResetDatabase();
         var category = new ContactCategory { Id = 0, Name = "Family" };
+        _fixture.ResetDatabase();
         _fixture.SeedCategoryTable(category);
 
         // Act
