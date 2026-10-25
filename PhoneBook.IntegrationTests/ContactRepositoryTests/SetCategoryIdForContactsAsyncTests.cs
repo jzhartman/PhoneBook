@@ -231,21 +231,3 @@ public class SetCategoryIdForContactsAsyncTests : IClassFixture<DatabaseFixture>
         Assert.True(await _fixture.Context.Contacts.AnyAsync(c => c.CategoryId == defaultCategory.Id));
     }
 }
-
-/*
-            if (!await _context.ContactCategories.AnyAsync(cat => cat.Name.ToUpper() == category.Name.ToUpper()))
-                return Result.Failure(CategoryRepositoryErrors.CategoryDoesNotExist);
-
-            if (!await _context.Contacts.AnyAsync(c => c.CategoryId == category.Id))
-                return Result.Success();
-
-            var response = await _context.Contacts
-                                .Where(c => c.CategoryId == category.Id)
-                                .ExecuteUpdateAsync(setters => setters
-                                    .SetProperty(c => c.CategoryId, 1));
-
-            if (response <= 0)
-                return Result.Failure(ContactRepositoryErrors.UpdateDataFailed);
-
-            return Result.Success();
- */
